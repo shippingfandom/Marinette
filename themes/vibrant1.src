@@ -1,0 +1,12 @@
+colorRed = "<color=#FF6B8B><b>"           // Vibrant pink
+colorCyan = "<color=#00E5E8><b>"          // Bright cyan
+colorGold = "<color=#FFC0CB><b>"          // Light pink (gold replacement)
+colorGrey = "<color=#C0C0C0><b>"          // Silver grey
+colorGreen = "<color=#88E8F0><b>"         // Cyan-green
+colorOlive = "<color=#B0E0E6><b>"         // Powder blue (olive replacement)
+colorWhite = "<color=#FFFFFF><b>"         // Pure white
+colorBlack = "<color=#4A4A4A><b>"         // Dark grey
+colorOrange = "<color=#FF9EB5><b>"        // Pinkish-orange
+colorViolet = "<color=#FF82AB><b>"        // Deep pink (violet replacement)
+colorMagenta = "<color=#FF00FF><b>"       // Electric magenta
+colorLightBlue = "<color=#87CEFA><b>"     // Light sky blue

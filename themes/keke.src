@@ -1,0 +1,12 @@
+colorRed = "<color=#FF2E4EFF><b>"       // Brighter version of outline_root
+colorCyan = "<color=#00F0EAFF><b>"      // Super bright cyan
+colorGold = "<color=#FFD700FF><b>"      // Pure gold for max visibility
+colorGrey = "<color=#A0A0A0FF><b>"      // Medium bright grey
+colorGreen = "<color=#00FF9CFF><b>"     // Neon terminal green
+colorOlive = "<color=#B8B800FF><b>"     // Bright olive
+colorWhite = "<color=#FFFFFFFF><b>"      // Pure white
+colorBlack = "<color=#1A1A1AFF><b>"     // Soft black (not pure)
+colorOrange = "<color=#FF6D00FF><b>"    // Vivid orange
+colorViolet = "<color=#C97BFFFF><b>"    // Electric purple
+colorMagenta = "<color=#FF00F5FF><b>"   // Hot pink
+colorLightBlue = "<color=#00C8FFFF><b>"  // Sky blue

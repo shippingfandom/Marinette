@@ -1,0 +1,32 @@
+ROOT_PASSWORD = "YourPasswordHere!"
+
+g_root_shell = null
+if ROOT_PASSWORD then g_root_shell = get_shell("root", ROOT_PASSWORD)
+if active_user == "root" then g_root_shell = get_shell
+while not g_root_shell
+	password = user_input(
+		"Enter root password: ",
+		true,
+		false,
+		false)
+	g_root_shell = get_shell("root", password)
+	if not g_root_shell then print("Incorrect password, please try again.")
+end while
+
+_GET_SHELL = @get_shell
+globals.get_shell = function(username="", password="")
+	if @username and @password then return _GET_SHELL(@username, @password)
+	return g_root_shell
+end function
+
+_ACTIVE_USER = @active_user
+globals.active_user = function
+	return "root"
+end function
+
+_HOME_DIR = @home_dir
+globals.home_dir = function
+	return "/root"
+end function
+
+get_shell.launch("/bin/cd")

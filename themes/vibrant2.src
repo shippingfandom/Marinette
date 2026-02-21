@@ -1,0 +1,12 @@
+colorRed = "<color=#FF2D7CFF><b>"        // Vibrant pink-red
+colorCyan = "<color=#00F9FFFF><b>"       // Bright electric cyan
+colorGold = "<color=#FFD700FF><b>"       // Gold (kept vibrant for visibility)
+colorGrey = "<color=#A0A0A0FF><b>"       // Medium grey (better for CLI)
+colorGreen = "<color=#00FF88FF><b>"      // Cyan-green
+colorOlive = "<color=#80FF80FF><b>"      // Light neon green
+colorWhite = "<color=#FFFFFFFF><b>"      // Pure white (unchanged)
+colorBlack = "<color=#000000FF><b>"      // Pure black (unchanged)
+colorOrange = "<color=#FF8000FF><b>"     // Bright orange
+colorViolet = "<color=#FF00FFFF><b>"     // Magenta-violet
+colorMagenta = "<color=#FF00A8FF><b>"    // Hot pink
+colorLightBlue = "<color=#00B4FFFF><b>"  // Bright sky blue

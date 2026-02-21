@@ -1,0 +1,23 @@
+kore --silent
+
+grep -p ^rkit$ / | clipa
+if " " " pwd | clipb || cd \@a || mkdir marinette || cd \@b " @a " No ^rkit$ found. "
+
+grep -p ^marinette$ @a | clipa
+if " " " pwd | clipb || cd \@a || mkdir glosure || cd \@b " @a " No ^marinette$ found. "
+
+grep -p ^glosure$ @a | clipa
+if " " " pwd | clipb || cd \@a || poke 5hell.gls || cd \@b " @a " No ^glosure$ found. "
+if " " " pwd | clipb || cd \@a || poke marinette.gls || cd \@b " @a " No ^glosure$ found. "
+if " " " pwd | clipb || cd \@a || poke do.gls || cd \@b " @a " No ^glosure$ found. "
+
+grep -p ^5hell.gls$ @a | clipc
+if " " " cat \@c | glosure -e " @c " No ^5hell.gls$ found. "
+
+grep -p ^marinette.gls$ @a | clipc
+if " " " cat \@c | glosure -e " @c " No ^marinette.gls$ found. "
+
+grep -p ^do.gls$ @a | clipc
+if " " " cat \@c | glosure -e " @c " No ^do.gls$ found. "
+
+kore --silent

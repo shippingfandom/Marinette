@@ -1,0 +1,12 @@
+colorRed = "<color=#D16BA5><b>" // Muted purplish-red
+colorCyan = "<color=#86A8E7><b>" // Soft periwinkle
+colorGold = "<color=#B8A9C6><b>" // Dusty lavender-gold
+colorGrey = "<color=#A7A9AC><b>" // Medium ghost grey
+colorGreen = "<color=#A0C1B8><b>" // Muted sage green
+colorOlive = "<color=#8A8D91><b>" // Greyish olive
+colorWhite = "<color=#E6E6FA><b>" // Ghost white (lavender tint)
+colorBlack = "<color=#4B4453><b>" // Deep purple-grey
+colorOrange = "<color=#C490A4><b>" // Dusty rose-orange
+colorViolet = "<color=#9B7ED6><b>" // Medium purple
+colorMagenta = "<color=#C47AC0><b>" // Soft magenta
+colorLightBlue = "<color=#A5B8E7><b>" // Pale lavender-blue

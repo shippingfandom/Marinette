@@ -1,0 +1,12 @@
+colorRed = "<color=#CC0000FF><b>"          // Matches 'title'/'red' from original
+colorCyan = "<color=#00ACB3FF><b>"         // New: Teal-cyan that fits the muted palette
+colorGold = "<color=#CC9900FF><b>"         // Warmer gold matching the softer yellow
+colorGrey = "<color=#606060FF><b>"         // Matches 'dark_grey'
+colorGreen = "<color=#00AA00FF><b>"        // Matches 'arg' but slightly deeper
+colorOlive = "<color=#668000FF><b>"        // New: Earthy olive from original's greens
+colorWhite = "<color=#E0E0E0FF><b>"        // Soft white (original was #FFFFFF)
+colorBlack = "<color=#202020FF><b>"        // Dark grey instead of pure black
+colorOrange = "<color=#CC6600FF><b>"       // Burnt orange matching gold/red tones
+colorViolet = "<color=#6600CCFF><b>"       // Muted purple from original blues
+colorMagenta = "<color=#CC00AAFF><b>"      // Desaturated pink-magenta
+colorLightBlue = "<color=#5F87FFFF><b>"    // Matches 'bool'/'light_blue'
