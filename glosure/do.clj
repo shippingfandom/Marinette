@@ -3,7 +3,9 @@
 (mari-mkdir 'binaries')     ;; rkit/marinette/binaries
 (mari-mkdir 'notepads')     ;; rkit/marinette/notepads
 
-;; Change your theme in rkit/marinette/themes
+;; Create a theme file in rkit/marinette/themes
+;; Then change the string to your file name like this:
+;; (mari-load-theme 'your-amazing-theme.src')
 (mari-load-theme 'soft.src')
 
 
