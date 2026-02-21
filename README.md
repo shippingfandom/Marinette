@@ -5,16 +5,16 @@ A set of [5hell](https://github.com/jhook777/5hell-for-Grey-Hack-the-Game) confi
 
 **TL;DR** An [installation how-to](#okay-you-definitely-bought-me-how-can-i-install-marinette) for those who can't wait! 👀
 
-# What is even this?
+## What is even this?
 It's **Marinette** - the addition to your **5hell**'s **rkit/do.rc**, written entirely in **Glosure**! 😜
 
-# Why Marinette?
+## Why Marinette?
 **Marinette** is named in honor of [Marinette Dupain-Cheng](https://en.wikipedia.org/wiki/Marinette_Dupain-Cheng), my favourite character of the [Miraculous: Tales of Ladybug & Cat Noir](https://en.wikipedia.org/wiki/Miraculous:_Tales_of_Ladybug_%26_Cat_Noir) series! 🐞
 
-# What is 5hell?
+## What is 5hell?
 **5hell** is an awesome shell emulator and multitool by the fabulous [Plu70](https://github.com/jhook777), which you can use and tinker on for *absolutely* free! 🎁
 
-# What is rkit/do.rc?
+## What is rkit/do.rc?
 It's like **.bashrc**, but for **5hell**!
 
 If you have absolutely no idea what **.bashrc** is, not a single clue about how **do.rc** works and don't feel like reading through a whole lot, no worries! 🤭
@@ -23,12 +23,12 @@ In simple words, **do.rc** is simply a file with a set of commands that gets exe
 
 If you would like to learn more in detail about how it works, refer to the documentation [here](https://github.com/Arc8ne/5hell-Documentation-Extractor/blob/main/5hell-Documentation.md#do), or simply issue `help -s do.rc` command while running the **5hell** herself 🥰
 
-# What and why Glosure?
+## What and why Glosure?
 **Glosure** is the first ever publicly available interpreted lisp-like language for **Grey Hack** by the gorgeous [mahocitrus](https://github.com/mahocitrus), which **5hell** supports fully and without *any* restrictions! 😃
 
 It allows everything **do.rc** scripitng allows *plus* everything in-game **scripting** allows! Which opens endless possibilities with what you can implement in a configuration files, really! 🌺
 
-# Why would I want to use Marinette?
+## Why would I want to use Marinette?
 Because just as **5hell**, **Marinette** is *completely* free to use and to tinker on! 💅
 
 Not only that, but **Marinette**:
@@ -38,7 +38,7 @@ Not only that, but **Marinette**:
 - Is fully compatible with the **do.rc** you already have 👀
 - Loves all of you! 💝
 
-# Okay, you definitely bought me! How can I install Marinette?
+## Okay, you definitely bought me! How can I install Marinette?
 Awesome! Can't wait for it! 😄
 
 To install **Marinette**, follow these simple instructions:
@@ -58,17 +58,17 @@ Now you may would want to do one of the following things:
 
 Happy hacking! 👾
 
-# Doesn't sound convincing... Maybe I'll try it later...
+## Doesn't sound convincing... Maybe I'll try it later...
 No worries! And thanks for reading this far 😌
 
 I still encourage you to check out [these projects](#the-people-who-made-this-possible), though!
 
-# Why there are SO many whys and whats?
+## Why there are SO many whys and whats?
 Well, it's just because I felt like writing an entire novel in a single README file. Whoops!
 
 I'm absolutely sure something is still missing in here... Guess we'll see! 😅
 
-# The people who made this possible!
+## The people who made this possible!
 **Marinette** wouldn't be possible without you! Big thanks to *all* of you! 💖
 
 - Thanks [Plu70](https://github.com/jhook777) for [5hell](https://github.com/jhook777/5hell-for-Grey-Hack-the-Game)!
@@ -77,6 +77,6 @@ I'm absolutely sure something is still missing in here... Guess we'll see! 😅
 
 You all are simply the best! 🥰
 
-# Afterword
+## Afterword
 
 I could forget to mention someone above, something can be broken, some link in the repository may lead to rickroll, all that thingies I overlooked, so if you find out something I can fix or help you with please let me know in the Discord (my ID is `not_s0phie`)! Thanks for your patience and for using this little project of mine! Lots of loooove! 💕
