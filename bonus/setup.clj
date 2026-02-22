@@ -19,6 +19,9 @@
 ((|> aptm) '-i' 'metaxploit.so')
 ((|> aptm) '-i' 'blockchain.so')
 
+;; Fill rkit with updates libraries
+((|> kore) '-r')
+
 ;; Load updated libraries into the memory
 ((|> aptm) '--hotswap')
 
