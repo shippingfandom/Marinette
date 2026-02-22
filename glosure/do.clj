@@ -3,11 +3,6 @@
 (mari-mkdir 'binaries')     ;; rkit/marinette/binaries
 (mari-mkdir 'notepads')     ;; rkit/marinette/notepads
 
-;; Create a theme file in rkit/marinette/themes
-;; Then change the string to your file name like this:
-;; (mari-load-theme 'your-amazing-theme.src')
-(mari-load-theme 'soft.src')
-
 
 
 
@@ -49,7 +44,9 @@
         (def do-rc (gl-grep-into (array '^rkit$' '^do.rc$')))
         (if (!= 'file' (typeof do-rc))
             'rc: could not find do.rc file.'
-            ((|> do) '1' '-f' ((_ do-rc path) do-rc)))))))
+            (begin
+                ((|> aptm) '--hotswap')
+                ((|> do) '1' '-f' ((_ do-rc path) do-rc))))))))
 
 ;; Crash workaround
 (>> scrub @pipe (begin
@@ -69,6 +66,27 @@
         (def endpoint-shell (at ((|> bios) '-B') (- (len ((|> bios) '-B')) 1)))
         (def infil-path (infil '-g' endpoint-shell))
         ((|> run) infil-path endpoint-shell)))))
+
+(>> unlock @pipe (begin
+    (def input (# @pipe 0 ''))
+    (if (== '' input) (begin
+        (gl-break-silence 'Warning: this will run the following on the object you are in!')
+        (gl-break-silence '<b>usr -r guest / || grp -r guest / || perms unlock all</b>')
+        (gl-break-silence 'Continue? (N/y)')
+        (def input (lower (user_input '||: ' 0 1 0)))))
+    (if (== 'y' input) (begin
+        ((|> usr) '-r' 'guest' '/')
+        ((|> grp) '-r' 'guest' '/')
+        ((|> perms) 'unlock' 'all'))
+    (begin
+        'Aborting...'))))
+
+(>> gls @pipe (begin
+    (def path (# @pipe 0 ''))
+    (if (== '' path)
+        'gls: a path to the glosure script is needed.'
+    (begin
+        ((|> glosure) '-e' ((|> cat) path))))))
 
 
 ;; 
@@ -450,5 +468,10 @@
 
 ;; Comment this if you don't want your macros to be sorted
 (mari-sort-macros)
+
+;; Create a theme file in rkit/marinette/themes
+;; Then change the string to your file name like this:
+;; (mari-load-theme 'your-amazing-theme.src')
+(mari-load-theme 'soft.src')
 
 (gl-break-silence '[MariConf] Marinette config is successfully loaded! \\(^.^)/')
