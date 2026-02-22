@@ -34,8 +34,6 @@ Absolutely no! Marinette doesn't require any Glosure knowledge for you to use it
 ## How can I write my own scripts or modify the config?
 For now, you can write your own script only by reading the [Glosure tutorial](https://github.com/mahocitrus/Glosure/blob/main/Tutorial.md) and checking the [scripts in bonus](bonus)
 
-<small><small><small>I will probably write a tutorial one day...</small></small></small>
-
 However, modifying **do.gls** is as easy as just commenting out something or simply following the instructions in the comments!
 
 ## Why would I want to use Marinette?
