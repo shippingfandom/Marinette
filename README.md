@@ -29,7 +29,7 @@ If you would like to learn more in detail about how it works, refer to the docum
 It allows everything **do.rc** scripitng allows *plus* everything in-game **scripting** allows! Which opens endless possibilities with what you can implement in a configuration files, really! 🌺
 
 ## Do I need to know Glosure to use this?
-Absolutely no! Marinette doesn't require any Glosure knowledge for you to use it. However, if you want to modify something or write your own Glosure scripts, you, of course, would make use of Glosure 😉
+Absolutely no! **Marinette** doesn't require any **Glosure** knowledge for you to use her. However, if you want to modify something or write your own **Glosure** scripts, you, of course, would make use of **Glosure** 😉
 
 ## How can I write my own scripts or modify the config?
 For now, you can write your own script only by reading the [Glosure tutorial](https://github.com/mahocitrus/Glosure/blob/main/Tutorial.md) and checking the [scripts in bonus](bonus)
