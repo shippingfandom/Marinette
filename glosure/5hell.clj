@@ -106,9 +106,9 @@
     (if (hasIndex (: command) (quote cmd-name))
         (at (: command) (quote cmd-name))))
 
-;; Sets globals.command.cmd-name (doesn't work because of Glosure bug)
+;; Sets globals.command.cmd-name
 (defmacro |= (cmd-name cmd-args cmd-body) () (begin
-    (defun cmd-name cmd-args cmd-body)
+    (defunction cmd-name cmd-args cmd-body)
     ((lambda () (begin
         (def commands (: command))
         (set commands (quote cmd-name) cmd-name)
