@@ -458,8 +458,8 @@
             (char 10))
     (if (* (== 'shell' (typeof a1)) (== 'string' (typeof a2)))
         (if (== 0 a3)
-            (run a2 a1 a3 a4)
-            (run a2 a3 a1 a4))
+            (RUN a2 a1 a3 a4)
+            (RUN a2 a3 a1 a4))
     (begin
         (RUN a1 a2 a3 a4)))))
 
