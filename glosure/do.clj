@@ -33,40 +33,6 @@
         ((|> macro) '-h')
         ((|> macro) '-l'))))
 
-(>> rc @pipe (begin
-    (def a1 (# @pipe 0 ''))
-    (if (!= null (indexOf (array '-h' 'help') a1))
-        (join (array
-            '<b>Usage: rc</b> -- Reinitialize Marinette'
-            'Will not work with no rkit folder! You can generate one by running <b>kore -r</b> as root')
-            (char 10))
-    (begin
-        (def do-rc (gl-grep-into (array '^rkit$' '^do.rc$')))
-        (if (!= 'file' (typeof do-rc))
-            'rc: could not find do.rc file.'
-            (begin
-                ((|> aptm) '--hotswap')
-                ((|> do) '1' '-f' ((_ do-rc path) do-rc))))))))
-
-;; Crash workaround
-(>> scrub @pipe (begin
-    (def a1 (# @pipe 0 ''))
-    (if (!= null (indexOf (array '-h' 'help') a1))
-        ((|> scrub) '-h')
-    (begin
-        ((|> kraken) 'scrub')))))
-
-;; Crash workaround and some other stuff
-(>> prox @pipe (begin
-    (def a1 (# @pipe 0 ''))
-    (if (!= null (indexOf (array '-h' 'help') a1))
-        ((|> prox) '-h')
-    (begin
-        (scrub)
-        (def endpoint-shell (at ((|> bios) '-B') (- (len ((|> bios) '-B')) 1)))
-        (def infil-path (infil '-g' endpoint-shell))
-        ((|> run) infil-path endpoint-shell)))))
-
 (>> unlock @pipe (begin
     (def input (# @pipe 0 ''))
     (if (== '' input) (begin
@@ -309,6 +275,36 @@
         (:= SILENT silent-state)
         return-value)))
 
+(|= breach (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help' 0) a1))
+        (join (array
+            '<u>Marinette || breach the network || bypass firewall </u>'
+            ''
+            '<b>Usage: breach [memory] [value]</b> -- Disable firewall in the entire local network')
+            (char 10))
+    (if (== 0 a2)
+        (join (array
+                'breach: both memory and value must be specified.'
+                'See <b>breach -h</b> for more info!')
+                (char 10))
+    (if (== 0 ((_ (: localmachine) is_network_active) (: localmachine)))
+        'breach: no network connection.'
+    (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
+        (gl-break-silence 'Scanning the local network...')
+        (def lanpro ((|> lanpro)))
+        ((|> porter) '0' lanpro)
+        (def lines (split ((|> clipb)) (char 10)))
+        (foreach _ line lines (begin
+            (def address (pull (split line ' ')))
+            (gl-break-silence (join (array 'Disabling the firewall for ' address '...') ''))
+            ((|> target) address '0')
+            ((|> meta) 'link')
+            ((|> zap) a1 a2)))
+        (:= SILENT silent-state)
+        null)))))
+
 
 ;; 
 ;; Hooks
@@ -462,6 +458,138 @@
             (RUN a2 a3 a1 a4))
     (begin
         (RUN a1 a2 a3 a4)))))
+
+(def ZAP (|> zap))
+(|= zap (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            (ZAP '-h' a2 a3 a4)
+            ''
+            '<u>Marinette specific functionality</u>'
+            'You can now quickly get a list of available exploits without opening up a menu with <b>zap -l/list</b>!')
+            (char 10))
+    (if (!= null (indexOf (array '-l' 'list') a1))
+        (ZAP '-r' '1337')
+    (begin
+        (ZAP a1 a2 a3 a4)))))
+
+(def ZC (|> zc))
+(|= zc (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            (ZC '-h' a2 a3 a4)
+            ''
+            '<u>Marinette specific functionality</u>'
+            '<b>zc -i/info [path_to_lib_or_folder]</b> -- Print patch state of local libraries'
+            '<b>zc -e/enum [address]</b> -- Enumerate remote libraries and print info about them'
+            '<b>zc -p/patch [user] [password] [path_to_lib_or_folder]</b> -- Auto-patch local libraries')
+            (char 10))
+    (if (!= null (indexOf (array '-i' 'info') a1)) (begin
+        (def file ((|> file) '-r' a2))
+        (if (!= 'file' (typeof file))
+            (join (array
+                'zc: second argument must be a path to the existing file.'
+                'See <b>zc -h</b> for more info!')
+                (char 10))
+        (begin
+            (def silent-state (: SILENT))
+            (:= SILENT 2)
+            (def info (array))
+            (def files
+                (if (== 1 ((_ file is_folder) file))
+                    ((_ file get_files) file)
+                    (array file)))
+            (while (> (len files) 0) (begin
+                (def file (pull files))
+                (def path ((_ file path) file))
+                (def metalib ((|> meta) 'load' path))
+                (if (== 'MetaLib' (typeof metalib))
+                    (push info (join (array
+                        ((_ metalib lib_name) metalib)
+                        ((_ metalib version) metalib)
+                        (if (== 1 ((_ metalib is_patched) metalib))
+                            'patched'
+                            'unpatched')
+                        ((_ metalib is_patched) metalib 1)
+                        ) ' ')))))
+            (:= SILENT silent-state)
+            (if (> (len info) 0)
+                (+ (char 10) (format_columns (join (+ (array 'LIBRARY VERSION STATUS DATE') info) (char 10))))))))
+    (if (!= null (indexOf (array '-e' 'enum') a1)) (begin
+        (if (== 0 ((_ (: localmachine) is_network_active) (: localmachine)))
+            'zc: no network connection.'
+        (begin
+            (def router
+                (if (== 'router' (typeof (get_router a2)))
+                    (get_router a2)
+                    (get_switch a2)))
+            (if (!= 'router' (typeof router))
+                (join (array
+                    'zc: incorrect address.'
+                    'See <b>zc -h</b> for more info!')
+                (char 10))
+            (begin
+                (def silent-state (: SILENT))
+                (:= SILENT 2)
+                (def info (array 'PORT STATUS LIBRARY VERSION DATE ADDRESS'))
+                (def ports ((_ router used_ports) router))
+                (for (def i 0) (< i (len ports)) (++ i)
+                    (set ports i (str ((_ (at ports i) port_number) (at ports i)))))
+                (def ports (+ (array '0') ports))
+                (foreach _ port ports (begin
+                    ((|> target) a2 port)
+                    (def metalib ((|> meta) 'link'))
+                    (def local-address
+                        (if (== '0' port)
+                            ((_ router local_ip) router)
+                        (begin
+                            (def pinged-port ((_ router ping_port) router (to_int port)))
+                            ((_ pinged-port get_lan_ip) pinged-port))))
+                    (if (!= 'MetaLib' (typeof metalib))
+                        (push info (join (array
+                            (if (== '0' port)
+                                a2
+                                port)
+                            'undetermined'
+                            ((_ metalib lib_name) metalib)
+                            ((_ metalib version) metalib)
+                            'undetermined'
+                            local-address) ' '))
+                        (push info (join (array
+                            (if (== '0' port)
+                                a2
+                                port)
+                            (if (== 1 ((_ metalib is_patched) metalib))
+                                'patched'
+                                'unpatched')
+                            ((_ metalib lib_name) metalib)
+                            ((_ metalib version) metalib)
+                            ((_ metalib is_patched) metalib 1)
+                            local-address) ' ')))))
+                (:= SILENT silent-state)
+                (format_columns (join info (char 10))))))))
+    (if (!= null (indexOf (array '-p' 'patch') a1)) (begin
+        'Not implemented yet! </3')
+    (begin
+        (ZC a1 a2 a3 a4)))))))
+
+(def PROX (|> prox))
+(|= prox (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            (PROX '-h' a2 a3 a4)
+            ''
+            '<u>Marinette specific functionality</u>'
+            'You can now open 5hell instead of a terminal with <b>prox -g/ghost</b>!'
+            'This will run scrub beforehand!')
+            (char 10))
+    (if (!= null (indexOf (array '-g' 'guest') a1)) (begin
+        (scrub)
+        (def endpoint-shell (at ((|> bios) '-B') (- (len ((|> bios) '-B')) 1)))
+        (def infil-path (infil '-g' endpoint-shell))
+        ((|> run) infil-path endpoint-shell))
+    (begin
+        (PROX a1 a2 a3 a4)))))
 
 
 
