@@ -602,4 +602,4 @@
 ;; (mari-load-theme 'your-amazing-theme.src')
 (mari-load-theme 'soft.src')
 
-(gl-break-silence '[MariConf] Marinette config is successfully loaded! \\(^.^)/')
+(gl-break-silence '[MariConf] Marinette config v0.0.1 is successfully loaded! \\(^.^)/')

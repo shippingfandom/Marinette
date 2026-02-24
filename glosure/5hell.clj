@@ -161,4 +161,4 @@
 
 
 ;; Init
-(gl-break-silence '[5GL] 5hell Glosure library is successfully loaded! \\(^.^)/')
+(gl-break-silence '[5GL] 5hell Glosure library v0.0.1 is successfully loaded! \\(^.^)/')

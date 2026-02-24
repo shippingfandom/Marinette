@@ -76,4 +76,4 @@
 
 
 ;; Init
-(gl-break-silence '[Mari] Marinette is successfully loaded! \\(^.^)/')
+(gl-break-silence '[Mari] Marinette v0.0.1 is successfully loaded! \\(^.^)/')
