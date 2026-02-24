@@ -584,7 +584,7 @@
             'This will run scrub beforehand!')
             (char 10))
     (if (!= null (indexOf (array '-g' 'guest') a1)) (begin
-        (scrub)
+        ((|> scrub))
         (def endpoint-shell (at ((|> bios) '-B') (- (len ((|> bios) '-B')) 1)))
         (def infil-path (infil '-g' endpoint-shell))
         ((|> run) infil-path endpoint-shell))
@@ -602,4 +602,4 @@
 ;; (mari-load-theme 'your-amazing-theme.src')
 (mari-load-theme 'soft.src')
 
-(gl-break-silence '[MariConf] Marinette config v0.0.1 is successfully loaded! \\(^.^)/')
+(gl-break-silence '[MariConf] Marinette config v0.0.2 is successfully loaded! \\(^.^)/')
