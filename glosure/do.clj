@@ -481,8 +481,14 @@
             ''
             '<u>Marinette specific functionality</u>'
             '<b>zc -i/info [path_to_lib_or_folder]</b> -- Print patch state of local libraries'
+            ''
             '<b>zc -e/enum [address]</b> -- Enumerate remote libraries and print info about them'
-            '<b>zc -p/patch [user] [password] [path_to_lib_or_folder]</b> -- Auto-patch local libraries')
+            '-- This action leaves logs on the remote machine!'
+            ''
+            '<b>zc -p/patch [user] [password] [path_to_lib_or_folder]</b> -- Auto-patch local libraries'
+            '-- This action removes any orig and patch.zd it finds!'
+            '-- It is highly adviced to remove any debugLibraries from your BUFFER before using this!'
+            '-- As of Marinette config v0.0.3 this feature is still quite untested so proceed at your own risk')
             (char 10))
     (if (!= null (indexOf (array '-i' 'info') a1)) (begin
         (def file ((|> file) '-r' a2))
@@ -527,7 +533,7 @@
                 (join (array
                     'zc: incorrect address.'
                     'See <b>zc -h</b> for more info!')
-                (char 10))
+                    (char 10))
             (begin
                 (def silent-state (: SILENT))
                 (:= SILENT 2)
@@ -569,7 +575,64 @@
                 (:= SILENT silent-state)
                 (format_columns (join info (char 10))))))))
     (if (!= null (indexOf (array '-p' 'patch') a1)) (begin
-        'Not implemented yet! </3')
+        (if (+ (!= 'string' (typeof a4)) (+ (!= 'string' (typeof a2)) (!= 'string' (typeof a3))))
+            (join (array
+                'zc: must provide credentials and path.'
+                'See <b>zc -h</b> for more info!')
+                (char 10))
+        (begin
+            (def file ((|> file) '-r' a4))
+            (if (!= 'file' (typeof file))
+                (join (array
+                    'zc: fourth argument must be a path to the existing file.'
+                    'See <b>zc -h</b> for more info!')
+                    (char 10))
+            (begin
+                (def silent-state (: SILENT))
+                (:= SILENT 2)
+                (def return null)
+                (def info (array))
+                (def files
+                    (if (== 1 ((_ file is_folder) file))
+                        ((_ file get_files) file)
+                        (array file)))
+                (while (> (len files) 0) (begin
+                    (def file (pull files))
+                    (def path ((_ file path) file))
+                    (def metalib ((|> meta) 'load' path))
+                    (if (== 'MetaLib' (typeof metalib)) (begin
+                        (def origs ((|> grep) '-a' '^orig$'))
+                        (if (== 'list' (typeof origs))
+                            (foreach _ orig-file origs
+                                ((|> del) ((_ orig-file path) orig-file))))
+                        (def patchzds ((|> grep) '-a' '^patch.zd$'))
+                        (if (== 'list' (typeof patchzds))
+                            (foreach _ patch-file patchzds
+                                ((|> del) ((_ patch-file path) patch-file))))
+                        (def zerochill (ZC a2 a3 metalib))
+                        (if (== 1 (len (split zerochill (char 10))))
+                            (def return zerochill)
+                        (begin
+                            (def debug-library (mari-buffer-top-debug-library))
+                            (if (!= 'debugLibrary' (typeof debug-library)) (begin
+                                (def files (array))
+                                (def return (join (array
+                                    'zc: incorrect credentials.'
+                                    'See <b>zc -h</b> for more info!')
+                                    (char 10))))
+                            (begin
+                                (def result ((_ debug-library apply_patch) debug-library ((|> grep) '-p' '^patch.zd$')))
+                                (gl-break-silence (join (array 'Patching status for ' path ' -- ' result) ''))))))))))
+                (def origs ((|> grep) '-a' '^orig$'))
+                (if (== 'list' (typeof origs))
+                    (foreach _ orig-file origs
+                        ((|> del) ((_ orig-file path) orig-file))))
+                (def patchzds ((|> grep) '-a' '^patch.zd$'))
+                (if (== 'list' (typeof patchzds))
+                    (foreach _ patch-file patchzds
+                        ((|> del) ((_ patch-file path) patch-file))))
+                (:= SILENT silent-state)
+                return)))))
     (begin
         (ZC a1 a2 a3 a4)))))))
 
@@ -602,4 +665,4 @@
 ;; (mari-load-theme 'your-amazing-theme.src')
 (mari-load-theme 'soft.src')
 
-(gl-break-silence '[MariConf] Marinette config v0.0.2 is successfully loaded! \\(^.^)/')
+(gl-break-silence '[MariConf] Marinette config v0.0.3 is successfully loaded! \\(^.^)/')

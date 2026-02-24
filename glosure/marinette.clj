@@ -72,8 +72,19 @@
             (def folders (+ folders ((_ folder get_folders) folder)))))))
     return))
 
+;; Get a debug library from the top of the BUFFER
+(defun mari-buffer-top-debug-library () (begin
+    (def return null)
+    (def buffer (+ (array) ((|> bios) '-B')))
+    (while (> (len buffer) 0) (begin
+        (def potential-debug-library (pop buffer))
+        (if (== 'debugLibrary' (typeof potential-debug-library)) (begin
+            (def buffer (array))
+            (def return potential-debug-library)))))
+    return))
+
 
 
 
 ;; Init
-(gl-break-silence '[Mari] Marinette v0.0.1 is successfully loaded! \\(^.^)/')
+(gl-break-silence '[Mari] Marinette v0.0.2 is successfully loaded! \\(^.^)/')
