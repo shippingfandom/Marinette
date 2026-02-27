@@ -52,7 +52,16 @@
     (if (== '' path)
         'gls: a path to the glosure script is needed.'
     (begin
-        ((|> glosure) '-e' ((|> cat) path))))))
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
+        (def file ((|> file) '-r' path))
+        (:= SILENT silent-state)
+        (if (!= 'file' (typeof file))
+            'gls: file does not exist.'
+        (if (== null ((_ file get_content) file))
+            'gls: could not read file.'
+        (begin
+            ((|> glosure) '-e' ((|> cat) ((|> file) '-p' file))))))))))
 
 
 ;; 
@@ -663,6 +672,7 @@
 ;; Create a theme file in rkit/marinette/themes
 ;; Then change the string to your file name like this:
 ;; (mari-load-theme 'your-amazing-theme.src')
+;; Example using soft theme:
 (mari-load-theme 'soft.src')
 
-(gl-break-silence '[MariConf] Marinette config v0.0.3 is successfully loaded! \\(^.^)/')
+(gl-break-silence '[MariConf] Marinette config v0.0.4 is successfully loaded! \\(^.^)/')
