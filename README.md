@@ -83,7 +83,7 @@ If the issue is resolved, chances are high that this has something to do with yo
 
 Update your **5hell** on **home**, in **rkit**, on **HOME server**, on the targets you are attacking, and then do the same with **Marinette**! 
 
-The issue is still there? I will be more than happy if you tell me about it in the DM (my ID is `not_s0phie`) or the 5hell official [discord server](https://discord.gg/VuWYdWUXQw)
+The issue is still there? I will be more than happy if you tell me about it in the DM (my ID is `not_s0phie`) or the **5hell** official [discord server](https://discord.gg/VuWYdWUXQw)
 
 ## Why there are SO many whys and whats?
 Well, it's just because I felt like writing an entire novel in a single README file. Whoops!
