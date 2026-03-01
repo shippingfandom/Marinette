@@ -5,6 +5,7 @@
 ;; 2. Define library, address and value variables to match your attacking library bounce exploit
 ;; 3. Run the script with gls [path-to-corrupt-data-bot.gls]
 
+
 ;; Attacking library variables
 ;; 
 ;; This is the only thing you must configure for the bot to work!
@@ -38,10 +39,15 @@
 ;; Open mail client and dump spool
 ((|> mail))
 (def spool ((|> grep) '-f' '^spool.txt$'))
+(def library-file ((|> grep) '-f' (join (array '^' library '$') '')))
 
 ;; If we forgot to dump spool, exit
 (if (!= 'file' (typeof spool))
-    'Please dump spool file!'
+    'corrupt-data-bot.gls: Please dump spool file!'
+
+;; Else if we did not download a library on our computer before running the bot
+(if (!= 'file' (typeof library-file))
+    'corrupt-data-bot.gls: Please download an attacking library!'
 
 ;; Else continue
 (begin
@@ -135,4 +141,4 @@
                     ((|> run) infil-path run-args shell)))))))))
 
     ;; Break the silence! <3
-    (:= SILENT silent-state)))
+    (:= SILENT silent-state))))
