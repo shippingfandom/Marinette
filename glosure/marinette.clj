@@ -83,8 +83,38 @@
             (def return potential-debug-library)))))
     return))
 
+;; Get all scripts from rkit/marinette/scripts 
+(defun mari-get-glosure-scripts () (begin
+    (def return (array))
+    (def scripts (gl-grep-into (array '^rkit$' '^marinette$' '^scripts$')))
+    (if scripts (begin
+        (def scripts-path ((|> file) '-p' scripts))
+        (def scripts-files ((|> grep) '-a' '*#' scripts-path))
+        (if (== 'list' (typeof scripts-files))
+            (foreach _ scripts-file scripts-files
+                (if (== 1 (gl-is-file-text scripts-file))
+                    (push return scripts-file))))))
+    return))
+
 
 
 
 ;; Init
-(gl-break-silence '[Mari] Marinette v0.0.2 is successfully loaded! \\(^.^)/')
+
+;; Create Marinette folder structure
+(mari-mkdir 'themes')       ;; rkit/marinette/themes
+(mari-mkdir 'glosure')      ;; rkit/marinette/glosure
+(mari-mkdir 'binaries')     ;; rkit/marinette/binaries
+(mari-mkdir 'notepads')     ;; rkit/marinette/notepads
+(mari-mkdir 'scripts')      ;; rkit/marinette/scripts
+
+;; Register Glosure scripts as macros
+(def scripts (mari-get-glosure-scripts))
+(foreach _ script scripts (begin
+    (def name ((|> file) '-n' script))
+    (def name-re (join (array '^' name '$') ''))
+    (def macro-name (+ '%' ((_ name replace) name '\.gls' '')))
+    (def macro-string (join (array 'grep -p ' name-re ' | gls') ''))
+    ((|> macro) '-s' macro-name macro-string)))
+
+(gl-break-silence '[Mari] Marinette v0.0.4 is successfully loaded! \\(^.^)/')

@@ -157,8 +157,15 @@
         (def return-string (+ return-string character))))
     return-string))
 
+;; Return true if a file is a text file
+(defun gl-is-file-text (file) (begin
+    (def return 0)
+    (if (== 'file' (typeof file))
+        (def return (* (== 0 ((_ file is_folder) file)) (== 0 ((_ file is_binary) file)))))
+    return))
+
 
 
 
 ;; Init
-(gl-break-silence '[5GL] 5hell Glosure library v0.0.1 is successfully loaded! \\(^.^)/')
+(gl-break-silence '[5GL] 5hell Glosure library v0.0.3 is successfully loaded! \\(^.^)/')

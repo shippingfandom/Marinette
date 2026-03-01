@@ -1,11 +1,3 @@
-(mari-mkdir 'themes')       ;; rkit/marinette/themes
-(mari-mkdir 'glosure')      ;; rkit/marinette/glosure
-(mari-mkdir 'binaries')     ;; rkit/marinette/binaries
-(mari-mkdir 'notepads')     ;; rkit/marinette/notepads
-
-
-
-
 ;; 
 ;; Macros
 ;; 
@@ -58,10 +50,14 @@
         (:= SILENT silent-state)
         (if (!= 'file' (typeof file))
             'gls: file does not exist.'
-        (if (== null ((_ file get_content) file))
+        (if (!= 1 (gl-is-file-text file))
             'gls: could not read file.'
         (begin
-            ((|> glosure) '-e' ((|> cat) ((|> file) '-p' file))))))))))
+            (def silent-state (: SILENT))
+            (:= SILENT 2)
+            (def code ((|> cat) ((|> file) '-p' file)))
+            (:= SILENT silent-state)
+            ((|> glosure) '-e' code))))))))
 
 
 ;; 
@@ -81,6 +77,7 @@
     (if (!= null (indexOf (array '-s' 'show') a1))
         ((|> probe) '-s' a2 a3 a4)
     (begin
+        ((|> purge) '-p' 'y')
         ((|> probe) '-f' a1 a2 a3)))))
 
 (|= dir (a1 a2 a3 a4)
@@ -663,6 +660,28 @@
     (begin
         (PROX a1 a2 a3 a4)))))
 
+(def SSH (|> ssh))
+(|= ssh (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            (SSH '-h' a2 a3 a4)
+            ''
+            '<u>Marinette specific functionality</u>'
+            'You can now get your HOME server shell with <b>ssh -H/home</b>!')
+            (char 10))
+    (if (!= null (indexOf (array '-H' 'home') a1)) (begin
+        (def user (at (@ HOME) 'user'))
+        (def pass (at (@ HOME) 'pass'))
+        (def address (at (@ HOME) 'ip'))
+        (def port (str (at (@ HOME) 'loginport')))
+        (def protocol (at (@ HOME) 'loginprotocol'))
+        (if (== 'ip.add.rr.ess' address)
+            'ssh: HOME server is not configured.'
+        (begin
+            (SSH (join (array user '@' pass) '') address port protocol))))
+    (begin
+        (SSH a1 a2 a3 a4)))))
+
 
 
 
@@ -675,4 +694,10 @@
 ;; Example using soft theme:
 (mari-load-theme 'soft.src')
 
-(gl-break-silence '[MariConf] Marinette config v0.0.4 is successfully loaded! \\(^.^)/')
+;; Configure HOME server if you would like
+;; (set (@ HOME) 'ip' 'ip.add.rr.ess')
+;; (set (@ HOME) 'loginport' 22)
+;; (set (@ HOME) 'rshellport' 1222)
+;; (set (@ HOME) 'pass' 'password')
+
+(gl-break-silence '[MariConf] Marinette config v0.1.0 is successfully loaded! \\(^.^)/')
