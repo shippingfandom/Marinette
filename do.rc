@@ -1,23 +1,51 @@
-kore --silent
+glosure -e " ((set globals 'SILENT' 2)) "
+-------------------------------
+-- Marinette bootstrap start --
+-------------------------------
+-- Update link for:
+--     |_ 5hell -> https://github.com/jhook777/5hell-for-Grey-Hack-the-Game
+--     |_ Marinette -> https://github.com/shippingfandom/Marinette
+-- Thanks for using Marinette! <3
 
-grep -p ^rkit$ / | clipa
+
+-- To clipa, get 5hell path
+-- To clipb, get parent path of clipa
+-- To clipc, get file name of clipb
+glosure -e (program_path) | clipa
+file -P @a | file -p | clipb
+file -n @b | clipc
+
+-- If the parent is rkit, clip the parent of it, else clip home directory
+if " file -P \@b | clipb " " glosure -e (home_dir) | file -r | clipb " " rkit " @c
+
+-- Look for rkit in @b, create marinette in it if it's there
+grep -p ^rkit$ @b | clipa
 if " " " pwd | clipb || cd \@a || mkdir marinette || cd \@b " @a " No ^rkit$ found. "
 
+-- Look for marinette in @b/rkit, create glosure in it if it's there
 grep -p ^marinette$ @a | clipa
 if " " " pwd | clipb || cd \@a || mkdir glosure || cd \@b " @a " No ^marinette$ found. "
 
+-- Look for glosure in @b/rkit/marinette, create 5hell.gls, marinette.gls, do.gls in it if it's there
 grep -p ^glosure$ @a | clipa
 if " " " pwd | clipb || cd \@a || poke 5hell.gls || cd \@b " @a " No ^glosure$ found. "
 if " " " pwd | clipb || cd \@a || poke marinette.gls || cd \@b " @a " No ^glosure$ found. "
 if " " " pwd | clipb || cd \@a || poke do.gls || cd \@b " @a " No ^glosure$ found. "
 
+-- Look for 5hell.gls in @b/rkit/marinette, run in it if it's there
 grep -p ^5hell.gls$ @a | clipc
 if " " " cat \@c | glosure -e " @c " No ^5hell.gls$ found. "
 
+-- Look for marinette.gls in @b/rkit/marinette, run in it if it's there
 grep -p ^marinette.gls$ @a | clipc
 if " " " cat \@c | glosure -e " @c " No ^marinette.gls$ found. "
 
+-- Look for do.gls in @b/rkit/marinette, run in it if it's there
 grep -p ^do.gls$ @a | clipc
 if " " " cat \@c | glosure -e " @c " No ^do.gls$ found. "
 
-kore --silent
+
+-----------------------------
+-- Marinette bootstrap end --
+-----------------------------
+glosure -e " ((set globals 'SILENT' 0)) "
