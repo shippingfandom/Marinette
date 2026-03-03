@@ -1,0 +1,145 @@
+;; 
+;; A modification to the Standard Glosure Library, also known as STL
+;; 
+
+;; Define undefined variable or use value of the defined one
+(defmacro defdefault (name value) ()
+    (def name
+        (if (hasIndex (context) (quote name))
+            name
+            value)))
+
+;; Effectfull for loop
+(defmacro for (initializer condition iterator body) (!result) (begin
+    initializer
+    (if condition (begin
+        (loop (def !result body) iterator condition)
+        !result))))
+
+;; Potentially more hygienic foreach
+(defmacro foreach (key value collection body) (!keys) (begin
+    (defdefault !keys (array))
+    (push !keys (indexes collection))
+    (if (at !keys (to_int '-1'))
+        (loop
+            (def key (pull (at !keys (to_int '-1'))))
+            (def value (at collection key))
+            body
+            (at !keys (to_int '-1'))))
+    (pop !keys)))
+
+;; Useless gensym
+(defun gensym ()
+    (exec '(defmacro _ () (sym) (quote sym))(_)')) ;; Unquote is needed to make it any usefull
+
+
+
+
+;; 
+;; 5hell Glosure Library
+;;
+
+;; Get COB variable
+(defmacro @ (var-name) ()
+    (if (hasIndex (get_custom_object) (quote var-name))
+        (at (get_custom_object) (quote var-name))))
+
+;; Set COB variable
+(defmacro @= (var-name var-value) ()
+    (set (get_custom_object) (quote var-name) var-value))
+
+;; Get globals variable
+(defmacro : (var-name) ()
+    (if (hasIndex globals (quote var-name))
+        (at globals (quote var-name))))
+
+;; Set globals variable
+(defmacro := (var-name var-value) ()
+    (set globals (quote var-name) var-value))
+
+;; Get globals.command command
+(defmacro |> (cmd-name) ()
+    (if (hasIndex (: command) (quote cmd-name))
+        (at (: command) (quote cmd-name))))
+
+;; Sets globals.command.cmd-name
+(defmacro |= (cmd-name cmd-args cmd-body) () (begin
+    (defunction cmd-name cmd-args cmd-body)
+    ((lambda () (begin
+        (def commands (: command))
+        (set commands (quote cmd-name) cmd-name)
+        (:= command commands))))))
+
+;; Get miniscript's object method
+(defmacro _ (object method) ()
+    (at object (quote method)))
+
+;; Break through globals.SILENT and print()
+(defun gl-break-silence (message) (begin
+    (def silent-state (: SILENT))
+    (if (!= silent-state 0)
+        (:= SILENT 0))
+    (print message)
+    (:= SILENT silent-state)
+    message))
+
+;; Greps into every step from previous step and returns a file if successfull
+(defun gl-grep-into (steps starting-point) (begin
+    (def from ((|> file) '-r' '/'))
+    (if starting-point
+        (def from ((|> file) '-r' starting-point)))
+    (foreach _ step steps
+        (if (== (typeof from) 'file')
+            (def from ((|> grep) '-f' step from))))
+    (if (== (typeof from) 'file')
+        from)))
+
+;; Gets rkit folder from the 5hell launched
+(defun gl-get-rkit () (begin
+    (def silent-state (: SILENT))
+    (:= SILENT 2)
+    (def shell-path (program_path))
+    (def shell-parent-path ((|> file) '-p' ((|> file) '-P' shell-path)))
+    (def shell-parent-name ((|> file) '-n' shell-parent-path))
+    (def lookup-path
+        (if (== 'rkit' shell-parent-name)
+            ((|> file) '-P' shell-parent-path)
+            (home_dir)))
+    (def rkit ((|> grep) '-f' '^rkit$' lookup-path))
+    (:= SILENT silent-state)
+    (if (== 'file' (typeof rkit))
+        rkit)))
+
+;; Concats file paths
+(defun gl-pathcat (paths) (begin
+    (def path (pull paths))
+    (foreach _ part paths
+        (def path (join (array path part) '/')))
+    (if (== '//' (slice path 0 2))
+        (slice path 2 (len path)))
+        path))
+
+;; Generates random string of specified length
+(defun gl-random-string (length) (begin
+    (def abc 'acdfeghhijklmnopqrstuvwxyz')
+    (def abc (+ abc (upper abc)))
+    (def return-string '')
+    (for (def i 0) (< i length) (++ i) (begin
+        (def characters (values abc))
+        (shuffle characters)
+        (def character (pull characters))
+        (def return-string (+ return-string character))))
+    return-string))
+
+;; Return true if a file is a text file
+(defun gl-is-file-text (file) (begin
+    (def return 0)
+    (if (== 'file' (typeof file))
+        (def return (* (== 0 ((_ file is_folder) file)) (== 0 ((_ file is_binary) file)))))
+    return))
+
+
+
+
+;; Init
+(gl-break-silence '[5GL] 5hell Glosure library v0.0.6 is successfully loaded! \\(^.^)/')
