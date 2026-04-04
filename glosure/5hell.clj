@@ -1,5 +1,5 @@
 ;; 
-;; Standard Glosure Library, modified
+;; A modification to the Standard Glosure Library, also known as STL
 ;; 
 
 ;; Define undefined variable or use value of the defined one
@@ -9,28 +9,14 @@
             name
             value)))
 
-;; Define named lambda
-(defmacro defun (name arguments body) ()
-    (def name (lambda arguments body)))
-
-;; Define named glosure
-(defmacro defunction (name arguments body) ()
-    (def name (glosure arguments body)))
-
-;; While loop
-(defmacro while (condition body) ()
-    (if condition (loop body condition)))
-
-;; Do while loop
-(defmacro do-while (condition body) ()
-    (loop body condition))
-
-;; For loop
-(defmacro for (initializer condition iterator body) () (begin
+;; Effectfull for loop
+(defmacro for (initializer condition iterator body) (!result) (begin
     initializer
-    (if condition (loop body iterator condition))))
+    (if condition (begin
+        (loop (def !result body) iterator condition)
+        !result))))
 
-;; Foreach loop
+;; Potentially more hygienic foreach
 (defmacro foreach (key value collection body) (!keys) (begin
     (defdefault !keys (array))
     (push !keys (indexes collection))
@@ -41,36 +27,6 @@
             body
             (at !keys (to_int '-1'))))
     (pop !keys)))
-
-;; Rebind keyword
-(defmacro defalias (name keyword) ()
-    (defmacro name () () keyword))
-
-;; Swap two variables
-(defmacro swap (a b) (!temp) (begin
-    (def !temp a)
-    (def a b)
-    (def b !temp)))
-
-;; Preincrement
-(defmacro ++ (var) ()
-    (def var (+ var 1)))
-
-;; Postincrement
-(defmacro var++ (var) (!temp) (begin
-    (def !temp var)
-    (def var (+ var 1))
-    !temp))
-
-;; Predecrement
-(defmacro -- (var) ()
-    (def var (- var 1)))
-
-;; Postdecrement
-(defmacro var-- (var) (!temp) (begin
-    (def !temp var)
-    (def var (- var 1))
-    !temp))
 
 ;; Useless gensym
 (defun gensym ()
@@ -128,13 +84,31 @@
     message))
 
 ;; Greps into every step from previous step and returns a file if successfull
-(defun gl-grep-into (steps) (begin
+(defun gl-grep-into (steps starting-point) (begin
     (def from ((|> file) '-r' '/'))
+    (if starting-point
+        (def from ((|> file) '-r' starting-point)))
     (foreach _ step steps
         (if (== (typeof from) 'file')
             (def from ((|> grep) '-f' step from))))
     (if (== (typeof from) 'file')
         from)))
+
+;; Gets rkit folder from the 5hell launched
+(defun gl-get-rkit () (begin
+    (def silent-state (: SILENT))
+    (:= SILENT 2)
+    (def shell-path (program_path))
+    (def shell-parent-path ((|> file) '-p' ((|> file) '-P' shell-path)))
+    (def shell-parent-name ((|> file) '-n' shell-parent-path))
+    (def lookup-path
+        (if (== 'rkit' shell-parent-name)
+            ((|> file) '-P' shell-parent-path)
+            (home_dir)))
+    (def rkit ((|> grep) '-f' '^rkit$' lookup-path))
+    (:= SILENT silent-state)
+    (if (== 'file' (typeof rkit))
+        rkit)))
 
 ;; Concats file paths
 (defun gl-pathcat (paths) (begin
@@ -157,8 +131,15 @@
         (def return-string (+ return-string character))))
     return-string))
 
+;; Return true if a file is a text file
+(defun gl-is-file-text (file) (begin
+    (def return 0)
+    (if (== 'file' (typeof file))
+        (def return (* (== 0 ((_ file is_folder) file)) (== 0 ((_ file is_binary) file)))))
+    return))
+
 
 
 
 ;; Init
-(gl-break-silence '[5GL] 5hell Glosure library is successfully loaded! \\(^.^)/')
+(gl-break-silence '[5GL] 5hell Glosure library v0.0.6 is successfully loaded! \\(^.^)/')

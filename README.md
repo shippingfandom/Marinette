@@ -55,7 +55,7 @@ To install **Marinette**, follow these simple instructions:
 2. Add [these simple lines](do.rc) at the end of **do.rc** 📝
 3. Close **5hell** and run her again. This will generate **marinette** folder structure in your **rkit** 🗂
 4. Go to **rkit/marinette/glosure** and paste in [5hell.gls](glosure/5hell.clj), [do.gls](glosure/do.clj), [marinette.gls](glosure/marinette.clj), one by one ✏️
-5. Close **5hell** and run ger again 💻
+5. Close **5hell** and run her again 💻
 
 Congratulatuons, **Marinette** is successfully installed! 💞
 
@@ -70,6 +70,20 @@ Happy hacking! 👾
 No worries! And thanks for reading this far 😌
 
 I still encourage you to check out [these projects](#the-people-who-made-this-possible), though!
+
+## I've encountered a bug, please help!
+Absolutely try these easy steps before reporting ✌️
+1. Rename all binaries with the name **5hell** to something else, for example, 5hell.bak, or remove them from the machine entirely 🔍
+2. Rename all folders with the name **rkit** to something else, for example, rkit.bak, or remove them from the machine entirely 📝
+3. Build the most recent **5hell** from the [upstream](https://github.com/jhook777/5hell-for-Grey-Hack-the-Game) ✨
+4. Create **rkit** folder in /root and create **do.rc** text file in it 📄
+5. Begin the [installation](#okay-you-definitely-bought-me-how-can-i-install-marinette) of **Marinette** <u>from the step 2!!!</u>
+
+If the issue is resolved, chances are high that this has something to do with your setup! 😔
+
+Update your **5hell** on **home**, in **rkit**, on **HOME server**, on the targets you are attacking, and then do the same with **Marinette**! 
+
+The issue is still there? I will be more than happy if you tell me about it in the DM (my ID is `not_s0phie`) or the **5hell** official [discord server](https://discord.gg/VuWYdWUXQw)
 
 ## Why there are SO many whys and whats?
 Well, it's just because I felt like writing an entire novel in a single README file. Whoops!
