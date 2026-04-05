@@ -632,6 +632,7 @@
             (join (array (: colorWhite) 'Special thanks to the author of ' (: colorRed) '5' (: CT) (: colorGrey) 'hell' (: CT) ' - ' (: colorGreen) 'Plu70' (: CT) ' - as well as all the people made her possible! ' (: CT) (: colorRed) '<3' (: CT)) '')
             (join (array 'Glosure by: ' (: colorWhite) 'mahocitrus' (: CT)) '')
             (join (array 'Extracted documentation by: ' (: colorWhite) 'Arc8ne' (: CT)) '')
+            (join (array 'Greybel-JS by: ' (: colorWhite) 'ayecue' (: CT)) '')
             (join (array 'Lines in do.rc to avoid re-loading by: ' (: colorWhite) 'Plu70,' (: CT) ' investigated together with ' (: colorWhite) 'Lagoon' (: CT)) '')
             'And hugs to many others for your feedback and all the kind words! You all are awesome! \\(^.^ \\)')
             (char 10))
@@ -651,7 +652,7 @@
         (:= SILENT silent-state)
         (join (array
             (join (array (: colorViolet) 'Marinette' (: CT) ' by not_s0phie') '')
-            (join (array (: colorOlive) '[5HELL.GLS        : ' (: colorRed) 'v' SHELL-GLS-VERSION (: CT) ']') '')
+            (join (array (: colorOlive) '[5HELL.GLS        : ' (: colorWhite) 'v' SHELL-GLS-VERSION (: CT) ']') '')
             (join (array (: colorOlive) '[MARINETTE.GLS    : ' (: colorViolet) 'v' MARINETTE-GLS-VERSION (: CT) ']') '')
             (join (array (: colorOlive) '[DO.GLS           : ' (: colorWhite) 'v' DO-GLS-VERSION (: CT) ']') '')
             (join (array (: colorOlive) '[GLOSURE SCRIPTS  : ' (: colorCyan) (len (mari-get-scripts)) (: CT) ']') '')
