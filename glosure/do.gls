@@ -1,0 +1,96 @@
+;; Resource configuration using the Glosure programming language!
+;; * Much like ordinary do.rc! But with Glosure syntax and macros applied ^.^
+;; 
+;; * Commands use the following syntax:
+;; -- ((|> command-name) arg1 arg2 arg3 arg4)
+;; --eg: ((|> echo) 'hello' 'Marinette' 'users!' '<3')
+;; 
+;; * Piping works! Just the different syntax:
+;; -- (def command1-result ((|> command1) arg1 ...))
+;; -- ((|> command2) command1-result ...)
+;; --eg: To be written soon...
+;; 
+;; * Macros use the following syntax:
+;; -- To define a macro:
+;; ---- (>> macroname @pipe body)
+;; ----eg: (>> hello @pipe ((|> echo) 'hello world!'))
+;; -- To evaluate a macro:
+;; ---- ((|> macro) 'macroname')
+;; ----eg: ((|> macro) 'hello')
+;; 
+;; NOTE: Unlike do.rc, you can't place any Marinette part to Config!
+;; -- To have 'home' and 'away' functionality, read stack_pool at cob
+;; -- If it is zero, we're at home, else away. Should be simple! <3
+
+
+
+
+;; Comment this if you don't want your macros to be sorted
+;; By default, Marinette will sort macros
+(mari-sort-macros)
+
+;; Create a theme file in rkit/marinette/themes
+;; Then change the string to your file name like this:
+;; (mari-load-theme 'your-amazing-theme.src')
+;; By default, Marinette will attempt to load soft theme
+(mari-load-theme 'soft.src')
+
+;; Configure HOME server if you would like to have one!
+;; By default, Marinette doesn't have anything configured as your HOME server
+;; (set (@ HOME) 'ip' 'ip.add.rr.ess')
+;; (set (@ HOME) 'loginport' 22)
+;; (set (@ HOME) 'rshellport' 1222)
+;; (set (@ HOME) 'pass' 'password')
+
+;; Update hacking libraries in /lib and rkit at startup
+;; By default, hacking libraries will be updated if the following is in order:
+;; -- We are at stack_pool 0
+;; -- We have aptclient loaded
+;; -- There is active network connection
+;; -- There is a repository with up to date libraries
+;; -- There are libraries that need updating
+(mari-update-hacking-libraries)
+
+;; Bounce library configuration
+;; 
+;; What is the bounce library?
+;; In short, it is a library that gives you a root computer if you pass 
+;; local-address as an injection parameter while being inside the same network
+;; 
+;; The above technique is called "bouncing", and if you have no idea
+;; what is bouncing, I highly encourage you to watch the below video by Plu70 <3
+;; -> https://youtu.be/I8sjtVxpnvk?si=1PPB-IP7stmm0ONZ <-
+;; 
+;; Why should I configure bounce library?
+;; Because it makes bounce command (and maybe some others in the future) available for you to use!
+;; 
+;; Where to get the bounce library?
+;; The easiest way to get the bounce library is to download it from other players websites,
+;; for example, www.celestial.com
+;; 
+;; Always be cautious and carefull when you visit players websites! Proxy usage is highly adviced!
+;; 
+;; Step by step instruction for www.celestial.com, assuming you are on the main page:
+;; 1. Click on "Libs" button and scroll to the bottom. You will see the Poison Libs. That's the
+;; attacking libraries available for you too choose from. Remember the name and version
+;; 2. Scroll back up and click on "Files". Find and download the library you have remembered
+;; 3. Copy the library to your rkit/marinette/binaries and to /lib folders and run this line (without |>):
+;; |> meta load /lib/bouncelibrary.so | db -m || zap -l
+;; 4. Copy memory address and unsecure zone of the root computer exploit to the below.
+;; Hooray! The bounce library is configured! \(^.^)/
+;; 
+;; By default, Marinette doesn't have anything configured as your bounce library
+;; (def bounce-library 'libhttp-1.0.4.so')
+;; (def bounce-library-memory-address '0x7DD8F3DE')
+;; (def bounce-library-unsecure-zone 'alse')
+
+
+
+
+;; Simply print version information of the used configuration
+;; By default, Marinette will print version information
+;; -- It is highly recommended to leave this printing for the ease of bug reporting
+;; -- If you remove DO-GLS-VERSION definition line, 5hell will crash if you attempt
+;;    to issue marinette command
+(def DO-GLS-VERSION '0.1.6')
+(gl-break-silence (join (array '[MariConf] Marinette config v' DO-GLS-VERSION ' is successfully loaded! \\(^.^)/') ''))

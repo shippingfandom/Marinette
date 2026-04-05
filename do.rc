@@ -7,6 +7,9 @@ glosure -e " ((set globals 'SILENT' 2)) "
 --     |_ Marinette -> https://github.com/shippingfandom/Marinette
 -- Thanks for using Marinette! <3
 
+-- Check if Marinette is already loaded and return if she is
+-- Big thanks to Plu70 for this check! <3
+glosure -e " (: 'marinette-loaded') " | if " glosure -e \" ((set globals 'SILENT' 0)) \" || echo @RETURN " " echo Loading Marinette... " " echo true "
 
 -- To clipa, get 5hell path
 -- To clipb, get parent path of clipa
@@ -44,6 +47,9 @@ if " " " cat \@c | glosure -e " @c " No ^marinette.gls$ found. "
 grep -p ^do.gls$ @a | clipc
 if " " " cat \@c | glosure -e " @c " No ^do.gls$ found. "
 
+-- Set Marinette state to loaded so that the check at the start works
+-- Big thanks to Plu70 for this check! <3
+glosure -e " (:= 'marinette-loaded' 'true') "
 
 -----------------------------
 -- Marinette bootstrap end --

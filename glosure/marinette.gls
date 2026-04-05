@@ -96,6 +96,10 @@
                     (push return scripts-file))))))
     return))
 
+;; Get a binary from rkit/marinette/binaries
+(defun mari-get-binary (binary-name)
+    (gl-grep-into (array '^marinette$' '^binaries$' (join (array '^' binary-name '$') '')) (gl-get-rkit)))
+
 ;; Update hacking libraries on both /lib and rkit if the following conditions are met:
 ;; -- We are at stack_pool 0
 ;; -- We have aptclient loaded
@@ -111,7 +115,7 @@
     (def is-network-active (== 1 ((_ (: localmachine) is_network_active) (: localmachine))))
     (def is-host (== 0 ((|> cob) 'get' 'stack_pool')))
     (if (* has-aptclient (* is-network-active is-host)) (begin
-            (gl-break-silence '[Mari] Updating repositories...')
+            (gl-break-silence '[Mari] Attempting to update the repositories...')
             ((|> aptm) '-U')
             (foreach _ update-path update-paths (begin
                 (if (== 'file' (typeof update-path)) (begin
@@ -119,10 +123,62 @@
                         (def path ((|> file) '-p' update-path))
                         (def lib-path (gl-pathcat (array path library)))
                         (if (!= 0 ((_ aptclient check_upgrade) aptclient lib-path)) (begin
-                            (gl-break-silence (join (array '[Mari] Updating ' lib-path '...') ''))
+                            (gl-break-silence (join (array '[Mari] Attempting to update ' lib-path '...') ''))
                             ((|> aptm) '-i' library path))
                         (begin
                             (gl-break-silence (join (array '[Mari] Up to date: ' lib-path '!') ''))))))))))))))
+
+;; Get all macros starting with %
+(defun mari-get-scripts () (begin
+    (def scripts (array))
+    (def defined-macros (@ macros))
+    (foreach macro-name _ defined-macros (begin
+        (def first-character (pull (values macro-name)))
+        (if (== '%' first-character)
+            (push scripts macro-name))))
+    (sort scripts)))
+
+;; Get all added/modified commands
+(defun mari-get-total-changes ()
+    (sort (indexes MARINETTE-COMMANDS)))
+
+;; Get all added commands
+(defun mari-get-additions () (begin
+    (def additions (array))
+    (foreach _ command-name (mari-get-total-changes) (begin
+        (def help ((at (: command) command-name) '-h'))
+        (if (== null (indexOf help 'Marinette specific functionality'))
+            (push additions command-name))))
+    (sort additions)))
+
+;; Get all modified commands
+(defun mari-get-modifications () (begin
+    (def modifications (array))
+    (foreach _ command-name (mari-get-total-changes) (begin
+        (def help ((at (: command) command-name) '-h'))
+        (if (!= null (indexOf help 'Marinette specific functionality'))
+            (push modifications command-name))))
+    (sort modifications)))
+
+;; Return columns formatted in help-like passion
+(defun mari-format-help-like (arr) (begin
+    (def first-eight (slice arr 0 8))
+    (def rest (slice arr 8))
+    (def columns (join first-eight ' '))
+    (def lines (ceil (/ (len rest) 8)))
+    (for (def i 0) (< i lines) (++ i) (begin
+        (def columns (join (array columns (char 10) (join (slice rest (* i 8) (* (+ i 1) 8)) ' ')) ''))))
+    (def lines (split (format_columns columns) (char 10)))
+    (foreach idx line lines (begin
+        (set lines idx (join (array (: colorWhite) line (: CT)) ''))))
+    (join lines (char 10))
+    (def return (join (array
+        (join (array (: colorGold) '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -' (: CT)) '')
+        (join lines (char 10))
+        ''
+        (join (array (: colorGold) '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -' (: CT)) ''))
+        (char 10)))
+    return))
 
 
 
@@ -555,6 +611,115 @@
                 (gl-break-silence (join (array 'Opening ' graphical-program ' for ' path '...') '')))
             ((|> run) program-path path))))))))
 
+(|= marinette (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            '<u>Marinette || Miraculous, les aventures de Ladybug et Chat Noir</u>'
+            ''
+            '<b>Usage: marinette</b> -- show various statistics'
+            '<b>Usage: marinette credits</b> -- the people who made Marinette possible! <3'
+            '<b>Usage: marientte scripts</b> -- show glosure scripts loaded from rkit/marinette/scripts'
+            '<b>Usage: marientte additions</b> -- show commands added by Marinette'
+            '<b>Usage: marientte modifications</b> -- show commands modified by Marinette')
+            (char 10))
+    (if (== a1 'credits')
+        (join (array
+            (join (array (: colorViolet) ' _ _ _                             ' (: CT)) '')
+            (join (array (: colorViolet) '( / ) )         o          _/__/_  ' (: CT)) '')
+            (join (array (: colorViolet) ' / / / __,  _  ,  _ _   _  /  /  _ ' (: CT)) '')
+            (join (array (: colorViolet) '/ / (_(_/(_/ (_(_/ / /_(/_(__(__(/_' (: CT)) '')
+            'by not_s0phie, also know as Hecate'
+            (join (array (: colorWhite) 'Special thanks to the author of ' (: colorRed) '5' (: CT) (: colorGrey) 'hell' (: CT) ' - ' (: colorGreen) 'Plu70' (: CT) ' - as well as all the people made her possible! ' (: CT) (: colorRed) '<3' (: CT)) '')
+            (join (array 'Glosure by: ' (: colorWhite) 'mahocitrus' (: CT)) '')
+            (join (array 'Extracted documentation by: ' (: colorWhite) 'Arc8ne' (: CT)) '')
+            (join (array 'Greybel-JS by: ' (: colorWhite) 'ayecue' (: CT)) '')
+            (join (array 'Lines in do.rc to avoid re-loading by: ' (: colorWhite) 'Plu70,' (: CT) ' investigated together with ' (: colorWhite) 'Lagoon' (: CT)) '')
+            'And hugs to many others for your feedback and all the kind words! You all are awesome! \\(^.^ \\)')
+            (char 10))
+    (if (== a1 'scripts')
+        (mari-format-help-like (mari-get-scripts))
+    (if (== a1 'additions')
+        (mari-format-help-like (mari-get-additions))
+    (if (== a1 'modifications')
+        (mari-format-help-like (mari-get-modifications))
+    (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
+        (def bounce-library-state 'NOT CONFIGURED OR MISSING')
+        (def bounce-library-file (mari-get-binary bounce-library))
+        (if (== 'file' (typeof bounce-library-file))
+            (def bounce-library-state ((|> file) '-p' bounce-library-file)))
+        (:= SILENT silent-state)
+        (join (array
+            (join (array (: colorViolet) 'Marinette' (: CT) ' by not_s0phie') '')
+            (join (array (: colorOlive) '[5HELL.GLS        : ' (: colorWhite) 'v' SHELL-GLS-VERSION (: CT) ']') '')
+            (join (array (: colorOlive) '[MARINETTE.GLS    : ' (: colorViolet) 'v' MARINETTE-GLS-VERSION (: CT) ']') '')
+            (join (array (: colorOlive) '[DO.GLS           : ' (: colorWhite) 'v' DO-GLS-VERSION (: CT) ']') '')
+            (join (array (: colorOlive) '[GLOSURE SCRIPTS  : ' (: colorCyan) (len (mari-get-scripts)) (: CT) ']') '')
+            (join (array (: colorOlive) '[ADDITIONS     (*): ' (: colorGold) (len (mari-get-additions)) (: CT) ']') '')
+            (join (array (: colorOlive) '[MODIFICATIONS (#): ' (: colorRed) (len (mari-get-modifications)) (: CT) ']') '')
+            (join (array (: colorOlive) '[SUM OF  (*) + (#): ' (: colorOrange) (len (mari-get-total-changes)) (: CT) ']') '')
+            (join (array (: colorOlive) '[BOUNCE LIBRARY   : ' (: colorRed) bounce-library-state (: CT) ']') '')
+            (join (array '<size=65%>--: update <b>5hell</b> at https://github.com/jhook777/5hell-for-Grey-Hack-the-Game!</size>') '')
+            (join (array '<size=65%>--: update <b>Marinette</b> at https://github.com/shippingfandom/Marinette!</size>') ''))
+            (char 10)))))))))
+
+(|= bounce (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help' 0) a1))
+        (join (array
+            '<u>Marinette || bounce exploit || bouncing || attacking library</u>'
+            ''
+            '<b>Usage: bounce [address]</b> -- Bounce to the specified address using bounce library'
+            '-- requires bounce library to be configured in do.gls!')
+            (char 10))
+    (if (!= 1 (is_lan_ip (+ '' a1)))
+        (join (array
+            'bounce: need one local address as argument.'
+            'See <b>bounce -h</b> for more info!')
+            (char 10))
+    (if (gl-any (array (== null bounce-library) (== null bounce-library-memory-address) (== null bounce-library-unsecure-zone)))
+        (join (array
+            'bounce: bounce library is not configured or is configured incorrectly.'
+            'See <b>bounce -h</b> for more info!')
+            (char 10))
+    (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
+        (def bounce-library-file (mari-get-binary bounce-library))
+        (:= SILENT silent-state)
+        (if (== null bounce-library-file)
+            (join (array
+                'bounce: bounce library is missing in rkit/marinette/binaries.'
+                'See <b>bounce -h</b> for more info!')
+                (char 10))
+        (begin
+            (def silent-state (: SILENT))
+            (:= SILENT 2)
+            (def bounce-library-path ((|> file) '-p' bounce-library-file))
+            (gl-break-silence (join (array 'Attempting to copy ' bounce-library-path ' to /lib directory...') ''))
+            (def cp ((|> cp) bounce-library-path '/lib/'))
+            (:= SILENT silent-state)
+            (if (!= 1 cp)
+                'bounce: could not copy bounce library to /lib directory.'
+            (begin
+                (def silent-state (: SILENT))
+                (:= SILENT 2)
+                ;; Back up previous metalib
+                (def metalib-backup ((|> bios) '-m'))
+                ;; Load bounce library
+                (gl-break-silence (join (array 'Loading /lib/' bounce-library '...') ''))
+                ((|> meta) 'load' (+ '/lib/' bounce-library))
+                ;; Perform bounce exploit attack
+                (gl-break-silence (join (array 'Attempting to bounce into ' a1 '...') ''))
+                (def return ((|> zap) bounce-library-memory-address bounce-library-unsecure-zone a1))
+                ;; Restore previous metalib
+                (if (!= null metalib-backup) (begin
+                    (gl-break-silence (join (array 'Restoring previous ' metalib-backup '...') ''))
+                    ((|> meta) 'load' metalib-backup)))
+                (:= SILENT silent-state)
+                (gl-break-silence 'Everything is done! Check BUFFER to see how successfull an attack was')
+                return)))))))))
+
 
 ;; Hooks
 ;; -- Change the behaviour of the existing command, hopefully without breaking anything
@@ -687,7 +852,8 @@
             (APTM '-h' a2 a3 a4)
             ''
             '<u>Marinette specific functionality</u>'
-            'You can now force update repositories using <b>aptm -U/update</b>')
+            'You can now force update repositories using <b>aptm -U/update</b>'
+            '-- As of Marinette v0.1.5 this feature is deprecated and left here for backward compatibility')
             (char 10))
     (if (!= null (indexOf (array '-U' 'update') a1))
         ((|> aptm) '-u' (gl-random-string 16))
@@ -739,7 +905,7 @@
             '<b>zc -p/patch [user] [password] [path_to_lib_or_folder]</b> -- Auto-patch local libraries'
             '-- This action removes any orig and patch.zd it finds!'
             '-- It is highly adviced to remove any debugLibraries from your BUFFER before using this!'
-            '-- As of Marinette config v0.0.3 this feature is still quite untested so proceed at your own risk')
+            '-- As of Marinette v0.1.5 this feature is experimental. Proceed at your own risk!')
             (char 10))
     (if (!= null (indexOf (array '-i' 'info') a1)) (begin
         (def file ((|> file) '-r' a2))
@@ -942,12 +1108,20 @@
 (mari-mkdir 'scripts')      ;; rkit/marinette/scripts
 
 ;; Register Glosure scripts as macros
-(def scripts (mari-get-glosure-scripts))
-(foreach _ script scripts (begin
-    (def name ((|> file) '-n' script))
-    (def name-re (join (array '^' name '$') ''))
-    (def macro-name (+ '%' ((_ name replace) name '\.gls' '')))
-    (def macro-string (join (array 'glosure -e (gl-get-rkit) | file -p | grep -p ' name-re ' | gls') ''))
-    ((|> macro) '-s' macro-name macro-string)))
+((lambda () (begin
+    (def scripts (mari-get-glosure-scripts))
+    (foreach _ script scripts (begin
+        (def name ((|> file) '-n' script))
+        (def name-re (join (array '^' name '$') ''))
+        (def macro-name (+ '%' ((_ name replace) name '\.gls' '')))
+        (def macro-string (join (array 'glosure -e (gl-get-rkit) | file -p | grep -p ' name-re ' | gls') ''))
+        ((|> macro) '-s' macro-name macro-string))))))
 
-(gl-break-silence '[Mari] Marinette v0.1.4 is successfully loaded! \\(^.^)/')
+;; Implicitly define these to indicate the absence of the bounce library
+(def bounce-library null)
+(def bounce-library-memory-address null)
+(def bounce-library-unsecure-zone null)
+
+;; Print version information
+(def MARINETTE-GLS-VERSION '0.1.7')
+(gl-break-silence (join (array '[Mari] Marinette v' MARINETTE-GLS-VERSION ' is successfully loaded! \\(^.^)/') ''))
