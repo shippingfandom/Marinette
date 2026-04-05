@@ -57,10 +57,20 @@ To install **Marinette**, follow these simple instructions:
 4. Go to **rkit/marinette/glosure** and paste in [5hell.gls](glosure/5hell.clj), [do.gls](glosure/do.clj), [marinette.gls](glosure/marinette.clj), one by one ✏️
 5. Close **5hell** and run her again 💻
 
+Or, if you're feeling adventurous, you can try an alternative way, using [Greybel-JS](https://github.com/ayecue/greybel-js):
+1. Repeat steps 1 and 2 from the above 👆
+2. Download the source code of Marinette to your computer and unarchive it 📚
+3. Enter the directory where **do.rc** is stored 📁
+4. Issue `greybel import glosure -id /root/rkit/marinette ; greybel import scripts -id /root/rkit/marinette ; greybel import themes -id /root/rkit/marinette` in the console of your IRL computer 💻
+5. Close **5hell** and run her again ✌️
+
+
 Congratulatuons, **Marinette** is successfully installed! 💞
 
 Now you may would want to do one of the following things:
-- Issue `help -s Marinette` to see what commands were added or changed 💾
+- Issue `marinette` to see the overall statistics 📊
+- Issue `marinette additions` to see what commands were added (issue a specific command with `-h` flag to get a help for it!) 🧰
+- Issue `marinette modifications` to see what commands were changed 🔮
 - Issue `macros` to see what macros were added 📼
 - Change 5hell theme. Read themeing section in **rkit/marinette/glosure/do.gls** and choose a theme from [themes](themes) 🏁
 
@@ -85,6 +95,8 @@ Update your **5hell** on **home**, in **rkit**, on **HOME server**, on the targe
 
 The issue is still there? I will be more than happy if you tell me about it in the DM (my ID is `not_s0phie`) or the **5hell** official [discord server](https://discord.gg/VuWYdWUXQw)
 
+When reporting a bug, be sure to include the output of `shell || marinette`!
+
 ## Why there are SO many whys and whats?
 Well, it's just because I felt like writing an entire novel in a single README file. Whoops!
 
@@ -96,6 +108,7 @@ I'm absolutely sure something is still missing in here... Guess we'll see! 😅
 - Thanks [Plu70](https://github.com/jhook777) for [5hell](https://github.com/jhook777/5hell-for-Grey-Hack-the-Game)!
 - Thanks [mahocitrus](https://github.com/mahocitrus) for [Glosure](https://github.com/mahocitrus/Glosure)!
 - Thanks [Arc8ne](https://github.com/Arc8ne) for the [extracted documentation](https://github.com/Arc8ne/5hell-Documentation-Extractor/blob/main/5hell-Documentation.md)!
+- Thanks [ayecue](https://github.com/ayecue) for [Greybel-JS](https://github.com/ayecue/greybel-js)!
 
 You all are simply the best! 🥰
 
