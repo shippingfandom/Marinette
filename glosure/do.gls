@@ -84,7 +84,37 @@
 ;; (def bounce-library-memory-address '0x7DD8F3DE')
 ;; (def bounce-library-unsecure-zone 'alse')
 
-
+;; Escalation library configuration
+;; 
+;; What is an escalation library?
+;; It is a library that gives you a root shell without conditions!
+;; 
+;; Why should I configure escalation library?
+;; Because it makes ariadne command (and maybe some others in the future) available for you to use!
+;; 
+;; Where to get the bounce library?
+;; Just as the bounce library, the easiest way to get the escalation library is to download it from other
+;; players websites, for example, www.celestial.com
+;; 
+;; Follow the bounce library configuration guide to configure the escalation library! (^.^)
+;; 
+;; 
+;; Questions asked frequently:
+;; 
+;; -- Q: Can I use one library as both the bounce library and the escalation library?
+;; -- A: Yes, absolutely! As long as it is vulnerable for both bouncing and escalation!
+;; 
+;; -- Q: Can I configure the escalation library without configuring the bounce library?
+;; -- A: Yes, and you can configure the bounce library without the escalation library!
+;; 
+;; -- Q: Why use escalation library if ariadne fails on almost every machine?
+;; -- A: I don't know! (0.0 )
+;;       I've figured that only when I tried using it!
+;; 
+;; By default, Marinette doesn't have anything configured as your escalation library
+;; (def escalation-library 'libhttp-1.0.4.so')
+;; (def escalation-library-memory-address '0x4164FC74')
+;; (def escalation-library-unsecure-zone 'groupblock_sizex')
 
 
 ;; Simply print version information of the used configuration
@@ -92,5 +122,5 @@
 ;; -- It is highly recommended to leave this printing for the ease of bug reporting
 ;; -- If you remove DO-GLS-VERSION definition line, 5hell will crash if you attempt
 ;;    to issue marinette command
-(def DO-GLS-VERSION '0.1.6')
-(gl-break-silence (join (array '[MariConf] Marinette config v' DO-GLS-VERSION ' is successfully loaded! \\(^.^)/') ''))
+(def DO-GLS-VERSION '0.2.0')
+(gl-break-silence (join (array (: colorGold) '[Marinette Configuration] Marinette configuration v' DO-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)) ''))

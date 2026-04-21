@@ -15,8 +15,8 @@
                 (def color-value (at parts 2))
                 (set globals color-name ((_ color-value replace) color-value (char 34) ''))
                 (:= colorDefault ((_ (: colorGreen) replace) (: colorGreen) '<b>' ''))))
-            (gl-break-silence (join (array '[Mari] Could not load ' theme ' theme!') ''))))
-        (gl-break-silence (join (array '[Mari] Could not load ' theme ' theme!') '')))))
+            (mari-printline (array 'Could not load ' theme ' theme!'))))
+        (mari-printline (array 'Could not load ' theme ' theme!')))))
 
 ;; Populate rkit/marinette w/ a directory
 (defun mari-mkdir (dirname) (begin
@@ -115,7 +115,7 @@
     (def is-network-active (== 1 ((_ (: localmachine) is_network_active) (: localmachine))))
     (def is-host (== 0 ((|> cob) 'get' 'stack_pool')))
     (if (* has-aptclient (* is-network-active is-host)) (begin
-            (gl-break-silence '[Mari] Attempting to update the repositories...')
+            (mari-printline (array 'Attempting to update the repositories...'))
             ((|> aptm) '-U')
             (foreach _ update-path update-paths (begin
                 (if (== 'file' (typeof update-path)) (begin
@@ -123,10 +123,10 @@
                         (def path ((|> file) '-p' update-path))
                         (def lib-path (gl-pathcat (array path library)))
                         (if (!= 0 ((_ aptclient check_upgrade) aptclient lib-path)) (begin
-                            (gl-break-silence (join (array '[Mari] Attempting to update ' lib-path '...') ''))
+                            (mari-printline (array 'Attempting to update ' lib-path '...'))
                             ((|> aptm) '-i' library path))
                         (begin
-                            (gl-break-silence (join (array '[Mari] Up to date: ' lib-path '!') ''))))))))))))))
+                            (mari-printline (array 'Up to date: ' lib-path '!'))))))))))))))
 
 ;; Get all macros starting with %
 (defun mari-get-scripts () (begin
@@ -179,6 +179,64 @@
         (join (array (: colorGold) '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -' (: CT)) ''))
         (char 10)))
     return))
+
+;; Regex but with per-line matching support! \(^.^)/
+(defun mari-match (string pattern) (begin
+    (def per-line-match 0)
+    (def lines (split string (char 10)))
+    (foreach _ line lines (begin
+        (if (== 1 ((_ line is_match) line pattern))
+            (def per-line-match 1))))
+    (def whole-match ((_ string is_match) string pattern))
+    (if (+ per-line-match whole-match)
+        1
+        0)))
+
+;; Track while scan that returns a list of indexes
+(defun mari-tws-list (query) (begin
+    (def idxs (array))
+    (def tws ((|> tws) query 'pl'))
+    (def lines (split tws (char 10)))
+    (foreach _ line lines (begin
+        (def index (to_int (slice line (+ 1 (indexOf line '[')) (indexOf line ']'))))
+        (push idxs index)))
+    idxs))
+
+;; Returns an index of the first found buffer object matching input arguments
+(defun mari-tws-look (user object-type public-address local-address) (begin
+    (def return (to_int '-1'))
+    (def idxs (mari-tws-list 'FG'))
+    (foreach _ index idxs (begin
+        (if (== (to_int '-1') return) (begin
+            (def object (at (: BUFFER) index))
+            (def object-user ((: checkUser) object))
+            (if (* (== object-type (typeof object)) (== user object-user)) (begin
+                (if (== 'file' object-type)
+                    (def return index)
+                (begin
+                    (def object-public-address (mari-public-address object))
+                    (def object-local-address (mari-local-address object))
+                    (if (* (== public-address object-public-address) (== local-address object-local-address))
+                        (def return index))))))))))
+    return))
+
+;; Output something with the Marinette prefix!
+(defun mari-printline (str-array)
+    (gl-break-silence (join (array (: colorViolet) '[Marinette]' (: CT) ' ' (join str-array '')) '')))
+
+;; Get shell/computer public address
+(defun mari-public-address (object) (begin
+    (def computer object)
+    (if (== 'shell' (typeof object))
+        (def computer ((_ computer host_computer) computer)))
+    ((_ computer public_ip) computer)))
+
+;; Get shell/computer local address
+(defun mari-local-address (object) (begin
+    (def computer object)
+    (if (== 'shell' (typeof object))
+        (def computer ((_ computer host_computer) computer)))
+    ((_ computer local_ip) computer)))
 
 
 
@@ -324,7 +382,7 @@
             'See <b>match -h</b> for more info!')
             (char 10))
     (begin
-        ((_ a2 is_match) a2 a1)))))
+        (mari-match a2 a1)))))
 
 (|= netstalk (a1 a2 a3 a4)
     (if (!= null (indexOf (array '-h' 'help' 0) a1))
@@ -378,7 +436,7 @@
 (|= nemesis (a1 a2 a3 a4)
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
-            '<u>Marinette || hacking utility || roil the database</u>'
+            '<u>Marinette || nemesis || unveil the scales of retribution || hacking utility || roil the database</u>'
             ''
             '<b>Usage: nemesis [opt:ip] [opt:port] [opt:inject]</b> -- Hack remotely using database'
             '--eg: <b>nemesis 1.1.1.1 0</b> -- Attempt to linkdb against the said gateway and will roil in case of success, else db'
@@ -633,7 +691,7 @@
             (join (array 'Glosure by: ' (: colorWhite) 'mahocitrus' (: CT)) '')
             (join (array 'Extracted documentation by: ' (: colorWhite) 'Arc8ne' (: CT)) '')
             (join (array 'Greybel-JS by: ' (: colorWhite) 'ayecue' (: CT)) '')
-            (join (array 'Lines in do.rc to avoid re-loading by: ' (: colorWhite) 'Plu70,' (: CT) ' investigated together with ' (: colorWhite) 'Lagoon' (: CT)) '')
+            (join (array 'Lines in do.rc to avoid re-loading by: ' (: colorWhite) 'Plu70,' (: CT) ' investigated together with ' (: colorWhite) 'lagoon' (: CT)) '')
             'And hugs to many others for your feedback and all the kind words! You all are awesome! \\(^.^ \\)')
             (char 10))
     (if (== a1 'scripts')
@@ -649,17 +707,35 @@
         (def bounce-library-file (mari-get-binary bounce-library))
         (if (== 'file' (typeof bounce-library-file))
             (def bounce-library-state ((|> file) '-p' bounce-library-file)))
+        (def escalation-library-state 'NOT CONFIGURED OR MISSING')
+        (def escalation-library-file (mari-get-binary bounce-library))
+        (if (== 'file' (typeof escalation-library-file))
+            (def escalation-library-state ((|> file) '-p' escalation-library-file)))
         (:= SILENT silent-state)
         (join (array
             (join (array (: colorViolet) 'Marinette' (: CT) ' by not_s0phie') '')
-            (join (array (: colorOlive) '[5HELL.GLS        : ' (: colorWhite) 'v' SHELL-GLS-VERSION (: CT) ']') '')
-            (join (array (: colorOlive) '[MARINETTE.GLS    : ' (: colorViolet) 'v' MARINETTE-GLS-VERSION (: CT) ']') '')
-            (join (array (: colorOlive) '[DO.GLS           : ' (: colorWhite) 'v' DO-GLS-VERSION (: CT) ']') '')
-            (join (array (: colorOlive) '[GLOSURE SCRIPTS  : ' (: colorCyan) (len (mari-get-scripts)) (: CT) ']') '')
-            (join (array (: colorOlive) '[ADDITIONS     (*): ' (: colorGold) (len (mari-get-additions)) (: CT) ']') '')
-            (join (array (: colorOlive) '[MODIFICATIONS (#): ' (: colorRed) (len (mari-get-modifications)) (: CT) ']') '')
-            (join (array (: colorOlive) '[SUM OF  (*) + (#): ' (: colorOrange) (len (mari-get-total-changes)) (: CT) ']') '')
-            (join (array (: colorOlive) '[BOUNCE LIBRARY   : ' (: colorRed) bounce-library-state (: CT) ']') '')
+            (join (array (: colorOlive) '[5HELL.GLS         : ' (: colorWhite) 'v' SHELL-GLS-VERSION (: CT) ']') '')
+            (join (array (: colorOlive) '[MARINETTE.GLS     : ' (: colorViolet) 'v' MARINETTE-GLS-VERSION (: CT) ']') '')
+            (join (array (: colorOlive) '[DO.GLS            : ' (: colorWhite) 'v' DO-GLS-VERSION (: CT) ']') '')
+            (join (array (: colorOlive) '[GLOSURE SCRIPTS   : ' (: colorCyan) (len (mari-get-scripts)) (: CT) ']') '')
+            (join (array (: colorOlive) '[ADDITIONS     (*) : ' (: colorGold) (len (mari-get-additions)) (: CT) ']') '')
+            (join (array (: colorOlive) '[MODIFICATIONS (#) : ' (: colorRed) (len (mari-get-modifications)) (: CT) ']') '')
+            (join (array (: colorOlive) '[SUM OF  (*) + (#) : ' (: colorOrange) (len (mari-get-total-changes)) (: CT) ']') '')
+            (join (array (: colorOlive) '[BOUNCE LIBRARY    : ' (: colorRed) bounce-library-state (: CT) ']') '')
+            (join (array (: colorOlive) '[ESCALATION LIBRARY: ' (: colorRed) escalation-library-state (: CT) ']') '')
+            (join (array (: colorOlive) '[COLOR PALETTE     : ' (join (array
+                (: colorRed) '###'  (: CT)
+                (: colorCyan) '###'  (: CT)
+                (: colorGold) '###'  (: CT)
+                (: colorGrey) '###'  (: CT)
+                (: colorGreen) '###'  (: CT)
+                (: colorOlive) '###'  (: CT)
+                (: colorWhite) '###'  (: CT)
+                (: colorBlack) '###'  (: CT)
+                (: colorOrange) '###'  (: CT)
+                (: colorViolet) '###'  (: CT)
+                (: colorMagenta) '###'  (: CT)
+                (: colorLightBlue) '###'  (: CT)) '') (: CT) ']') '')
             (join (array '<size=65%>--: update <b>5hell</b> at https://github.com/jhook777/5hell-for-Grey-Hack-the-Game!</size>') '')
             (join (array '<size=65%>--: update <b>Marinette</b> at https://github.com/shippingfandom/Marinette!</size>') ''))
             (char 10)))))))))
@@ -720,6 +796,112 @@
                 (gl-break-silence 'Everything is done! Check BUFFER to see how successfull an attack was')
                 return)))))))))
 
+(|= ariadne (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            '<u>Marinette || ariadne || follow the thread through the dark || local exploit || escalation || attacking library</u>'
+            ''
+            '<b>Usage: ariadne</b> -- Escalate to root on the machine you are on'
+            '-- requires escalation library to be configured in do.gls!')
+            (char 10))
+    (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
+        (def escalation-library-file (mari-get-binary escalation-library))
+        (:= SILENT silent-state)
+        (if (== null escalation-library-file)
+            (join (array
+                'ariadne: escalation library is missing in rkit/marinette/binaries.'
+                'See <b>ariadne -h</b> for more info!')
+                (char 10))
+        (begin
+            (def silent-state (: SILENT))
+            (:= SILENT 2)
+            (def escalation-library-path ((|> file) '-p' escalation-library-file))
+            (gl-break-silence (join (array 'Attempting to copy ' escalation-library-path ' to /lib directory...') ''))
+            (def cp ((|> cp) escalation-library-path '/lib/'))
+            (:= SILENT silent-state)
+            (if (!= 1 cp)
+                'ariadne: could not copy escalation library to /lib directory.'
+            (begin
+                (def silent-state (: SILENT))
+                (:= SILENT 2)
+                ;; Back up previous metalib
+                (def metalib-backup ((|> bios) '-m'))
+                ;; Load escalation library
+                (gl-break-silence (join (array 'Loading /lib/' escalation-library '...') ''))
+                ((|> meta) 'load' (+ '/lib/' escalation-library))
+                ;; Perform escalation exploit attack
+                (gl-break-silence (join (array 'Attempting an escalation to root...') ''))
+                (def return ((|> zap) escalation-library-memory-address escalation-library-unsecure-zone a1))
+                ;; Restore previous metalib
+                (if (!= null metalib-backup) (begin
+                    (gl-break-silence (join (array 'Restoring previous ' metalib-backup '...') ''))
+                    ((|> meta) 'load' metalib-backup)))
+                (:= SILENT silent-state)
+                (gl-break-silence 'Everything is done! Check BUFFER to see how successfull an attack was')
+                return)))))))
+
+(|= mimi (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            '<u>Marinette || eavesdropping || administrators || players || dsession || Xorg</u>'
+            ''
+            '<b>Usage: mimi [opt:object]</b> -- Check for administrators or players online'
+            '-- accepts <b>shell</b> and <b>computer</b> objects'
+            '-- runs <b>ps</b> and <b>match</b> chain'
+            '-- returns a number which is one of the status codes listed below'
+            ''
+            '<u>Status codes</u>'
+            '-- <b>0</b> if there are no administrators or players'
+            '-- <b>1</b> if there is at least one player'
+            '-- <b>2</b> if there is at least one administrator'
+            '-- <b>3</b> if there are at least one player and at least one administrator')
+            (char 10))
+    (if (* (== null (indexOf (array 'shell' 'computer') (typeof a1))) (!= 0 a1))
+        (join (array
+            'mimi: need a shell or a computer as an argument.'
+            'See <b>mimi -h</b> for more info!')
+            (char 10))
+    (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
+        (def return 0)
+        (def object
+            (if (!= 0 a1)
+                a1
+                (begin
+                    (def globals-shell (: shell))
+                    (def computer-from-shell ((_ globals-shell host_computer) globals-shell))
+                    (def globals-computer (: localmachine))
+                    (if (* (== ((_ computer-from-shell public_ip) computer-from-shell) ((_ globals-computer public_ip) globals-computer)) (== ((_ computer-from-shell local_ip) computer-from-shell) ((_ globals-computer local_ip) globals-computer)))
+                        globals-shell
+                        globals-computer))))
+        (def ps ((|> ps) '-r' a1))
+        (def players? (+ (match '^root .* .* .* Xorg .*$' ps) (match '^root .* .* .* Xorg$' ps)))
+        (def administrators? (+ (match '^root .* .* .* dsession .*$' ps) (match '^root .* .* .* dsession$' ps)))
+        (def user ((: checkUser) object))
+        (def object-type (typeof object))
+        (def public-address (mari-public-address object))
+        (def local-address (mari-local-address object))
+        (def buffer-index (mari-tws-look user object-type public-address local-address))
+        (if (== 'root' user)
+            (def user (join (array (: colorRed) user (: CT)) ''))
+        (if (== 'guest' user)
+            (def user (join (array (: colorGold) user (: CT)) ''))
+        (begin
+            (def user (join (array (: colorCyan) user (: CT)) '')))))
+        (if players? (begin
+            (def return (+ 1 return))
+            (mari-printline (array 'An online ' (: colorGreen) 'player' (: CT) ' on ' (: colorOrange) '[' buffer-index ']' (: CT) user ':' object-type '@' (: colorCyan) public-address (: CT) '/' local-address '!'))))
+        (if administrators? (begin
+            (def return (+ 2 return))
+            (mari-printline (array 'An online ' (: colorGreen) 'administrator' (: CT) ' on ' (: colorOrange) '[' buffer-index ']' (: CT) user ':' object-type '@' (: colorCyan) public-address (: CT) '/' local-address '!'))))
+        (if (== 0 return)
+            (mari-printline (array 'No administrators or players online on ' (: colorOrange) '[' buffer-index ']' (: CT) user ':' object-type '@' (: colorCyan) public-address (: CT) '/' local-address '!')))
+        (:= SILENT silent-state)
+        return))))
+
 
 ;; Hooks
 ;; -- Change the behaviour of the existing command, hopefully without breaking anything
@@ -735,7 +917,8 @@
             'You can now infiltrate a target with your rkit folder uploading hidden!'
             'Moreover, it uploads to any available permissive folder it finds, not necessarily /home/guest'
             'To perform this kind of infiltration, issue <b>infil -g/ghost [shell_object]</b>'
-            'To run 5hell after infiltration, use <b>-G</b> flag')
+            'To run 5hell after infiltration, use <b>-G</b> flag'
+            'Infiltration with <b>-g/ghost</b> flag now runs <b>mimi</b> automatically!')
             (char 10))
     (if (!= null (indexOf (array '-g' 'ghost') (lower a1))) (begin
         (def shell a2)
@@ -769,8 +952,10 @@
                 ;; Yielding 5hell on target
                 (def five-hell-path (gl-pathcat (array upload-path 'rkit' '5hell')))
                 (gl-break-silence (join (array '5hell is accessible at ' five-hell-path '! <3') ''))
+                (if (!= '-G' a1)
+                    (mimi shell))
                 (if (== '-G' a1)
-                    ((|> run) five-hell-path shell)
+                    ((|> run) five-hell-path shell 'mimi')
                     five-hell-path)))))))
     (begin
         (INFIL a1 a2 a3 a4)))))
@@ -807,8 +992,6 @@
                     (gl-break-silence (join (array 'Have tried ' addresses-generated ' addresses so far...') '')))
                 (def rnip ((|> rnip) '1'))
                 (++ addresses-generated)
-                ((|> probe) '-q')
-                (def probe ((|> probe) '-s'))
                 (def has-smtp (== rnip ((|> porter) '25' rnip)))
                 (def has-ssh (== rnip ((|> porter) '22' rnip)))
                 (def is-npc-network (* has-smtp has-ssh))
@@ -883,12 +1066,15 @@
             (ZAP '-h' a2 a3 a4)
             ''
             '<u>Marinette specific functionality</u>'
-            'You can now quickly get a list of available exploits without opening up a menu with <b>zap -l/list</b>!')
+            'You can now quickly get a list of available exploits without opening up a menu with <b>zap -l/list</b>!'
+            'Automatically detect players or administrators with <b>mimi</b>!')
             (char 10))
     (if (!= null (indexOf (array '-l' 'list') a1))
         (ZAP '-r' '1337')
     (begin
-        (ZAP a1 a2 a3 a4)))))
+        (def return (ZAP a1 a2 a3 a4))
+        (mimi return)
+        return))))
 
 (def ZC (|> zc))
 (|= zc (a1 a2 a3 a4)
@@ -1067,7 +1253,7 @@
         ((|> scrub))
         (def endpoint-shell (at ((|> bios) '-B') (- (len ((|> bios) '-B')) 1)))
         (def infil-path (infil '-g' endpoint-shell))
-        ((|> run) infil-path endpoint-shell))
+        ((|> run) infil-path endpoint-shell 'mimi'))
     (begin
         (PROX a1 a2 a3 a4)))))
 
@@ -1078,7 +1264,8 @@
             (SSH '-h' a2 a3 a4)
             ''
             '<u>Marinette specific functionality</u>'
-            'You can now get your HOME server shell with <b>ssh -H/home</b>!')
+            'You can now get your HOME server shell with <b>ssh -H/home</b>!'
+            'Run <b>mimi</b> automatically when using <b>ssh</b>!')
             (char 10))
     (if (!= null (indexOf (array '-H' 'home') a1)) (begin
         (def user (at (@ HOME) 'user'))
@@ -1089,9 +1276,57 @@
         (if (== 'ip.add.rr.ess' address)
             'ssh: HOME server is not configured.'
         (begin
-            (SSH (join (array user '@' pass) '') address port protocol))))
+            (def return (SSH (join (array user '@' pass) '') address port protocol))
+            (mimi return)
+            return)))
     (begin
-        (SSH a1 a2 a3 a4)))))
+        (def return (SSH a1 a2 a3 a4))
+        (mimi return)
+        return))))
+
+(def G_RCLEAN (: rclean))
+(:= rclean (glosure (a1 a2) (begin
+    (def return (G_RCLEAN a1 a2))
+    (if (+ (== 'shell' (typeof a1)) (== 'computer' (typeof a1)))
+        (mimi a1))
+    (if (+ (== 'shell' (typeof a2)) (== 'computer' (typeof a2)))
+        (mimi a2))
+    return)))
+
+(def RCLEAN (|> rclean))
+(|= rclean (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            (RCLEAN '-h' a2 a3 a4)
+            ''
+            '<u>Marinette specific functionality</u>'
+            'Now attempts to run <b>mimi</b> on cleaning!')
+            (char 10))
+    (begin
+        (RCLEAN a1 a2 a3 a4))))
+
+(def SILENTCLEAN (|> silentclean))
+(|= silentclean (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            (SILENTCLEAN '-h' a2 a3 a4)
+            ''
+            '<u>Marinette specific functionality</u>'
+            'Now attempts to run <b>mimi</b> on cleaning!')
+            (char 10))
+    (begin
+        (def return (SILENTCLEAN a1 a2 a3 a4))
+        (if (+ (== 'shell' (typeof a4)) (== 'computer' (typeof a4)))
+            (mimi a4)
+        (if (+ (== 'shell' (typeof a3)) (== 'computer' (typeof a3)))
+            (mimi a3)
+        (if (+ (== 'shell' (typeof a2)) (== 'computer' (typeof a2)))
+            (mimi a2)
+        (if (+ (== 'shell' (typeof a1)) (== 'computer' (typeof a1)))
+            (mimi a1)
+        (begin
+            (mimi 0))))))
+        return)))
 
 
 
@@ -1107,8 +1342,19 @@
 (mari-mkdir 'notepads')     ;; rkit/marinette/notepads
 (mari-mkdir 'scripts')      ;; rkit/marinette/scripts
 
-;; Register Glosure scripts as macros
+;; Implicitly define these to indicate the absence of the bounce library
+(def bounce-library null)
+(def bounce-library-memory-address null)
+(def bounce-library-unsecure-zone null)
+
+;; Implicitly define these to indicate the absence of the escalation library
+(def escalation-library null)
+(def escalation-library-memory-address null)
+(def escalation-library-unsecure-zone null)
+
+;; Part of initialization in the inner scope of self invoked lambda
 ((lambda () (begin
+    ;; Register Glosure scripts as macros
     (def scripts (mari-get-glosure-scripts))
     (foreach _ script scripts (begin
         (def name ((|> file) '-n' script))
@@ -1117,11 +1363,6 @@
         (def macro-string (join (array 'glosure -e (gl-get-rkit) | file -p | grep -p ' name-re ' | gls') ''))
         ((|> macro) '-s' macro-name macro-string))))))
 
-;; Implicitly define these to indicate the absence of the bounce library
-(def bounce-library null)
-(def bounce-library-memory-address null)
-(def bounce-library-unsecure-zone null)
-
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.1.7')
-(gl-break-silence (join (array '[Mari] Marinette v' MARINETTE-GLS-VERSION ' is successfully loaded! \\(^.^)/') ''))
+(def MARINETTE-GLS-VERSION '0.2.2')
+(mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)))
