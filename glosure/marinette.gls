@@ -801,7 +801,7 @@
         (join (array
             '<u>Marinette || ariadne || follow the thread through the dark || local exploit || escalation || attacking library</u>'
             ''
-            '<b>Usage: ariadne </b> -- Escalate to root on the machine you are on'
+            '<b>Usage: ariadne</b> -- Escalate to root on the machine you are on'
             '-- requires escalation library to be configured in do.gls!')
             (char 10))
     (begin
