@@ -151,9 +151,18 @@
             (def return 1)))
     return))
 
+;; Return 1 if all of the conditions evaluate to truthy value
+(defun gl-all (conditions) (begin
+    (def return 1)
+    (foreach _ condition conditions
+        (if condition
+            ()
+            (def return 0)))
+    return))
+
 
 
 
 ;; Init
-(def SHELL-GLS-VERSION '0.0.8')
-(gl-break-silence (join (array '[5GL] 5hell Glosure library v' SHELL-GLS-VERSION ' is successfully loaded! \\(^.^)/') ''))
+(def SHELL-GLS-VERSION '0.1.0')
+(gl-break-silence (join (array (: colorWhite) '[5hell Glosure Library] 5hell Glosure library v' SHELL-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)) ''))
