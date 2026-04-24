@@ -100,6 +100,10 @@
 (defun mari-get-binary (binary-name)
     (gl-grep-into (array '^marinette$' '^binaries$' (join (array '^' binary-name '$') '')) (gl-get-rkit)))
 
+;; Get a notepad from rkit/marinette/notepads
+(defun mari-get-notepad (notepad-name)
+    (gl-grep-into (array '^marinette$' '^notepads$' (join (array '^' notepad-name '$') '')) (gl-get-rkit)))
+
 ;; Update hacking libraries on both /lib and rkit if the following conditions are met:
 ;; -- We are at stack_pool 0
 ;; -- We have aptclient loaded
@@ -220,23 +224,70 @@
                         (def return index))))))))))
     return))
 
+;; Returns a string in [buf-idx]checkUser:obj-type@pub-ip/loc-ip format
+(defun mari-format-tws-like (object) (begin
+    (def user ((: checkUser) object))
+    (def object-type (typeof object))
+    (def public-address (mari-public-address object))
+    (def local-address (mari-local-address object))
+    (def buffer-index (mari-tws-look user object-type public-address local-address))
+    (if (== 'root' user)
+        (def user (join (array (: colorRed) user (: CT)) ''))
+    (if (== 'guest' user)
+        (def user (join (array (: colorGold) user (: CT)) ''))
+    (begin
+        (def user (join (array (: colorCyan) user (: CT)) '')))))
+    (join (array (: colorOrange) '[' buffer-index ']' (: CT) user ':' object-type '@' (: colorCyan) public-address (: CT) '/' local-address) '')))
+
 ;; Output something with the Marinette prefix!
 (defun mari-printline (str-array)
     (gl-break-silence (join (array (: colorViolet) '[Marinette]' (: CT) ' ' (join str-array '')) '')))
 
+;; Turn shell into computer, computer into computer and return
+(defun mari-computerify (object) (begin
+    (def computer object)
+    (if (== 'shell' (typeof computer))
+        (def computer ((_ computer host_computer) computer)))
+    (if (== 'computer' (typeof computer))
+        computer)))
+
+;; Get shell or computer we're currently on
+(defun mari-get-current-object () (begin
+    (def globals-shell (: shell))
+    (def computer-from-shell ((_ globals-shell host_computer) globals-shell))
+    (def globals-computer (: localmachine))
+    (if (* (== ((_ computer-from-shell public_ip) computer-from-shell) ((_ globals-computer public_ip) globals-computer)) (== ((_ computer-from-shell local_ip) computer-from-shell) ((_ globals-computer local_ip) globals-computer)))
+        globals-shell
+        globals-computer)))
+
 ;; Get shell/computer public address
 (defun mari-public-address (object) (begin
-    (def computer object)
-    (if (== 'shell' (typeof object))
-        (def computer ((_ computer host_computer) computer)))
+    (def computer (mari-computerify object))
     ((_ computer public_ip) computer)))
 
 ;; Get shell/computer local address
 (defun mari-local-address (object) (begin
-    (def computer object)
-    (if (== 'shell' (typeof object))
-        (def computer ((_ computer host_computer) computer)))
+    (def computer (mari-computerify object))
     ((_ computer local_ip) computer)))
+
+;; Show ascii art on startup if we're on host, once
+(defun mari-show-ascii-art () (begin
+    ((|> cob) 'validate')
+    (if (* (== 0 ((|> cob) 'get' 'stack_pool')) (!= 1 ((|> cob) 'get' 'ascii-shown?'))) (begin
+        ((|> cob) 'set' 'ascii-shown?' 1)
+        (ascii)))))
+
+;; Return an undercover buffer
+(defun mari-undercover-buffer () (begin
+    (def buffer ((|> cob) 'get' 'undercover-buffer'))
+    (if (!= 'list' (typeof buffer))
+        (@= undercover-buffer (array)))
+    (def buffer ((|> cob) 'get' 'undercover-buffer'))))
+
+;; Push to the undercover buffer
+(defun mari-undercover-buffer-push (value) (begin
+    (def buffer (mari-undercover-buffer))
+    (push buffer value)))
 
 
 
@@ -350,6 +401,9 @@
     (if (== 'shell' (typeof shell))
         ((|> glasspool) shell)
         shell)))
+
+(|= uc (a1 a2 a3 a4)
+    ((|> undercover) a1 a2 a3 a4))
 
 
 ;; Commands
@@ -490,13 +544,125 @@
 (|= undercover (a1 a2 a3 a4) (begin
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
-            '<u>Marinette || under the cover || cover your traces</u>'
+            '<u>Marinette || under the cover || cover your traces || undercover-buffer</u>'
             ''
             '<b>Usage: undercover [opt:shell|computer]</b> -- Cover your traces you have made with ghost infiltrating'
-            '--eg: <b>brutus | undercover</b> -- Attempts to bruteforce the password and then covers the traces left')
+            '--eg: <b>brutus | undercover</b> -- Attempts to bruteforce the password and then covers the traces left'
+            ''
+            '<b>Usage: undercover -b/buffer [opt:shell|computer|#]</b> -- Buffer management'
+            '-- An undercover buffer is a buffer with shells and computers you ghost infiltrate with <b>infil -g/-G</b>'
+            '--eg: <b>undercover -b</b> -- List the undercover buffer'
+            '--eg: <b>undercover -b @B 0</b> -- Add shell you are on to the undercover buffer'
+            ''
+            '<b>Usage: undercover -b/buffer -i/index [#]</b> -- Get an object at index #'
+            ''
+            '<b>Usage: undercover -b/buffer -r/remove [index]</b> -- Remove object at specified index from the undercover buffer'
+            ''
+            '<b>Usage: undercover -b/buffer -c/cover</b> -- Run <b>undercover</b> on every object of the undercover buffer'
+            ''
+            'Now with <b>uc</b> shorthand!')
             (char 10))
+    (if (!= null (indexOf (array '-b' 'buffer') a1)) (begin
+        (if (+ (== 'shell' (typeof a2)) (== 'computer' (typeof a2))) (begin
+            (def object a2)
+            (def object-type (typeof object))
+            (def user ((: checkUser) object))
+            (def public-address (mari-public-address object))
+            (def local-address (mari-local-address object))
+            (def tws-like (mari-format-tws-like object))
+            (def done? 0)
+            (def buffer (mari-undercover-buffer))
+            (for (def i 0) (< i (len buffer)) (++ i) (begin
+                (def buffer-object (at buffer i))
+                (def buffer-object-type (typeof object))
+                (def buffer-user ((: checkUser) buffer-object))
+                (def buffer-public-address (mari-public-address buffer-object))
+                (def buffer-local-address (mari-local-address buffer-object))
+                (def buffer-tws-like (mari-format-tws-like buffer-object))
+                ;; (if (gl-all (array (== object-type buffer-object-type) (== public-address buffer-public-address) (== local-address buffer-local-address))) (begin
+                (if (gl-all (array (== public-address buffer-public-address) (== local-address buffer-local-address))) (begin
+                    (if (+ (== user buffer-user) (+ (== null (indexOf (array 'guest' 'root') user)) (== null (indexOf (array 'guest' 'root') user)))) (begin
+                        (set buffer i object)
+                        (mari-printline (array 'Updated ' (: colorOlive) '[' i ']' (: CT)  buffer-tws-like ' in the ' (: colorOlive) 'undercover-buffer' (: CT) '!'))
+                        (def done? 1))
+                    (if (+ (* (== 'root' user) (!= 'root' buffer-user)) (* (== null (indexOf (array 'guest' 'root') user)) (== 'guest' buffer-user))) (begin
+                        (set buffer i object)
+                        (mari-printline (array 'Upgraded ' (: colorOlive) '[' i ']' (: CT) buffer-tws-like ' to ' tws-like ' in the ' (: colorOlive) 'undercover-buffer' (: CT) '!'))
+                        (def done? 1))))))))
+            (if (== 0 done?) (begin
+                (push buffer object)
+                (mari-printline (array 'Pushed ' tws-like ' to the ' (: colorOlive) 'undercover-buffer' (: CT) '!'))
+                (def done? 1)))
+            done?)
+        (if (== 0 a2) (begin
+            (def buffer (mari-undercover-buffer))
+            (def return '')
+            (for (def i 0) (< i (len buffer)) (++ i) (begin
+                (def object (at buffer i))
+                (def tws-like (mari-format-tws-like object))
+                (def return (join (array return (char 10) (: colorOlive) '[' i ']' (: CT) tws-like) ''))))
+            (def return (trim return))
+            (if (== '' return) (begin
+                (gl-break-silence (join (array 'An ' (: colorOlive) 'undercover-buffer' (: CT) ' is empty! </3') ''))
+                0)
+            (begin
+                return)))
+        (if (!= null (indexOf (array '-c' 'cover') a2)) (begin
+            (def buffer (mari-undercover-buffer))
+            (if (== 0 (len buffer)) (begin
+                (gl-break-silence (join (array 'An ' (: colorOlive) 'undercover-buffer' (: CT) ' is empty! </3') ''))
+                0)
+            (begin
+                (foreach i object buffer (begin
+                    (def tws-like (mari-format-tws-like object))
+                    (mari-printline (array 'Undercovering ' (: colorOlive) '[' i ']' (: CT) tws-like '...'))
+                    (gl-break-silence ((|> undercover) object))
+                    (gl-break-silence (join (array (: colorGold) '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -' (: CT)) ''))))
+                1)))
+        (if (!= null (indexOf (array '-r' 'remove') a2)) (begin
+            (if (!= 'number' (typeof (to_int a3)))
+                (join (array
+                    'undercover: an index must be a number.'
+                    'See <b>undercover -h</b> for more info!')
+                    (char 10))
+            (begin
+                (def buffer (mari-undercover-buffer))
+                (if (== 0 (hasIndex buffer (to_int a3)))
+                    (join (array
+                        'undercover: incorrect buffer index.'
+                        'See <b>undercover -h</b> for more info!')
+                        (char 10))
+                (begin
+                    (def object (at buffer (to_int a3)))
+                    (def tws-like (mari-format-tws-like object))
+                    (remove buffer (to_int a3))
+                    (mari-printline (array 'Removed ' tws-like ' from the ' (: colorOlive) 'undercover-buffer' (: CT) '!'))
+                    1)))))
+        (if (!= null (indexOf (array '-i' 'index') a2)) (begin
+            (if (!= 'number' (typeof (to_int a3)))
+                (join (array
+                    'undercover: an index must be a number.'
+                    'See <b>undercover -h</b> for more info!')
+                    (char 10))
+            (begin
+                (def buffer (mari-undercover-buffer))
+                (if (== 0 (hasIndex buffer (to_int a3)))
+                    (join (array
+                        'undercover: incorrect buffer index.'
+                        'See <b>undercover -h</b> for more info!')
+                        (char 10))
+                (begin
+                    (at buffer (to_int a3)))))))
+        (begin
+            (join (array
+                'undercover: object must be either shell or computer.'
+                'See <b>undercover -h</b> for more info!')
+                (char 10)))))))))
     (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
         (def files ((|> grep) '-a' '^rkit$' a1 a2))
+        (:= SILENT silent-state)
         (if (== 'list' (typeof files))
             (foreach _ file files (begin
                 (def parent ((_ file parent) file))
@@ -508,7 +674,7 @@
                         (gl-break-silence (join (array 'Could not delete ' parent-path '!') '')))))))
         (if (== 1 ((|> silentclean) '-d' a1 a2 a3))
             'Successfully covered traces with silentclean -d <3'
-            'Could not cover traces with silentclean -d! </3')))))
+            'Could not cover traces with silentclean -d! </3'))))))
 
 (|= hashcat (a1 a2 a3 a4)
     (if (!= null (indexOf (array '-h' 'help' 0) a1))
@@ -870,45 +1036,62 @@
         (def object
             (if (!= 0 a1)
                 a1
-                (begin
-                    (def globals-shell (: shell))
-                    (def computer-from-shell ((_ globals-shell host_computer) globals-shell))
-                    (def globals-computer (: localmachine))
-                    (if (* (== ((_ computer-from-shell public_ip) computer-from-shell) ((_ globals-computer public_ip) globals-computer)) (== ((_ computer-from-shell local_ip) computer-from-shell) ((_ globals-computer local_ip) globals-computer)))
-                        globals-shell
-                        globals-computer))))
+                (mari-get-current-object)))
         (def ps ((|> ps) '-r' a1))
         (def players? (+ (match '^root .* .* .* Xorg .*$' ps) (match '^root .* .* .* Xorg$' ps)))
         (def administrators? (+ (match '^root .* .* .* dsession .*$' ps) (match '^root .* .* .* dsession$' ps)))
-        (def user ((: checkUser) object))
-        (def object-type (typeof object))
-        (def public-address (mari-public-address object))
-        (def local-address (mari-local-address object))
-        (def buffer-index (mari-tws-look user object-type public-address local-address))
-        (if (== 'root' user)
-            (def user (join (array (: colorRed) user (: CT)) ''))
-        (if (== 'guest' user)
-            (def user (join (array (: colorGold) user (: CT)) ''))
-        (begin
-            (def user (join (array (: colorCyan) user (: CT)) '')))))
+        (def tws-like (mari-format-tws-like object))
         (if players? (begin
             (def return (+ 1 return))
-            (mari-printline (array 'An online ' (: colorGreen) 'player' (: CT) ' on ' (: colorOrange) '[' buffer-index ']' (: CT) user ':' object-type '@' (: colorCyan) public-address (: CT) '/' local-address '!'))))
+            (mari-printline (array 'An online ' (: colorGreen) 'player' (: CT) ' on ' tws-like '!'))))
         (if administrators? (begin
             (def return (+ 2 return))
-            (mari-printline (array 'An online ' (: colorGreen) 'administrator' (: CT) ' on ' (: colorOrange) '[' buffer-index ']' (: CT) user ':' object-type '@' (: colorCyan) public-address (: CT) '/' local-address '!'))))
+            (mari-printline (array 'An online ' (: colorGreen) 'administrator' (: CT) ' on ' tws-like '!'))))
         (if (== 0 return)
-            (mari-printline (array 'No administrators or players online on ' (: colorOrange) '[' buffer-index ']' (: CT) user ':' object-type '@' (: colorCyan) public-address (: CT) '/' local-address '!')))
+            (mari-printline (array 'No administrators or players online on ' tws-like '!')))
         (:= SILENT silent-state)
         return))))
+
+(|= ascii (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            '<u>Marinette || ascii art || logo || banner || shiny thingy</u>'
+            ''
+            '<b>Usage: ascii</b> -- Show Marinette ascii art in rkit/marinette/notepads/ascii.txt'
+            '-- you can change it easily for more personalization! <3'
+            '-- clips to <b>clipa</b>'
+            ''
+            '<u>Requirements for ascii.txt</u>'
+            '-- It must present at rkit/marinette/notepads'
+            '-- It must be a text file'
+            '-- It must be readable by the current user'
+            'If something is missing from the above, <b>ascii</b> will not print anything!')
+            (char 10))
+    (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
+        (def ascii-txt (mari-get-notepad 'ascii.txt'))
+        (def ascii? ((|> match) '^type: .* ascii .*$' ((|> file) ascii-txt)))
+        (:= SILENT silent-state)
+        (if ascii? (begin
+            (def content ((_ ascii-txt get_content) ascii-txt))
+            (if (!= null content)
+                (if (!= '' (trim content)) (begin
+                    (def silent-state (: SILENT))
+                    (:= SILENT 2)
+                    ((|> clipa) (gl-break-silence (mari-color-ascii-art content)))
+                    (:= SILENT silent-state)
+                    null))))))))
 
 
 ;; Hooks
 ;; -- Change the behaviour of the existing command, hopefully without breaking anything
 ;; -- Add Marinette specific information in help
 
+;; command.infil = function(sh_ob,par=0,arg2,arg3)
 (def INFIL (|> infil))
-(|= infil (a1 a2 a3 a4)
+(|= infil (a1 a2 a3 a4) (begin
+    (defaultvalue a2 0)
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (INFIL '-h' a2 a3 a4)
@@ -952,16 +1135,21 @@
                 ;; Yielding 5hell on target
                 (def five-hell-path (gl-pathcat (array upload-path 'rkit' '5hell')))
                 (gl-break-silence (join (array '5hell is accessible at ' five-hell-path '! <3') ''))
-                (if (!= '-G' a1)
-                    (mimi shell))
+                (if (!= '-G' a1) (begin
+                    (undercover '-b' shell)
+                    (mimi shell)))
                 (if (== '-G' a1)
-                    ((|> run) five-hell-path shell 'mimi')
+                    ((|> run) five-hell-path shell 'kore --silent || undercover -b @B 0 || mimi || kore --silent')
                     five-hell-path)))))))
     (begin
-        (INFIL a1 a2 a3 a4)))))
+        (INFIL a1 a2 a3 a4))))))
 
+;; command.kraken = function(arg1, arg2=0, arg3=0, arg4=0) // release the kraken!
 (def KRAKEN (|> kraken))
-(|= kraken (a1 a2 a3 a4)
+(|= kraken (a1 a2 a3 a4) (begin
+    (defaultvalue a2 0)
+    (defaultvalue a3 0)
+    (defaultvalue a4 0)
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (KRAKEN '-h' a2 a3 a4)
@@ -1025,11 +1213,14 @@
                 (gl-break-silence (join faulty-machines ', '))))
             'Note: it is adviced to run <b>kraken scrub</b> to avoid detection!')))
     (begin
-        (KRAKEN a1 a2 a3 a4)))))
+        (KRAKEN a1 a2 a3 a4))))))
 
 ;; Repository updating workaround
+;; command.aptm = function(arg1, arg2, arg3=0, arg4=0) // requires aptclient.so
 (def APTM (|> aptm))
-(|= aptm (a1 a2 a3 a4)
+(|= aptm (a1 a2 a3 a4) (begin
+    (defaultvalue a3 0)
+    (defaultvalue a4 0)
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (APTM '-h' a2 a3 a4)
@@ -1041,10 +1232,13 @@
     (if (!= null (indexOf (array '-U' 'update') a1))
         ((|> aptm) '-u' (gl-random-string 16))
     (begin
-        (APTM a1 a2 a3 a4)))))
+        (APTM a1 a2 a3 a4))))))
 
+;; command.run = function(arg1, arg2, arg3=0, arg4=0)
 (def RUN (|> run))
-(|= run (a1 a2 a3 a4)
+(|= run (a1 a2 a3 a4) (begin
+    (defaultvalue a3 0)
+    (defaultvalue a4 0)
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (RUN '-h' a2 a3 a4)
@@ -1057,10 +1251,12 @@
             (RUN a2 a1 a3 a4)
             (RUN a2 a3 a1 a4))
     (begin
-        (RUN a1 a2 a3 a4)))))
+        (RUN a1 a2 a3 a4))))))
 
+;; command.zap = function(arg1, arg2, arg3="", arg4)
 (def ZAP (|> zap))
-(|= zap (a1 a2 a3 a4)
+(|= zap (a1 a2 a3 a4) (begin
+    (defaultvalue a3 '')
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (ZAP '-h' a2 a3 a4)
@@ -1073,11 +1269,14 @@
         (ZAP '-r' '1337')
     (begin
         (def return (ZAP a1 a2 a3 a4))
+        (undercover '-b' return)
         (mimi return)
-        return))))
+        return)))))
 
+;; command.zc = function(neurobox_user,neurobox_pass,metalib,patch_it=0)
 (def ZC (|> zc))
-(|= zc (a1 a2 a3 a4)
+(|= zc (a1 a2 a3 a4) (begin
+    (defaultvalue a4 0)
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (ZC '-h' a2 a3 a4)
@@ -1237,10 +1436,14 @@
                 (:= SILENT silent-state)
                 return)))))
     (begin
-        (ZC a1 a2 a3 a4)))))))
+        (ZC a1 a2 a3 a4))))))))
 
+;; command.prox = function(arg1, arg2=0, arg3=0, arg4=0)
 (def PROX (|> prox))
-(|= prox (a1 a2 a3 a4)
+(|= prox (a1 a2 a3 a4) (begin
+    (defaultvalue a2 0)
+    (defaultvalue a3 0)
+    (defaultvalue a4 0)
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (PROX '-h' a2 a3 a4)
@@ -1253,12 +1456,15 @@
         ((|> scrub))
         (def endpoint-shell (at ((|> bios) '-B') (- (len ((|> bios) '-B')) 1)))
         (def infil-path (infil '-g' endpoint-shell))
-        ((|> run) infil-path endpoint-shell 'mimi'))
+        ((|> run) infil-path endpoint-shell 'kore --silent || undercover -b @B 0 || mimi || kore --silent'))
     (begin
-        (PROX a1 a2 a3 a4)))))
+        (PROX a1 a2 a3 a4))))))
 
+;; command.ssh = function(arg1, arg2, arg3=0, arg4="ssh")
 (def SSH (|> ssh))
-(|= ssh (a1 a2 a3 a4)
+(|= ssh (a1 a2 a3 a4) (begin
+    (defaultvalue a3 0)
+    (defaultvalue a4 'ssh')
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (SSH '-h' a2 a3 a4)
@@ -1282,19 +1488,14 @@
     (begin
         (def return (SSH a1 a2 a3 a4))
         (mimi return)
-        return))))
+        return)))))
 
-(def G_RCLEAN (: rclean))
-(:= rclean (glosure (a1 a2) (begin
-    (def return (G_RCLEAN a1 a2))
-    (if (+ (== 'shell' (typeof a1)) (== 'computer' (typeof a1)))
-        (mimi a1))
-    (if (+ (== 'shell' (typeof a2)) (== 'computer' (typeof a2)))
-        (mimi a2))
-    return)))
-
+;; command.rclean = function(arg1, arg2=0, arg3=0, arg4=0)
 (def RCLEAN (|> rclean))
-(|= rclean (a1 a2 a3 a4)
+(|= rclean (a1 a2 a3 a4) (begin
+    (defaultvalue a2 0)
+    (defaultvalue a3 0)
+    (defaultvalue a4 0)
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (RCLEAN '-h' a2 a3 a4)
@@ -1303,10 +1504,15 @@
             'Now attempts to run <b>mimi</b> on cleaning!')
             (char 10))
     (begin
-        (RCLEAN a1 a2 a3 a4))))
+        (RCLEAN a1 a2 a3 a4)))))
 
+;; command.silentclean = function(arg1=0, arg2=0, arg3=0, arg4=0)
 (def SILENTCLEAN (|> silentclean))
-(|= silentclean (a1 a2 a3 a4)
+(|= silentclean (a1 a2 a3 a4) (begin
+    (defaultvalue a1 0)
+    (defaultvalue a2 0)
+    (defaultvalue a3 0)
+    (defaultvalue a4 0)
     (if (!= null (indexOf (array '-h' 'help') a1))
         (join (array
             (SILENTCLEAN '-h' a2 a3 a4)
@@ -1326,7 +1532,131 @@
             (mimi a1)
         (begin
             (mimi 0))))))
-        return)))
+        return))))
+
+;; command.glasspool = function(arg1,arg2,arg3,arg4)
+(def GLASSPOOL (|> glasspool))
+(|= glasspool (a1 a2 a3 a4) (begin
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            (GLASSPOOL '-h' a2 a3 a4)
+            ''
+            '<u>Marinette specific functionality</u>'
+            'Now run <b>mimi</b> on mirrored objects! (^.^ )')
+            (char 10))
+    (begin
+        (GLASSPOOL a1 a2 a3 a4)))))
+
+;; Hook mimi into anything that starts glasspool mirroring session
+;; command.shell = function(input=null,mute=null)
+(def SHELL (|> shell))
+(|= shell (input mute) (begin
+    (defaultvalue input null)
+    (defaultvalue mute null)
+    (if (: GLASSPOOL)
+        (mimi (mari-get-current-object)))
+    (SHELL input mute)))
+
+;; command.purge = function(arg1, arg2, arg3=0, arg4=0)
+(def PURGE (|> purge))
+(|= purge (a1 a2 a3 a4) (begin
+    (defaultvalue a3 0)
+    (defaultvalue a4 0)
+    (if (!= null (indexOf (array '-h' 'help') a1))
+        (join (array
+            (PURGE '-h' a2 a3 a4)
+            ''
+            '<u>Marinette specific functionality</u>'
+            'Usage: purge [-uc] -- purge the undercover-buffer')
+            (char 10))
+    (if (!= null (indexOf (array '-uc') a1)) (begin
+        (@= undercover-buffer (array))
+        (join (array '<size=75%>purge: ' (: colorOlive) 'undercover-buffer' (: CT) ' purged') ''))
+    (begin
+        (PURGE a1 a2 a3 a4))))))
+
+
+;; Runtime function hooks
+;; -- Alter internal behaviour of 5hell
+;; -- Probably break something in the process (0.0 )
+
+;; Hook mimi into anything that runs globals.rclean()
+;; globals.rclean = function(arg1, arg2=0)
+(def G_RCLEAN (: rclean))
+(:= rclean (glosure (arg1 arg2) (begin
+    ;; Set up the default values
+    (defaultvalue arg2 0)
+    ;; Run the code before the original function
+    ;; Run the original function
+    (def return (G_RCLEAN arg1 arg2))
+    ;; Run the code after the original function
+    (if (+ (== 'shell' (typeof arg1)) (== 'computer' (typeof arg1)))
+        (mimi arg1))
+    (if (+ (== 'shell' (typeof arg2)) (== 'computer' (typeof arg2)))
+        (mimi arg2))
+    ;; Return the original function result
+    return)))
+
+;; globals.print = function(msg, mode=0, color=0,outfile=0) 
+(def G_PRINT (: print))
+(:= print (glosure (msg mode color outfile) (begin
+    ;; Set up the default values
+    (defaultvalue mode 0)
+    (defaultvalue color 0)
+    (defaultvalue outfile 0)
+    ;; Run the code before the original function
+    (def welcome-message (join (array (: colorRed) '5hell' (char 8482) (: CT) ' v ' (: ver) ' by Plu70') ''))
+    (if (== welcome-message msg) (begin
+        (if (== 1 MARINETTE-SHOW-ASCII-ART)
+            (mari-show-ascii-art))
+        (set (context) 'msg' (join (array (at (context) 'msg') ', ' (: colorViolet) 'Marinette' (: CT) ' v ' MARINETTE-GLS-VERSION ' w/ ' (: colorMagenta) '<3' (: CT) ' by not_s0phie') ''))))
+    ;; Run the original function
+    (def return (G_PRINT msg mode color outfile)))
+    ;; Run the code after the original function
+    ;; Return the original function result
+    return))
+
+;; globals.user_input = function(msg="",ispass=0,anykey=0,log=0)
+(def G_USER_INPUT (: user_input))
+(:= user_input (glosure (msg ispass anykey log) (begin
+    ;; Set up the default values
+    (defaultvalue msg '')
+    (defaultvalue ispass 0)
+    (defaultvalue anykey 0)
+    (defaultvalue log 0)
+    ;; Run the code before the original function
+    (def angle (+ '<color=#FF0000>' (char 20057)))
+    (def part1 '<b><rotate=180><voffset=.70em>')
+    (def part2
+        (if (: GLASSPOOL)
+            '</rotate></voffset><voffset=1em><size=75%><color=#2382FFFF>'
+            '</rotate></voffset><voffset=1em><size=75%><color=#E2DEDE>'))
+    (def user_level ((: checkUser) (: localmachine)))
+    (def user_level_line
+        (if (== 'root' user_level)
+            '<color=#FF0000><u></color>'
+        (if (== 'guest' user_level)
+            '<color=#FFFFFF><u></color>'
+        (begin
+            '<color=#00FF00><u></color>'))))
+    (def info (join (array '[' ((_ (: localmachine) public_ip) (: localmachine)) '@' ((_ (: localmachine) local_ip) (: localmachine))) ''))
+    (def pspace (join (array '<cspace=-' (* (len info) 0.75) 'em>]</u>') ''))
+    (def part3 '</size></voffset><cspace=-.25em>')
+    (def scadoosh '<color=#FFFFFFFF><b>|></b>')
+    (def user_guess (active_user))
+    (if (: GLASSPOOL) (begin
+        (def scadoosh '<color=#2382FFFF>|></b>')
+        (def user_guess ((: checkUser) (: localmachine)))))
+    (def bang (join (array part1 angle part2 user_level_line info pspace part3 angle '<voffset=-.25em>></b></cspace><color=#E2DEDE><size=75%>' user_guess '@' ((_ (: localmachine) get_name) (: localmachine)) ':' (: currentPath) '</size>' scadoosh ' ') ''))
+    (if (: GLASSPOOL)
+        (def bang (join (array (: colorLightBlue) (trim bang) '<color=#FFFFFF> ') '')))
+    (if (== bang msg) (begin
+        (set (context) 'msg' (mari-bang angle part1 part2 user_level user_level_line info pspace part3 scadoosh user_guess bang))))
+    ;; Run the original function
+    (def return (G_USER_INPUT msg ispass anykey log)))
+    ;; Run the code after the original function
+    ;; Return the original function result
+    return))
 
 
 
@@ -1352,6 +1682,20 @@
 (def escalation-library-memory-address null)
 (def escalation-library-unsecure-zone null)
 
+;; Fallback in case if this is commented out in do.gls
+(def MARINETTE-SHOW-ASCII-ART 0)
+
+;; Fallback in case if this is commented out in do.gls
+(defun mari-color-ascii-art (ascii-art) (begin
+    ascii-art))
+
+;; Fallback in case if this is commented out in do.gls
+(defun mari-bang (angle part1 part2 user_level user_level_line info pspace part3 scadoosh user_guess bang) (begin
+    bang))
+
+;; Initialize undercover buffer
+(mari-undercover-buffer)
+
 ;; Part of initialization in the inner scope of self invoked lambda
 ((lambda () (begin
     ;; Register Glosure scripts as macros
@@ -1364,5 +1708,5 @@
         ((|> macro) '-s' macro-name macro-string))))))
 
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.2.2')
+(def MARINETTE-GLS-VERSION '0.2.4')
 (mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)))
