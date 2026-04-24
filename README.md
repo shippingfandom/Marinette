@@ -41,7 +41,8 @@ Because just as **5hell**, **Marinette** is *completely* free to use and to tink
 
 Not only that, but **Marinette**:
 - Adds many usefull commands and macros 🖥
-- Adds support for themes 🌼
+- Adds support for personalization 🌼
+- Assists you in hacking 🕵️
 - Is easy to install and use ☘️
 - Is fully compatible with the **do.rc** you already have 👀
 - Loves all of you! 💝

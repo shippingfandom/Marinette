@@ -66,7 +66,7 @@
 (defmacro |= (cmd-name cmd-args cmd-body) () (begin
     (defdefault MARINETTE-COMMANDS (dict))
     (if (hasIndex MARINETTE-COMMANDS (quote cmd-name))
-        (gl-break-silence (join (array '[5GL] Command ' (quote cmd-name) ' is already defined or hooked, skipping') ''))
+        (gl-printline (array 'Command <b>' (quote cmd-name) '</b> is already defined or hooked, skipping'))
     (begin
         (defunction cmd-name cmd-args cmd-body)
         (set MARINETTE-COMMANDS (quote cmd-name) 1)
@@ -160,9 +160,17 @@
             (def return 0)))
     return))
 
+;; Default value for lambda/glosure parameter
+(defmacro defaultvalue (parameter-name parameter-value) ()
+    (if (== null (at (context) (quote parameter-name))) (set (context) (quote parameter-name) parameter-value)))
+
+;; Output something with the 5hell Glosure Library prefix!
+(defun gl-printline (str-array)
+    (gl-break-silence (join (array (: colorWhite) '[5hell Glosure Library]' (: CT) ' ' (join str-array '')) '')))
+
 
 
 
 ;; Init
-(def SHELL-GLS-VERSION '0.1.0')
-(gl-break-silence (join (array (: colorWhite) '[5hell Glosure Library] 5hell Glosure library v' SHELL-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)) ''))
+(def SHELL-GLS-VERSION '0.1.2')
+(gl-printline (array (: colorWhite) '5hell Glosure library v' SHELL-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)))
