@@ -16,8 +16,8 @@ This reference covers the functions, macros, and commands provided by Marinette.
 
 Core utility functions used throughout Marinette
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">#</summary>
+<details>
+<summary>#</summary>
 
 > Returns a specific argument from an args array with optional fallback value.
 
@@ -44,8 +44,8 @@ Returns: The value at the given index, or the fallback
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-bang</summary>
+<details>
+<summary>mari-bang</summary>
 
 > Generates the custom Marinette prompt with user info, date, time, buffer index, hostname, addresses, and pwd.
 
@@ -62,8 +62,8 @@ Returns: The formatted prompt string
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-buffer-top-debug-library</summary>
+<details>
+<summary>mari-buffer-top-debug-library</summary>
 
 > Searches the BUFFER for the topmost debug library object.
 
@@ -80,8 +80,8 @@ Returns: A debugLibrary object if found, null otherwise
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-color-ascii-art</summary>
+<details>
+<summary>mari-color-ascii-art</summary>
 
 > Colors ASCII art by applying color formatting to each line.
 
@@ -98,8 +98,8 @@ Returns: The colored ASCII art string
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-computerify</summary>
+<details>
+<summary>mari-computerify</summary>
 
 > Converts a shell to a computer, or returns the computer if already a computer object.
 
@@ -120,8 +120,8 @@ Returns: A computer object
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-format-help-like</summary>
+<details>
+<summary>mari-format-help-like</summary>
 
 > Formats an array into columns similar to help display, with color formatting.
 
@@ -142,8 +142,8 @@ Returns: A formatted string with columns
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-format-tws-like</summary>
+<details>
+<summary>mari-format-tws-like</summary>
 
 > Formats an object into a TWS-like string: `[buf-idx]user:obj-type@pub-ip/loc-ip`.
 
@@ -164,8 +164,8 @@ Returns: A formatted string
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-get-additions</summary>
+<details>
+<summary>mari-get-additions</summary>
 
 > Gets all commands added by Marinette (commands without "Marinette specific functionality" in help).
 
@@ -178,8 +178,8 @@ Returns: A sorted array of added command names
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-get-binary</summary>
+<details>
+<summary>mari-get-binary</summary>
 
 > Gets a binary file from rkit/marinette/binaries by name.
 
@@ -200,8 +200,8 @@ Returns: A file object if found, null otherwise
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-get-current-object</summary>
+<details>
+<summary>mari-get-current-object</summary>
 
 > Gets the current shell or computer object based on network position.
 
@@ -218,8 +218,8 @@ Returns: The current shell or computer object
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-get-glosure-scripts</summary>
+<details>
+<summary>mari-get-glosure-scripts</summary>
 
 > Retrieves all glosure script files from rkit/marinette/scripts.
 
@@ -236,8 +236,8 @@ Returns: An array of file objects
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-get-modifications</summary>
+<details>
+<summary>mari-get-modifications</summary>
 
 > Gets all commands modified by Marinette (commands with "Marinette specific functionality" in help).
 
@@ -250,8 +250,8 @@ Returns: A sorted array of modified command names
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-get-notepad</summary>
+<details>
+<summary>mari-get-notepad</summary>
 
 > Gets a notepad file from rkit/marinette/notepads by name.
 
@@ -272,8 +272,8 @@ Returns: A file object if found, null otherwise
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-get-scripts</summary>
+<details>
+<summary>mari-get-scripts</summary>
 
 > Gets all macros starting with `%` (glosure scripts).
 
@@ -290,8 +290,8 @@ Returns: A sorted array of script names
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-get-total-changes</summary>
+<details>
+<summary>mari-get-total-changes</summary>
 
 > Gets all added and modified commands (total changes).
 
@@ -304,8 +304,8 @@ Returns: A sorted array of command names
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-load-theme</summary>
+<details>
+<summary>mari-load-theme</summary>
 
 > Loads a custom color theme from a file in rkit/marinette/themes.
 
@@ -326,8 +326,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-local-address</summary>
+<details>
+<summary>mari-local-address</summary>
 
 > Gets the local IP address of a shell or computer.
 
@@ -348,8 +348,8 @@ Returns: A string containing the local IP address
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-match</summary>
+<details>
+<summary>mari-match</summary>
 
 > Performs regex matching on a string, supporting per-line matching.
 
@@ -371,8 +371,8 @@ Returns: 1 if matched, 0 otherwise
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-mkdir</summary>
+<details>
+<summary>mari-mkdir</summary>
 
 > Creates a directory inside the rkit/marinette folder.
 
@@ -393,8 +393,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-mkdir-hidden-infil</summary>
+<details>
+<summary>mari-mkdir-hidden-infil</summary>
 
 > Creates a hidden directory with a random name inside a computer's folder structure.
 
@@ -415,8 +415,8 @@ Returns: A file object pointing to the created hidden directory, or null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-printline</summary>
+<details>
+<summary>mari-printline</summary>
 
 > Outputs a message with the Marinette prefix and color formatting.
 
@@ -437,8 +437,8 @@ Returns: The formatted output string
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-public-address</summary>
+<details>
+<summary>mari-public-address</summary>
 
 > Gets the public IP address of a shell or computer.
 
@@ -459,8 +459,8 @@ Returns: A string containing the public IP address
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-show-ascii-art</summary>
+<details>
+<summary>mari-show-ascii-art</summary>
 
 > Displays ASCII art on startup if on host and ASCII art hasn't been shown yet.
 
@@ -473,8 +473,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-sort-macros</summary>
+<details>
+<summary>mari-sort-macros</summary>
 
 > Sorts all defined 5hell macros alphabetically by their names.
 
@@ -487,8 +487,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-undercover-buffer</summary>
+<details>
+<summary>mari-undercover-buffer</summary>
 
 > Gets the undercover buffer (stores shells/computers from ghost infiltration).
 
@@ -505,8 +505,8 @@ Returns: An array (buffer)
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-undercover-buffer-push</summary>
+<details>
+<summary>mari-undercover-buffer-push</summary>
 
 > Pushes a value to the undercover buffer.
 
@@ -527,8 +527,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-update-hacking-libraries</summary>
+<details>
+<summary>mari-update-hacking-libraries</summary>
 
 > Updates hacking libraries (`crypto.so` and `metaxploit.so`) in both /lib and rkit.
 
@@ -541,8 +541,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-tws-list</summary>
+<details>
+<summary>mari-tws-list</summary>
 
 > Executes a TWS (total world scan) query and returns a list of buffer indexes.
 
@@ -563,8 +563,8 @@ Returns: An array of buffer indexes
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-tws-look</summary>
+<details>
+<summary>mari-tws-look</summary>
 
 > Finds the buffer index of an object matching given user, object type, public address, and local address.
 
@@ -588,8 +588,8 @@ Returns: The buffer index, or -1 if not found
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mari-args</summary>
+<details>
+<summary>mari-args</summary>
 
 > Returns arguments from the macro pipe, parsing the pipe content into an array of string arguments.
 
@@ -606,8 +606,8 @@ Returns: An array of string arguments
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gl-all</summary>
+<details>
+<summary>gl-all</summary>
 
 > Returns 1 if all conditions in the array evaluate to a truthy value.
 
@@ -628,8 +628,8 @@ Returns: 1 if all conditions are truthy, 0 otherwise
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gl-any</summary>
+<details>
+<summary>gl-any</summary>
 
 > Returns 1 if any of the conditions in the array evaluate to a truthy value.
 
@@ -650,8 +650,8 @@ Returns: 1 if any condition is truthy, 0 otherwise
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gl-break-silence</summary>
+<details>
+<summary>gl-break-silence</summary>
 
 > Temporarily breaks through the `SILENT` flag to print a message, then restores the previous SILENT state.
 
@@ -672,8 +672,8 @@ Returns: The message that was printed
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gl-get-rkit</summary>
+<details>
+<summary>gl-get-rkit</summary>
 
 > Locates the rkit folder from the 5hell launch directory.
 
@@ -690,8 +690,8 @@ Returns: A file object pointing to the rkit folder, or null if not found
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gl-grep-into</summary>
+<details>
+<summary>gl-grep-into</summary>
 
 > Greps into every step from the previous step, starting from an optional starting point.
 
@@ -713,8 +713,8 @@ Returns: A file object if successful, null otherwise
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gl-is-file-text</summary>
+<details>
+<summary>gl-is-file-text</summary>
 
 > Checks if a file is a text file (not a folder and not binary).
 
@@ -735,8 +735,8 @@ Returns: 1 if the file is a text file, 0 otherwise
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gl-pathcat</summary>
+<details>
+<summary>gl-pathcat</summary>
 
 > Concatenates multiple path parts into a single path string, properly handling path separators.
 
@@ -757,8 +757,8 @@ Returns: A string containing the concatenated path
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gl-printline</summary>
+<details>
+<summary>gl-printline</summary>
 
 > Outputs a message with the 5hell Glosure Library prefix and color formatting.
 
@@ -779,8 +779,8 @@ Returns: The formatted output string
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gl-random-string</summary>
+<details>
+<summary>gl-random-string</summary>
 
 > Generates a random string of specified length using alphanumeric characters.
 
@@ -807,8 +807,8 @@ Returns: A string of random characters
 
 Special forms that evaluate their arguments differently
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">@</summary>
+<details>
+<summary>@</summary>
 
 > Gets a variable from the Custom Object (COB).
 
@@ -829,8 +829,8 @@ Returns: The value of the variable, or null if not found
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">@=</summary>
+<details>
+<summary>@=</summary>
 
 > Sets a variable in the Custom Object (COB).
 
@@ -852,8 +852,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">_</summary>
+<details>
+<summary>_</summary>
 
 > Gets a method from an object (miniscript accessor).
 
@@ -875,8 +875,8 @@ Returns: The method, or null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">:=</summary>
+<details>
+<summary>:=</summary>
 
 > Sets a global variable.
 
@@ -898,8 +898,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">:</summary>
+<details>
+<summary>:</summary>
 
 > Gets a global variable.
 
@@ -920,8 +920,8 @@ Returns: The value of the global variable, or null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">|=</summary>
+<details>
+<summary>|=</summary>
 
 > Defines and registers a new command in globals.command.
 
@@ -944,8 +944,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">|></summary>
+<details>
+<summary>|></summary>
 
 > Gets a command from globals.command.
 
@@ -966,8 +966,8 @@ Returns: The command function, or null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">>></summary>
+<details>
+<summary>>></summary>
 
 > Creates and registers a 5shell macro.
 
@@ -990,8 +990,8 @@ Returns: null
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">defaultvalue</summary>
+<details>
+<summary>defaultvalue</summary>
 
 > Sets a default value for a parameter in the context if it's currently null.
 
@@ -1019,8 +1019,8 @@ Returns: null
 
 Shell commands provided or modified by Marinette
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">aptm</summary>
+<details>
+<summary>aptm</summary>
 
 > Repository updating with Marinette enhancements.
 
@@ -1044,8 +1044,8 @@ aptm -update
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">ariadne</summary>
+<details>
+<summary>ariadne</summary>
 
 > Escalation attack using the configured escalation library.
 
@@ -1069,8 +1069,8 @@ ariadne MEMORY
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">ascii</summary>
+<details>
+<summary>ascii</summary>
 
 > Display ASCII art from rkit/marinette/notepads/ascii.txt.
 
@@ -1090,8 +1090,8 @@ ascii
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">bounce</summary>
+<details>
+<summary>bounce</summary>
 
 > Bounce attack using bounce library.
 
@@ -1115,8 +1115,8 @@ bounce 10.0.0.1
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">breach</summary>
+<details>
+<summary>breach</summary>
 
 > Disable firewall on the entire local network.
 
@@ -1140,8 +1140,8 @@ breach 0x1000 test
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">buf</summary>
+<details>
+<summary>buf</summary>
 
 > Shows the malwire buffer or help.
 
@@ -1165,8 +1165,8 @@ buf -h
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">cls</summary>
+<details>
+<summary>cls</summary>
 
 > Clears the screen.
 
@@ -1183,8 +1183,8 @@ cls
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">close</summary>
+<details>
+<summary>close</summary>
 
 > Closes the current shell session.
 
@@ -1208,8 +1208,8 @@ close -h
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">del</summary>
+<details>
+<summary>del</summary>
 
 > Deletes files with additional help handling.
 
@@ -1237,8 +1237,8 @@ del -r file.txt
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">dir</summary>
+<details>
+<summary>dir</summary>
 
 > Directory listing alias (wraps `ls -la`).
 
@@ -1262,8 +1262,8 @@ dir /path
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">explorer</summary>
+<details>
+<summary>explorer</summary>
 
 > Open FileExplorer.exe at specified path.
 
@@ -1287,8 +1287,8 @@ explorer /path
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">glasspool</summary>
+<details>
+<summary>glasspool</summary>
 
 > Mirror session with mimi on mirrored objects.
 
@@ -1308,8 +1308,8 @@ glasspool target
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">gls</summary>
+<details>
+<summary>gls</summary>
 
 > Executes a glosure script file.
 
@@ -1333,8 +1333,8 @@ gls scripts/my-script.gls
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">hashcat</summary>
+<details>
+<summary>hashcat</summary>
 
 > Hash cracking using host crypto library instead of loaded one.
 
@@ -1358,8 +1358,8 @@ hashcat hash-string
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">infil</summary>
+<details>
+<summary>infil</summary>
 
 > Infiltrate target with ability to upload rkit folder.
 
@@ -1387,8 +1387,8 @@ infil -G shell
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">kraken</summary>
+<details>
+<summary>kraken</summary>
 
 > Hack random NPCs and populate Map.conf.
 
@@ -1412,8 +1412,8 @@ kraken random 10
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">macros</summary>
+<details>
+<summary>macros</summary>
 
 > Lists all macros.
 
@@ -1437,8 +1437,8 @@ macros -h
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">marinette</summary>
+<details>
+<summary>marinette</summary>
 
 > Show Marinette statistics, credits, scripts, additions, or modifications.
 
@@ -1474,8 +1474,8 @@ marinette modifications
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">match</summary>
+<details>
+<summary>match</summary>
 
 > Pattern matching using regular expressions.
 
@@ -1499,8 +1499,8 @@ match "hello" "hello world"
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">mimi</summary>
+<details>
+<summary>mimi</summary>
 
 > Check for online administrators or players (eavesdropping).
 
@@ -1528,8 +1528,8 @@ mimi computer-object
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">nemesis</summary>
+<details>
+<summary>nemesis</summary>
 
 > Hacking utility using database exploitation.
 
@@ -1553,8 +1553,8 @@ nemesis 1.1.1.1 0 inject-code
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">netstalk</summary>
+<details>
+<summary>netstalk</summary>
 
 > Network stalking - probes random networks until pattern matches.
 
@@ -1578,8 +1578,8 @@ netstalk "gateway.*1\.2\.3"
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">nmap</summary>
+<details>
+<summary>nmap</summary>
 
 > Network mapper alias with purge prep and probe functionality.
 
@@ -1603,8 +1603,8 @@ nmap -s 192.168.1.0/24
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">notepad</summary>
+<details>
+<summary>notepad</summary>
 
 > Open Notepad.exe at specified path.
 
@@ -1628,8 +1628,8 @@ notepad /path/to/file.txt
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">nslookup</summary>
+<details>
+<summary>nslookup</summary>
 
 > Performs DNS lookup (wraps `nsl` command).
 
@@ -1653,8 +1653,8 @@ nslookup 8.8.8.8
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">prox</summary>
+<details>
+<summary>prox</summary>
 
 > Proxy connection with ghost 5hell option.
 
@@ -1682,8 +1682,8 @@ prox -G
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">purge</summary>
+<details>
+<summary>purge</summary>
 
 > Purge with undercover buffer purge option.
 
@@ -1707,8 +1707,8 @@ purge -uc
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">rclean</summary>
+<details>
+<summary>rclean</summary>
 
 > Remote clean with mimi integration.
 
@@ -1732,8 +1732,8 @@ rclean computer
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">run</summary>
+<details>
+<summary>run</summary>
 
 > Run executable with shell as first argument support.
 
@@ -1757,8 +1757,8 @@ run executable shell-object arg
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">shell</summary>
+<details>
+<summary>shell</summary>
 
 > Shell command with mimi when in mirror session.
 
@@ -1776,8 +1776,8 @@ shell
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">ssh</summary>
+<details>
+<summary>ssh</summary>
 
 > SSH connection with HOME server and automatic mimi.
 
@@ -1801,8 +1801,8 @@ ssh -H
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">silentclean</summary>
+<details>
+<summary>silentclean</summary>
 
 > Silent clean with mimi on targets.
 
@@ -1826,8 +1826,8 @@ silentclean target
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">su</summary>
+<details>
+<summary>su</summary>
 
 > Switch user command with multiple behavior modes.
 
@@ -1855,8 +1855,8 @@ su -u username
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">touch</summary>
+<details>
+<summary>touch</summary>
 
 > Alias for `poke` - creates or modifies a file.
 
@@ -1880,8 +1880,8 @@ touch /path/to/file new-content
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">type</summary>
+<details>
+<summary>type</summary>
 
 > Gets the type of an object.
 
@@ -1902,8 +1902,8 @@ type "string"
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">uc</summary>
+<details>
+<summary>uc</summary>
 
 > Undercover alias.
 
@@ -1927,8 +1927,8 @@ uc -b
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">undercover</summary>
+<details>
+<summary>undercover</summary>
 
 > Cover traces after infiltration, or manage undercover buffer.
 
@@ -1960,8 +1960,8 @@ undercover -c
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">unlock</summary>
+<details>
+<summary>unlock</summary>
 
 > Unlocks all permissions on the current object (guest user access).
 
@@ -1978,8 +1978,8 @@ unlock
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">view</summary>
+<details>
+<summary>view</summary>
 
 > View various file types using graphical viewers.
 
@@ -2007,8 +2007,8 @@ view -p document.pdf
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">zap</summary>
+<details>
+<summary>zap</summary>
 
 > Exploit attack with automatic player/admin detection.
 
@@ -2032,8 +2032,8 @@ zap -l
 ```
 </details>
 
-<details open>
-<summary style="background-color: transparent; color: #d63384; padding: 8px 12px; border: 2px solid #d63384; border-radius: 4px; margin: 4px 0; font-weight: bold; cursor: pointer;">zc</summary>
+<details>
+<summary>zc</summary>
 
 > Zero Chill - library patching utility with multiple modes.
 
