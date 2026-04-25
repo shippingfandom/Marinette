@@ -16,8 +16,8 @@ This reference covers the functions, macros, and commands provided by Marinette.
 
 Core utility functions used throughout Marinette
 
-<details>
-<summary>#</summary>
+<details open>
+<summary>**#** - Returns a specific argument from an args array with optio...</summary>
 
 > Returns a specific argument from an args array with optional fallback value.
 
@@ -44,8 +44,8 @@ Returns: The value at the given index, or the fallback
 ```
 </details>
 
-<details>
-<summary>mari-bang</summary>
+<details open>
+<summary>**mari-bang** - Generates the custom Marinette prompt with user info, dat...</summary>
 
 > Generates the custom Marinette prompt with user info, date, time, buffer index, hostname, addresses, and pwd.
 
@@ -62,8 +62,8 @@ Returns: The formatted prompt string
 ```
 </details>
 
-<details>
-<summary>mari-buffer-top-debug-library</summary>
+<details open>
+<summary>**mari-buffer-top-debug-library** - Searches the BUFFER for the topmost debug library object</summary>
 
 > Searches the BUFFER for the topmost debug library object.
 
@@ -80,8 +80,8 @@ Returns: A debugLibrary object if found, null otherwise
 ```
 </details>
 
-<details>
-<summary>mari-color-ascii-art</summary>
+<details open>
+<summary>**mari-color-ascii-art** - Colors ASCII art by applying color formatting to each line</summary>
 
 > Colors ASCII art by applying color formatting to each line.
 
@@ -98,8 +98,8 @@ Returns: The colored ASCII art string
 ```
 </details>
 
-<details>
-<summary>mari-computerify</summary>
+<details open>
+<summary>**mari-computerify** - Converts a shell to a computer, or returns the computer i...</summary>
 
 > Converts a shell to a computer, or returns the computer if already a computer object.
 
@@ -120,8 +120,8 @@ Returns: A computer object
 ```
 </details>
 
-<details>
-<summary>mari-format-help-like</summary>
+<details open>
+<summary>**mari-format-help-like** - Formats an array into columns similar to help display, wi...</summary>
 
 > Formats an array into columns similar to help display, with color formatting.
 
@@ -142,8 +142,8 @@ Returns: A formatted string with columns
 ```
 </details>
 
-<details>
-<summary>mari-format-tws-like</summary>
+<details open>
+<summary>**mari-format-tws-like** - Formats an object into a TWS-like string: `[buf-idx]user:...</summary>
 
 > Formats an object into a TWS-like string: `[buf-idx]user:obj-type@pub-ip/loc-ip`.
 
@@ -164,8 +164,8 @@ Returns: A formatted string
 ```
 </details>
 
-<details>
-<summary>mari-get-additions</summary>
+<details open>
+<summary>**mari-get-additions** - Gets all commands added by Marinette (commands without "M...</summary>
 
 > Gets all commands added by Marinette (commands without "Marinette specific functionality" in help).
 
@@ -178,8 +178,8 @@ Returns: A sorted array of added command names
 ```
 </details>
 
-<details>
-<summary>mari-get-binary</summary>
+<details open>
+<summary>**mari-get-binary** - Gets a binary file from rkit/marinette/binaries by name</summary>
 
 > Gets a binary file from rkit/marinette/binaries by name.
 
@@ -200,8 +200,8 @@ Returns: A file object if found, null otherwise
 ```
 </details>
 
-<details>
-<summary>mari-get-current-object</summary>
+<details open>
+<summary>**mari-get-current-object** - Gets the current shell or computer object based on networ...</summary>
 
 > Gets the current shell or computer object based on network position.
 
@@ -218,8 +218,8 @@ Returns: The current shell or computer object
 ```
 </details>
 
-<details>
-<summary>mari-get-glosure-scripts</summary>
+<details open>
+<summary>**mari-get-glosure-scripts** - Retrieves all glosure script files from rkit/marinette/sc...</summary>
 
 > Retrieves all glosure script files from rkit/marinette/scripts.
 
@@ -236,8 +236,8 @@ Returns: An array of file objects
 ```
 </details>
 
-<details>
-<summary>mari-get-modifications</summary>
+<details open>
+<summary>**mari-get-modifications** - Gets all commands modified by Marinette (commands with "M...</summary>
 
 > Gets all commands modified by Marinette (commands with "Marinette specific functionality" in help).
 
@@ -250,8 +250,8 @@ Returns: A sorted array of modified command names
 ```
 </details>
 
-<details>
-<summary>mari-get-notepad</summary>
+<details open>
+<summary>**mari-get-notepad** - Gets a notepad file from rkit/marinette/notepads by name</summary>
 
 > Gets a notepad file from rkit/marinette/notepads by name.
 
@@ -272,8 +272,8 @@ Returns: A file object if found, null otherwise
 ```
 </details>
 
-<details>
-<summary>mari-get-scripts</summary>
+<details open>
+<summary>**mari-get-scripts** - Gets all macros starting with `%` (glosure scripts)</summary>
 
 > Gets all macros starting with `%` (glosure scripts).
 
@@ -290,8 +290,8 @@ Returns: A sorted array of script names
 ```
 </details>
 
-<details>
-<summary>mari-get-total-changes</summary>
+<details open>
+<summary>**mari-get-total-changes** - Gets all added and modified commands (total changes)</summary>
 
 > Gets all added and modified commands (total changes).
 
@@ -304,8 +304,8 @@ Returns: A sorted array of command names
 ```
 </details>
 
-<details>
-<summary>mari-load-theme</summary>
+<details open>
+<summary>**mari-load-theme** - Loads a custom color theme from a file in rkit/marinette/...</summary>
 
 > Loads a custom color theme from a file in rkit/marinette/themes.
 
@@ -326,8 +326,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>mari-local-address</summary>
+<details open>
+<summary>**mari-local-address** - Gets the local IP address of a shell or computer</summary>
 
 > Gets the local IP address of a shell or computer.
 
@@ -348,8 +348,8 @@ Returns: A string containing the local IP address
 ```
 </details>
 
-<details>
-<summary>mari-match</summary>
+<details open>
+<summary>**mari-match** - Performs regex matching on a string, supporting per-line ...</summary>
 
 > Performs regex matching on a string, supporting per-line matching.
 
@@ -371,8 +371,8 @@ Returns: 1 if matched, 0 otherwise
 ```
 </details>
 
-<details>
-<summary>mari-mkdir</summary>
+<details open>
+<summary>**mari-mkdir** - Creates a directory inside the rkit/marinette folder</summary>
 
 > Creates a directory inside the rkit/marinette folder.
 
@@ -393,8 +393,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>mari-mkdir-hidden-infil</summary>
+<details open>
+<summary>**mari-mkdir-hidden-infil** - Creates a hidden directory with a random name inside a co...</summary>
 
 > Creates a hidden directory with a random name inside a computer's folder structure.
 
@@ -415,8 +415,8 @@ Returns: A file object pointing to the created hidden directory, or null
 ```
 </details>
 
-<details>
-<summary>mari-printline</summary>
+<details open>
+<summary>**mari-printline** - Outputs a message with the Marinette prefix and color for...</summary>
 
 > Outputs a message with the Marinette prefix and color formatting.
 
@@ -437,8 +437,8 @@ Returns: The formatted output string
 ```
 </details>
 
-<details>
-<summary>mari-public-address</summary>
+<details open>
+<summary>**mari-public-address** - Gets the public IP address of a shell or computer</summary>
 
 > Gets the public IP address of a shell or computer.
 
@@ -459,8 +459,8 @@ Returns: A string containing the public IP address
 ```
 </details>
 
-<details>
-<summary>mari-show-ascii-art</summary>
+<details open>
+<summary>**mari-show-ascii-art** - Displays ASCII art on startup if on host and ASCII art ha...</summary>
 
 > Displays ASCII art on startup if on host and ASCII art hasn't been shown yet.
 
@@ -473,8 +473,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>mari-sort-macros</summary>
+<details open>
+<summary>**mari-sort-macros** - Sorts all defined 5hell macros alphabetically by their names</summary>
 
 > Sorts all defined 5hell macros alphabetically by their names.
 
@@ -487,8 +487,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>mari-undercover-buffer</summary>
+<details open>
+<summary>**mari-undercover-buffer** - Gets the undercover buffer (stores shells/computers from ...</summary>
 
 > Gets the undercover buffer (stores shells/computers from ghost infiltration).
 
@@ -505,8 +505,8 @@ Returns: An array (buffer)
 ```
 </details>
 
-<details>
-<summary>mari-undercover-buffer-push</summary>
+<details open>
+<summary>**mari-undercover-buffer-push** - Pushes a value to the undercover buffer</summary>
 
 > Pushes a value to the undercover buffer.
 
@@ -527,8 +527,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>mari-update-hacking-libraries</summary>
+<details open>
+<summary>**mari-update-hacking-libraries** - Updates hacking libraries (`crypto.so` and `metaxploit.so...</summary>
 
 > Updates hacking libraries (`crypto.so` and `metaxploit.so`) in both /lib and rkit.
 
@@ -541,8 +541,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>mari-tws-list</summary>
+<details open>
+<summary>**mari-tws-list** - Executes a TWS (total world scan) query and returns a lis...</summary>
 
 > Executes a TWS (total world scan) query and returns a list of buffer indexes.
 
@@ -563,8 +563,8 @@ Returns: An array of buffer indexes
 ```
 </details>
 
-<details>
-<summary>mari-tws-look</summary>
+<details open>
+<summary>**mari-tws-look** - Finds the buffer index of an object matching given user, ...</summary>
 
 > Finds the buffer index of an object matching given user, object type, public address, and local address.
 
@@ -588,8 +588,8 @@ Returns: The buffer index, or -1 if not found
 ```
 </details>
 
-<details>
-<summary>mari-args</summary>
+<details open>
+<summary>**mari-args** - Returns arguments from the macro pipe, parsing the pipe c...</summary>
 
 > Returns arguments from the macro pipe, parsing the pipe content into an array of string arguments.
 
@@ -606,8 +606,8 @@ Returns: An array of string arguments
 ```
 </details>
 
-<details>
-<summary>gl-all</summary>
+<details open>
+<summary>**gl-all** - Returns 1 if all conditions in the array evaluate to a tr...</summary>
 
 > Returns 1 if all conditions in the array evaluate to a truthy value.
 
@@ -628,8 +628,8 @@ Returns: 1 if all conditions are truthy, 0 otherwise
 ```
 </details>
 
-<details>
-<summary>gl-any</summary>
+<details open>
+<summary>**gl-any** - Returns 1 if any of the conditions in the array evaluate ...</summary>
 
 > Returns 1 if any of the conditions in the array evaluate to a truthy value.
 
@@ -650,8 +650,8 @@ Returns: 1 if any condition is truthy, 0 otherwise
 ```
 </details>
 
-<details>
-<summary>gl-break-silence</summary>
+<details open>
+<summary>**gl-break-silence** - Temporarily breaks through the `SILENT` flag to print a m...</summary>
 
 > Temporarily breaks through the `SILENT` flag to print a message, then restores the previous SILENT state.
 
@@ -672,8 +672,8 @@ Returns: The message that was printed
 ```
 </details>
 
-<details>
-<summary>gl-get-rkit</summary>
+<details open>
+<summary>**gl-get-rkit** - Locates the rkit folder from the 5hell launch directory</summary>
 
 > Locates the rkit folder from the 5hell launch directory.
 
@@ -690,8 +690,8 @@ Returns: A file object pointing to the rkit folder, or null if not found
 ```
 </details>
 
-<details>
-<summary>gl-grep-into</summary>
+<details open>
+<summary>**gl-grep-into** - Greps into every step from the previous step, starting fr...</summary>
 
 > Greps into every step from the previous step, starting from an optional starting point.
 
@@ -713,8 +713,8 @@ Returns: A file object if successful, null otherwise
 ```
 </details>
 
-<details>
-<summary>gl-is-file-text</summary>
+<details open>
+<summary>**gl-is-file-text** - Checks if a file is a text file (not a folder and not bin...</summary>
 
 > Checks if a file is a text file (not a folder and not binary).
 
@@ -735,8 +735,8 @@ Returns: 1 if the file is a text file, 0 otherwise
 ```
 </details>
 
-<details>
-<summary>gl-pathcat</summary>
+<details open>
+<summary>**gl-pathcat** - Concatenates multiple path parts into a single path strin...</summary>
 
 > Concatenates multiple path parts into a single path string, properly handling path separators.
 
@@ -757,8 +757,8 @@ Returns: A string containing the concatenated path
 ```
 </details>
 
-<details>
-<summary>gl-printline</summary>
+<details open>
+<summary>**gl-printline** - Outputs a message with the 5hell Glosure Library prefix a...</summary>
 
 > Outputs a message with the 5hell Glosure Library prefix and color formatting.
 
@@ -779,8 +779,8 @@ Returns: The formatted output string
 ```
 </details>
 
-<details>
-<summary>gl-random-string</summary>
+<details open>
+<summary>**gl-random-string** - Generates a random string of specified length using alpha...</summary>
 
 > Generates a random string of specified length using alphanumeric characters.
 
@@ -807,8 +807,8 @@ Returns: A string of random characters
 
 Special forms that evaluate their arguments differently
 
-<details>
-<summary>@</summary>
+<details open>
+<summary>**@** - Gets a variable from the Custom Object (COB)</summary>
 
 > Gets a variable from the Custom Object (COB).
 
@@ -829,8 +829,8 @@ Returns: The value of the variable, or null if not found
 ```
 </details>
 
-<details>
-<summary>@=</summary>
+<details open>
+<summary>**@=** - Sets a variable in the Custom Object (COB)</summary>
 
 > Sets a variable in the Custom Object (COB).
 
@@ -852,8 +852,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>_</summary>
+<details open>
+<summary>**_** - Gets a method from an object (miniscript accessor)</summary>
 
 > Gets a method from an object (miniscript accessor).
 
@@ -875,8 +875,8 @@ Returns: The method, or null
 ```
 </details>
 
-<details>
-<summary>:=</summary>
+<details open>
+<summary>**:=** - Sets a global variable</summary>
 
 > Sets a global variable.
 
@@ -898,8 +898,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>:</summary>
+<details open>
+<summary>**:** - Gets a global variable</summary>
 
 > Gets a global variable.
 
@@ -920,8 +920,8 @@ Returns: The value of the global variable, or null
 ```
 </details>
 
-<details>
-<summary>|=</summary>
+<details open>
+<summary>**|=** - Defines and registers a new command in globals.command</summary>
 
 > Defines and registers a new command in globals.command.
 
@@ -944,8 +944,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>|></summary>
+<details open>
+<summary>**|>** - Gets a command from globals.command</summary>
 
 > Gets a command from globals.command.
 
@@ -966,8 +966,8 @@ Returns: The command function, or null
 ```
 </details>
 
-<details>
-<summary>>></summary>
+<details open>
+<summary>**>>** - Creates and registers a 5shell macro</summary>
 
 > Creates and registers a 5shell macro.
 
@@ -990,8 +990,8 @@ Returns: null
 ```
 </details>
 
-<details>
-<summary>defaultvalue</summary>
+<details open>
+<summary>**defaultvalue** - Sets a default value for a parameter in the context if it...</summary>
 
 > Sets a default value for a parameter in the context if it's currently null.
 
@@ -1019,8 +1019,8 @@ Returns: null
 
 Shell commands provided or modified by Marinette
 
-<details>
-<summary>aptm</summary>
+<details open>
+<summary>**aptm** - Repository updating with Marinette enhancements</summary>
 
 > Repository updating with Marinette enhancements.
 
@@ -1044,8 +1044,8 @@ aptm -update
 ```
 </details>
 
-<details>
-<summary>ariadne</summary>
+<details open>
+<summary>**ariadne** - Escalation attack using the configured escalation library</summary>
 
 > Escalation attack using the configured escalation library.
 
@@ -1069,8 +1069,8 @@ ariadne MEMORY
 ```
 </details>
 
-<details>
-<summary>ascii</summary>
+<details open>
+<summary>**ascii** - Display ASCII art from rkit/marinette/notepads/ascii.txt</summary>
 
 > Display ASCII art from rkit/marinette/notepads/ascii.txt.
 
@@ -1090,8 +1090,8 @@ ascii
 ```
 </details>
 
-<details>
-<summary>bounce</summary>
+<details open>
+<summary>**bounce** - Bounce attack using bounce library</summary>
 
 > Bounce attack using bounce library.
 
@@ -1115,8 +1115,8 @@ bounce 10.0.0.1
 ```
 </details>
 
-<details>
-<summary>breach</summary>
+<details open>
+<summary>**breach** - Disable firewall on the entire local network</summary>
 
 > Disable firewall on the entire local network.
 
@@ -1140,8 +1140,8 @@ breach 0x1000 test
 ```
 </details>
 
-<details>
-<summary>buf</summary>
+<details open>
+<summary>**buf** - Shows the malwire buffer or help</summary>
 
 > Shows the malwire buffer or help.
 
@@ -1165,8 +1165,8 @@ buf -h
 ```
 </details>
 
-<details>
-<summary>cls</summary>
+<details open>
+<summary>**cls** - Clears the screen</summary>
 
 > Clears the screen.
 
@@ -1183,8 +1183,8 @@ cls
 ```
 </details>
 
-<details>
-<summary>close</summary>
+<details open>
+<summary>**close** - Closes the current shell session</summary>
 
 > Closes the current shell session.
 
@@ -1208,8 +1208,8 @@ close -h
 ```
 </details>
 
-<details>
-<summary>del</summary>
+<details open>
+<summary>**del** - Deletes files with additional help handling</summary>
 
 > Deletes files with additional help handling.
 
@@ -1237,8 +1237,8 @@ del -r file.txt
 ```
 </details>
 
-<details>
-<summary>dir</summary>
+<details open>
+<summary>**dir** - Directory listing alias (wraps `ls -la`)</summary>
 
 > Directory listing alias (wraps `ls -la`).
 
@@ -1262,8 +1262,8 @@ dir /path
 ```
 </details>
 
-<details>
-<summary>explorer</summary>
+<details open>
+<summary>**explorer** - Open FileExplorer.exe at specified path</summary>
 
 > Open FileExplorer.exe at specified path.
 
@@ -1287,8 +1287,8 @@ explorer /path
 ```
 </details>
 
-<details>
-<summary>glasspool</summary>
+<details open>
+<summary>**glasspool** - Mirror session with mimi on mirrored objects</summary>
 
 > Mirror session with mimi on mirrored objects.
 
@@ -1308,8 +1308,8 @@ glasspool target
 ```
 </details>
 
-<details>
-<summary>gls</summary>
+<details open>
+<summary>**gls** - Executes a glosure script file</summary>
 
 > Executes a glosure script file.
 
@@ -1333,8 +1333,8 @@ gls scripts/my-script.gls
 ```
 </details>
 
-<details>
-<summary>hashcat</summary>
+<details open>
+<summary>**hashcat** - Hash cracking using host crypto library instead of loaded...</summary>
 
 > Hash cracking using host crypto library instead of loaded one.
 
@@ -1358,8 +1358,8 @@ hashcat hash-string
 ```
 </details>
 
-<details>
-<summary>infil</summary>
+<details open>
+<summary>**infil** - Infiltrate target with ability to upload rkit folder</summary>
 
 > Infiltrate target with ability to upload rkit folder.
 
@@ -1387,8 +1387,8 @@ infil -G shell
 ```
 </details>
 
-<details>
-<summary>kraken</summary>
+<details open>
+<summary>**kraken** - Hack random NPCs and populate Map.conf</summary>
 
 > Hack random NPCs and populate Map.conf.
 
@@ -1412,8 +1412,8 @@ kraken random 10
 ```
 </details>
 
-<details>
-<summary>macros</summary>
+<details open>
+<summary>**macros** - Lists all macros</summary>
 
 > Lists all macros.
 
@@ -1437,8 +1437,8 @@ macros -h
 ```
 </details>
 
-<details>
-<summary>marinette</summary>
+<details open>
+<summary>**marinette** - Show Marinette statistics, credits, scripts, additions, o...</summary>
 
 > Show Marinette statistics, credits, scripts, additions, or modifications.
 
@@ -1474,8 +1474,8 @@ marinette modifications
 ```
 </details>
 
-<details>
-<summary>match</summary>
+<details open>
+<summary>**match** - Pattern matching using regular expressions</summary>
 
 > Pattern matching using regular expressions.
 
@@ -1499,8 +1499,8 @@ match "hello" "hello world"
 ```
 </details>
 
-<details>
-<summary>mimi</summary>
+<details open>
+<summary>**mimi** - Check for online administrators or players (eavesdropping)</summary>
 
 > Check for online administrators or players (eavesdropping).
 
@@ -1528,8 +1528,8 @@ mimi computer-object
 ```
 </details>
 
-<details>
-<summary>nemesis</summary>
+<details open>
+<summary>**nemesis** - Hacking utility using database exploitation</summary>
 
 > Hacking utility using database exploitation.
 
@@ -1553,8 +1553,8 @@ nemesis 1.1.1.1 0 inject-code
 ```
 </details>
 
-<details>
-<summary>netstalk</summary>
+<details open>
+<summary>**netstalk** - Network stalking - probes random networks until pattern m...</summary>
 
 > Network stalking - probes random networks until pattern matches.
 
@@ -1578,8 +1578,8 @@ netstalk "gateway.*1\.2\.3"
 ```
 </details>
 
-<details>
-<summary>nmap</summary>
+<details open>
+<summary>**nmap** - Network mapper alias with purge prep and probe functionality</summary>
 
 > Network mapper alias with purge prep and probe functionality.
 
@@ -1603,8 +1603,8 @@ nmap -s 192.168.1.0/24
 ```
 </details>
 
-<details>
-<summary>notepad</summary>
+<details open>
+<summary>**notepad** - Open Notepad.exe at specified path</summary>
 
 > Open Notepad.exe at specified path.
 
@@ -1628,8 +1628,8 @@ notepad /path/to/file.txt
 ```
 </details>
 
-<details>
-<summary>nslookup</summary>
+<details open>
+<summary>**nslookup** - Performs DNS lookup (wraps `nsl` command)</summary>
 
 > Performs DNS lookup (wraps `nsl` command).
 
@@ -1653,8 +1653,8 @@ nslookup 8.8.8.8
 ```
 </details>
 
-<details>
-<summary>prox</summary>
+<details open>
+<summary>**prox** - Proxy connection with ghost 5hell option</summary>
 
 > Proxy connection with ghost 5hell option.
 
@@ -1682,8 +1682,8 @@ prox -G
 ```
 </details>
 
-<details>
-<summary>purge</summary>
+<details open>
+<summary>**purge** - Purge with undercover buffer purge option</summary>
 
 > Purge with undercover buffer purge option.
 
@@ -1707,8 +1707,8 @@ purge -uc
 ```
 </details>
 
-<details>
-<summary>rclean</summary>
+<details open>
+<summary>**rclean** - Remote clean with mimi integration</summary>
 
 > Remote clean with mimi integration.
 
@@ -1732,8 +1732,8 @@ rclean computer
 ```
 </details>
 
-<details>
-<summary>run</summary>
+<details open>
+<summary>**run** - Run executable with shell as first argument support</summary>
 
 > Run executable with shell as first argument support.
 
@@ -1757,8 +1757,8 @@ run executable shell-object arg
 ```
 </details>
 
-<details>
-<summary>shell</summary>
+<details open>
+<summary>**shell** - Shell command with mimi when in mirror session</summary>
 
 > Shell command with mimi when in mirror session.
 
@@ -1776,8 +1776,8 @@ shell
 ```
 </details>
 
-<details>
-<summary>ssh</summary>
+<details open>
+<summary>**ssh** - SSH connection with HOME server and automatic mimi</summary>
 
 > SSH connection with HOME server and automatic mimi.
 
@@ -1801,8 +1801,8 @@ ssh -H
 ```
 </details>
 
-<details>
-<summary>silentclean</summary>
+<details open>
+<summary>**silentclean** - Silent clean with mimi on targets</summary>
 
 > Silent clean with mimi on targets.
 
@@ -1826,8 +1826,8 @@ silentclean target
 ```
 </details>
 
-<details>
-<summary>su</summary>
+<details open>
+<summary>**su** - Switch user command with multiple behavior modes</summary>
 
 > Switch user command with multiple behavior modes.
 
@@ -1855,8 +1855,8 @@ su -u username
 ```
 </details>
 
-<details>
-<summary>touch</summary>
+<details open>
+<summary>**touch** - Alias for `poke` - creates or modifies a file</summary>
 
 > Alias for `poke` - creates or modifies a file.
 
@@ -1880,8 +1880,8 @@ touch /path/to/file new-content
 ```
 </details>
 
-<details>
-<summary>type</summary>
+<details open>
+<summary>**type** - Gets the type of an object</summary>
 
 > Gets the type of an object.
 
@@ -1902,8 +1902,8 @@ type "string"
 ```
 </details>
 
-<details>
-<summary>uc</summary>
+<details open>
+<summary>**uc** - Undercover alias</summary>
 
 > Undercover alias.
 
@@ -1927,8 +1927,8 @@ uc -b
 ```
 </details>
 
-<details>
-<summary>undercover</summary>
+<details open>
+<summary>**undercover** - Cover traces after infiltration, or manage undercover buffer</summary>
 
 > Cover traces after infiltration, or manage undercover buffer.
 
@@ -1960,8 +1960,8 @@ undercover -c
 ```
 </details>
 
-<details>
-<summary>unlock</summary>
+<details open>
+<summary>**unlock** - Unlocks all permissions on the current object (guest user...</summary>
 
 > Unlocks all permissions on the current object (guest user access).
 
@@ -1978,8 +1978,8 @@ unlock
 ```
 </details>
 
-<details>
-<summary>view</summary>
+<details open>
+<summary>**view** - View various file types using graphical viewers</summary>
 
 > View various file types using graphical viewers.
 
@@ -2007,8 +2007,8 @@ view -p document.pdf
 ```
 </details>
 
-<details>
-<summary>zap</summary>
+<details open>
+<summary>**zap** - Exploit attack with automatic player/admin detection</summary>
 
 > Exploit attack with automatic player/admin detection.
 
@@ -2032,8 +2032,8 @@ zap -l
 ```
 </details>
 
-<details>
-<summary>zc</summary>
+<details open>
+<summary>**zc** - Zero Chill - library patching utility with multiple modes</summary>
 
 > Zero Chill - library patching utility with multiple modes.
 
