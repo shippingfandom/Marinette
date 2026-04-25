@@ -34,6 +34,8 @@ Absolutely no! **Marinette** doesn't require any **Glosure** knowledge for you t
 ## How can I write my own scripts or modify the config?
 For now, you can write your own script only by reading the [Glosure tutorial](https://github.com/mahocitrus/Glosure/blob/main/Tutorial.md) and checking the [scripts in bonus](bonus)
 
+There is also a [reference](notepads/Marinette.md) that covers everything **5hell**/**Marinette** specific 😌
+
 However, modifying **do.gls** is as easy as just commenting out something or simply following the instructions in the comments!
 
 ## Why would I want to use Marinette?
