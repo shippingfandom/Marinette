@@ -1611,10 +1611,10 @@
             (mari-show-ascii-art))
         (set (context) 'msg' (join (array (at (context) 'msg') ', ' (: colorViolet) 'Marinette' (: CT) ' v ' MARINETTE-GLS-VERSION ' w/ ' (: colorMagenta) '<3' (: CT) ' by not_s0phie') ''))))
     ;; Run the original function
-    (def return (G_PRINT msg mode color outfile)))
+    (def return (G_PRINT msg mode color outfile))
     ;; Run the code after the original function
     ;; Return the original function result
-    return))
+    return)))
 
 ;; globals.user_input = function(msg="",ispass=0,anykey=0,log=0)
 (def G_USER_INPUT (: user_input))
@@ -1653,10 +1653,10 @@
     (if (== bang msg) (begin
         (set (context) 'msg' (mari-bang angle part1 part2 user_level user_level_line info pspace part3 scadoosh user_guess bang))))
     ;; Run the original function
-    (def return (G_USER_INPUT msg ispass anykey log)))
+    (def return (G_USER_INPUT msg ispass anykey log))
     ;; Run the code after the original function
     ;; Return the original function result
-    return))
+    return)))
 
 
 
