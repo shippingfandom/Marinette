@@ -15,7 +15,7 @@ This reference covers the functions, macros, and commands provided by Marinette.
 
 Core utility functions used throughout Marinette
 
-<details>
+<details open>
 <summary>#</summary>
 
 > Returns a specific argument from an args array with optional fallback value.
@@ -43,7 +43,7 @@ Returns: The value at the given index, or the fallback
 ```
 </details>
 
-<details>
+<details open>
 <summary>gl-all</summary>
 
 > Returns 1 if all conditions in the array evaluate to a truthy value.
@@ -65,7 +65,7 @@ Returns: 1 if all conditions are truthy, 0 otherwise
 ```
 </details>
 
-<details>
+<details open>
 <summary>gl-any</summary>
 
 > Returns 1 if any of the conditions in the array evaluate to a truthy value.
@@ -87,7 +87,7 @@ Returns: 1 if any condition is truthy, 0 otherwise
 ```
 </details>
 
-<details>
+<details open>
 <summary>gl-break-silence</summary>
 
 > Temporarily breaks through the `SILENT` flag to print a message, then restores the previous SILENT state.
@@ -109,7 +109,7 @@ Returns: The message that was printed
 ```
 </details>
 
-<details>
+<details open>
 <summary>gl-get-rkit</summary>
 
 > Locates the rkit folder from the 5hell launch directory.
@@ -127,7 +127,7 @@ Returns: A file object pointing to the rkit folder, or null if not found
 ```
 </details>
 
-<details>
+<details open>
 <summary>gl-grep-into</summary>
 
 > Greps into every step from the previous step, starting from an optional starting point.
@@ -150,7 +150,7 @@ Returns: A file object if successful, null otherwise
 ```
 </details>
 
-<details>
+<details open>
 <summary>gl-is-file-text</summary>
 
 > Checks if a file is a text file (not a folder and not binary).
@@ -172,7 +172,7 @@ Returns: 1 if the file is a text file, 0 otherwise
 ```
 </details>
 
-<details>
+<details open>
 <summary>gl-pathcat</summary>
 
 > Concatenates multiple path parts into a single path string, properly handling path separators.
@@ -194,7 +194,7 @@ Returns: A string containing the concatenated path
 ```
 </details>
 
-<details>
+<details open>
 <summary>gl-printline</summary>
 
 > Outputs a message with the 5hell Glosure Library prefix and color formatting.
@@ -216,7 +216,7 @@ Returns: The formatted output string
 ```
 </details>
 
-<details>
+<details open>
 <summary>gl-random-string</summary>
 
 > Generates a random string of specified length using alphanumeric characters.
@@ -238,7 +238,7 @@ Returns: A string of random characters
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-bang</summary>
 
 > Generates the custom Marinette prompt with user info, date, time, buffer index, hostname, addresses, and pwd.
@@ -256,7 +256,7 @@ Returns: The formatted prompt string
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-buffer-top-debug-library</summary>
 
 > Searches the BUFFER for the topmost debug library object.
@@ -274,7 +274,7 @@ Returns: A debugLibrary object if found, null otherwise
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-color-ascii-art</summary>
 
 > Colors ASCII art by applying color formatting to each line.
@@ -292,7 +292,7 @@ Returns: The colored ASCII art string
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-computerify</summary>
 
 > Converts a shell to a computer, or returns the computer if already a computer object.
@@ -314,7 +314,7 @@ Returns: A computer object
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-format-help-like</summary>
 
 > Formats an array into columns similar to help display, with color formatting.
@@ -336,7 +336,7 @@ Returns: A formatted string with columns
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-format-tws-like</summary>
 
 > Formats an object into a TWS-like string: `[buf-idx]user:obj-type@pub-ip/loc-ip`.
@@ -358,7 +358,7 @@ Returns: A formatted string
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-get-additions</summary>
 
 > Gets all commands added by Marinette (commands without "Marinette specific functionality" in help).
@@ -372,7 +372,7 @@ Returns: A sorted array of added command names
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-get-binary</summary>
 
 > Gets a binary file from rkit/marinette/binaries by name.
@@ -394,7 +394,7 @@ Returns: A file object if found, null otherwise
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-get-current-object</summary>
 
 > Gets the current shell or computer object based on network position.
@@ -412,7 +412,7 @@ Returns: The current shell or computer object
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-get-glosure-scripts</summary>
 
 > Retrieves all glosure script files from rkit/marinette/scripts.
@@ -430,7 +430,7 @@ Returns: An array of file objects
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-get-modifications</summary>
 
 > Gets all commands modified by Marinette (commands with "Marinette specific functionality" in help).
@@ -444,7 +444,7 @@ Returns: A sorted array of modified command names
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-get-notepad</summary>
 
 > Gets a notepad file from rkit/marinette/notepads by name.
@@ -466,7 +466,7 @@ Returns: A file object if found, null otherwise
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-get-scripts</summary>
 
 > Gets all macros starting with `%` (glosure scripts).
@@ -484,7 +484,7 @@ Returns: A sorted array of script names
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-get-total-changes</summary>
 
 > Gets all added and modified commands (total changes).
@@ -498,7 +498,7 @@ Returns: A sorted array of command names
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-load-theme</summary>
 
 > Loads a custom color theme from a file in rkit/marinette/themes.
@@ -520,7 +520,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-local-address</summary>
 
 > Gets the local IP address of a shell or computer.
@@ -542,7 +542,7 @@ Returns: A string containing the local IP address
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-match</summary>
 
 > Performs regex matching on a string, supporting per-line matching.
@@ -565,7 +565,7 @@ Returns: 1 if matched, 0 otherwise
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-mkdir</summary>
 
 > Creates a directory inside the rkit/marinette folder.
@@ -587,7 +587,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-mkdir-hidden-infil</summary>
 
 > Creates a hidden directory with a random name inside a computer's folder structure.
@@ -609,7 +609,7 @@ Returns: A file object pointing to the created hidden directory, or null
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-printline</summary>
 
 > Outputs a message with the Marinette prefix and color formatting.
@@ -631,7 +631,7 @@ Returns: The formatted output string
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-public-address</summary>
 
 > Gets the public IP address of a shell or computer.
@@ -653,7 +653,7 @@ Returns: A string containing the public IP address
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-show-ascii-art</summary>
 
 > Displays ASCII art on startup if on host and ASCII art hasn't been shown yet.
@@ -667,7 +667,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-sort-macros</summary>
 
 > Sorts all defined 5hell macros alphabetically by their names.
@@ -681,7 +681,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-undercover-buffer</summary>
 
 > Gets the undercover buffer (stores shells/computers from ghost infiltration).
@@ -699,7 +699,7 @@ Returns: An array (buffer)
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-undercover-buffer-push</summary>
 
 > Pushes a value to the undercover buffer.
@@ -721,7 +721,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-update-hacking-libraries</summary>
 
 > Updates hacking libraries (`crypto.so` and `metaxploit.so`) in both /lib and rkit.
@@ -735,7 +735,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-tws-list</summary>
 
 > Executes a TWS (total world scan) query and returns a list of buffer indexes.
@@ -757,7 +757,7 @@ Returns: An array of buffer indexes
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-tws-look</summary>
 
 > Finds the buffer index of an object matching given user, object type, public address, and local address.
@@ -782,7 +782,7 @@ Returns: The buffer index, or -1 if not found
 ```
 </details>
 
-<details>
+<details open>
 <summary>mari-args</summary>
 
 > Returns arguments from the macro pipe, parsing the pipe content into an array of string arguments.
@@ -806,7 +806,7 @@ Returns: An array of string arguments
 
 Special forms that evaluate their arguments differently
 
-<details>
+<details open>
 <summary>@</summary>
 
 > Gets a variable from the Custom Object (COB).
@@ -828,7 +828,7 @@ Returns: The value of the variable, or null if not found
 ```
 </details>
 
-<details>
+<details open>
 <summary>@=</summary>
 
 > Sets a variable in the Custom Object (COB).
@@ -851,7 +851,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>_</summary>
 
 > Gets a method from an object (miniscript accessor).
@@ -874,7 +874,7 @@ Returns: The method, or null
 ```
 </details>
 
-<details>
+<details open>
 <summary>:=</summary>
 
 > Sets a global variable.
@@ -897,7 +897,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>:</summary>
 
 > Gets a global variable.
@@ -919,7 +919,7 @@ Returns: The value of the global variable, or null
 ```
 </details>
 
-<details>
+<details open>
 <summary>|=</summary>
 
 > Defines and registers a new command in globals.command.
@@ -943,7 +943,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>|></summary>
 
 > Gets a command from globals.command.
@@ -965,7 +965,7 @@ Returns: The command function, or null
 ```
 </details>
 
-<details>
+<details open>
 <summary>>></summary>
 
 > Creates and registers a 5shell macro.
@@ -989,7 +989,7 @@ Returns: null
 ```
 </details>
 
-<details>
+<details open>
 <summary>defaultvalue</summary>
 
 > Sets a default value for a parameter in the context if it's currently null.
