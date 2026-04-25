@@ -163,11 +163,15 @@
         prompt-color user_level_line  '> ' day '/' month '/' year ' | ' (at datetime 1) ' | buf=' (: colorOrange) buffer-index (: CT) ' | ' hostname '@' (: colorCyan) public-address (: CT) '/' local-address ' | pwd=' (: currentPath) (char 10)
         prompt-color '.( ~.^). ' (: CT) scadoosh ' ') '')))
 
+;; Show Marinette loading time
+;; By default, Marinette attempts to show the loading time
+(def MARINETTE-SHOW-LOADING-TIME 1)
+
 
 ;; Simply print version information of the used configuration
 ;; By default, Marinette will print version information
 ;; -- It is highly recommended to leave this printing for the ease of bug reporting
 ;; -- If you remove DO-GLS-VERSION definition line, 5hell will crash if you attempt
 ;;    to issue marinette command
-(def DO-GLS-VERSION '0.2.2')
-(gl-break-silence (join (array (: colorGold) '[Marinette Configuration] Marinette configuration v' DO-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)) ''))
+(def DO-GLS-VERSION '0.2.3')
+(gl-break-silence (join (array (: colorGold) '[Marinette Configuration] Marinette configuration v' DO-GLS-VERSION ' is loaded at ' (def DO-GLS-TIME (- (time) DO-GLS-TIME)) '! \\(^.^)/' (: CT)) ''))
