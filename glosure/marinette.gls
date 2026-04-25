@@ -1,3 +1,8 @@
+(def MARINETTE-GLS-TIME (time))
+
+
+
+
 ;; 
 ;; Marinette library
 ;;
@@ -288,6 +293,12 @@
 (defun mari-undercover-buffer-push (value) (begin
     (def buffer (mari-undercover-buffer))
     (push buffer value)))
+
+;; Show Marinette loading time
+(defun mari-show-loading-time () (begin
+    (if (!= '1' ((|> cob) 'get' 'time-shown?')) (begin
+        ((|> cob) 'set' 'time-shown?' '1')
+        (mari-printline (array 'It took ' (sum (array SHELL-GLS-TIME MARINETTE-GLS-TIME DO-GLS-TIME)) ' for <b>Marinette</b> to load <b>.(-.0 ).</b>'))))))
 
 
 
@@ -1129,9 +1140,10 @@
                 ;; Uploading unlocked 5hell
                 ((|> scpm) '-u' rkit-path upload-path shell)
                 ;; Locking back
-                ((|> usr) '-r' 'root' rkit-path)
-                ((|> grp) '-r' 'root' rkit-path)
-                ((|> perms) 'lock' rkit-path)
+                (if (== 'root' ((: checkUser) (mari-get-current-object))) (begin
+                    ((|> usr) '-r' 'root' rkit-path)
+                    ((|> grp) '-r' 'root' rkit-path)
+                    ((|> perms) 'lock' rkit-path)))
                 ;; Yielding 5hell on target
                 (def five-hell-path (gl-pathcat (array upload-path 'rkit' '5hell')))
                 (gl-break-silence (join (array '5hell is accessible at ' five-hell-path '! <3') ''))
@@ -1609,6 +1621,8 @@
     (if (== welcome-message msg) (begin
         (if (== 1 MARINETTE-SHOW-ASCII-ART)
             (mari-show-ascii-art))
+        (if (== 1 MARINETTE-SHOW-LOADING-TIME)
+            (mari-show-loading-time))
         (set (context) 'msg' (join (array (at (context) 'msg') ', ' (: colorViolet) 'Marinette' (: CT) ' v ' MARINETTE-GLS-VERSION ' w/ ' (: colorMagenta) '<3' (: CT) ' by not_s0phie') ''))))
     ;; Run the original function
     (def return (G_PRINT msg mode color outfile))
@@ -1683,7 +1697,8 @@
 (def escalation-library-unsecure-zone null)
 
 ;; Fallback in case if this is commented out in do.gls
-(def MARINETTE-SHOW-ASCII-ART 0)
+(def MARINETTE-SHOW-ASCII-ART 1)
+(def MARINETTE-SHOW-LOADING-TIME 1)
 
 ;; Fallback in case if this is commented out in do.gls
 (defun mari-color-ascii-art (ascii-art) (begin
@@ -1708,5 +1723,6 @@
         ((|> macro) '-s' macro-name macro-string))))))
 
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.2.5')
-(mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)))
+(def MARINETTE-GLS-VERSION '0.2.6')
+(mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is loaded at ' (def MARINETTE-GLS-TIME (- (time) MARINETTE-GLS-TIME)) '! \\(^.^)/' (: CT)))
+(def DO-GLS-TIME (time))
