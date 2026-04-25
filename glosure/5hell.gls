@@ -1,3 +1,8 @@
+(def SHELL-GLS-TIME (time))
+
+
+
+
 ;; 
 ;; A modification to the Standard Glosure Library, also known as STL
 ;; 
@@ -172,5 +177,5 @@
 
 
 ;; Init
-(def SHELL-GLS-VERSION '0.1.2')
-(gl-printline (array (: colorWhite) '5hell Glosure library v' SHELL-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)))
+(def SHELL-GLS-VERSION '0.1.3')
+(gl-printline (array (: colorWhite) '5hell Glosure library v' SHELL-GLS-VERSION ' is loaded at ' (def SHELL-GLS-TIME (- (time) SHELL-GLS-TIME)) '! \\(^.^)/' (: CT)))
