@@ -1139,7 +1139,7 @@
                     (undercover '-b' shell)
                     (mimi shell)))
                 (if (== '-G' a1)
-                    ((|> run) five-hell-path shell 'kore --silent || undercover -b @B 0 || mimi || kore --silent')
+                    ((|> run) five-hell-path shell 'kore --silent || undercover -b @B 0 || mimi || cd || kore --silent')
                     five-hell-path)))))))
     (begin
         (INFIL a1 a2 a3 a4))))))
@@ -1196,7 +1196,7 @@
                         (if (* (== 0 is-bruted) (* (!= 0 shell-index) (== rnip public-address))) (begin
                             (def shell (at ((|> bios) '-B') shell-index))
                             (def five-hell (infil '-g' shell))
-                            ((|> run) five-hell 'kore --silent || brutus | undercover || kore --silent || return y' shell)
+                            ((|> run) five-hell 'kore --silent || brutus | undercover -b || kore --silent || return y' shell)
                             (def lookup-addresses (join (array public-address ':' local-address) ''))
                             (foreach key value (get_custom_object)
                                 (if (* (== 0 is-bruted) (== lookup-addresses value)) (begin
@@ -1456,7 +1456,7 @@
         ((|> scrub))
         (def endpoint-shell (at ((|> bios) '-B') (- (len ((|> bios) '-B')) 1)))
         (def infil-path (infil '-g' endpoint-shell))
-        ((|> run) infil-path endpoint-shell 'kore --silent || undercover -b @B 0 || mimi || kore --silent'))
+        ((|> run) infil-path endpoint-shell 'kore --silent || undercover -b @B 0 || mimi || cd || kore --silent'))
     (begin
         (PROX a1 a2 a3 a4))))))
 
@@ -1708,5 +1708,5 @@
         ((|> macro) '-s' macro-name macro-string))))))
 
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.2.4')
+(def MARINETTE-GLS-VERSION '0.2.5')
 (mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is successfully loaded! \\(^.^)/' (: CT)))
