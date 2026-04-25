@@ -105,7 +105,7 @@ Returns: The message that was printed
 ```
 
 ```clojure
-(gl-break-silence (array "Current user: " current_user))
+(gl-break-silence (join (array "Current user: " current_user) ''))
 ```
 </details>
 
@@ -137,7 +137,7 @@ From: [5hell.gls](../glosure/5hell.gls)
 | Parameter | Type | Description |
 |-----------|------|--------------|
 | steps | array | An array of grep patterns to apply sequentially |
-| starting-point | string | Optional starting file path |
+| starting-point | string or file | Optional starting file path |
 
 Returns: A file object if successful, null otherwise
 
@@ -243,11 +243,7 @@ Returns: A string of random characters
 
 > Generates the custom Marinette prompt with user info, date, time, buffer index, hostname, addresses, and pwd.
 
-From: [do.gls](../glosure/do.gls)
-
-| Parameters | Multiple | Various prompt components |
-|------------|----------|-------------------|
-| Various | any | Multiple parameters for prompt generation |
+From: [marinette.gls](../glosure/marinette.gls)
 
 Returns: The formatted prompt string
 
@@ -277,9 +273,9 @@ Returns: A debugLibrary object if found, null otherwise
 <details open>
 <summary>mari-color-ascii-art</summary>
 
-> Colors ASCII art by applying color formatting to each line.
+> User-specified ASCII art coloring function.
 
-From: [do.gls](../glosure/do.gls)
+From: [marinette.gls](../glosure/marinette.gls)
 
 | Parameter | Type | Description |
 |-----------|------|--------------|
@@ -345,7 +341,7 @@ From: [marinette.gls](../glosure/marinette.gls)
 
 | Parameter | Type | Description |
 |-----------|------|--------------|
-| object | any | The object to format |
+| object | any | Shell or computer to format |
 
 Returns: A formatted string
 
@@ -738,7 +734,7 @@ Returns: null
 <details open>
 <summary>mari-tws-list</summary>
 
-> Executes a TWS (total world scan) query and returns a list of buffer indexes.
+> Executes a TWS (Track While Scan) query and returns a list of buffer indexes.
 
 From: [marinette.gls](../glosure/marinette.gls)
 
@@ -866,11 +862,11 @@ From: [5hell.gls](../glosure/5hell.gls)
 Returns: The method, or null
 
 ```clojure
-(_ file 'get_content')
+((_ file get_content) file)
 ```
 
 ```clojure
-(_ some-object 'some_method')
+((_ some-object some_method) some-object)
 ```
 </details>
 
@@ -957,18 +953,18 @@ From: [5hell.gls](../glosure/5hell.gls)
 Returns: The command function, or null
 
 ```clojure
-(|> file)
+((|> file) '-r' '/')
 ```
 
 ```clojure
-(|> grep)
+((|> grep) '-n' '^rkit$')
 ```
 </details>
 
 <details open>
 <summary>>></summary>
 
-> Creates and registers a 5shell macro.
+> Creates and registers a 5hell macro.
 
 From: [marinette.gls](../glosure/marinette.gls)
 
