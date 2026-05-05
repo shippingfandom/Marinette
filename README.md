@@ -105,7 +105,7 @@ Absolutely try these easy steps before reporting ✌️
 2. Rename all folders with the name **rkit** to something else, for example, rkit.bak, or remove them from the machine entirely 📝
 3. Build the most recent **5hell** from the [upstream](https://github.com/jhook777/5hell-for-Grey-Hack-the-Game) ✨
 4. Create **rkit** folder in /root and create **do.rc** text file in it 📄
-5. Begin the [installation](#okay-you-definitely-bought-me-how-can-i-install-marinette) of **Marinette** <u>from the step 2!!!</u>
+5. Begin the [installation](#okay-you-definitely-bought-me-how-can-i-install-marinette) of **Marinette** from the step 2!!!
 
 If the issue is resolved, chances are high that this has something to do with your setup! 😔
 
