@@ -1,57 +1,13 @@
-glosure -e " ((set globals 'SILENT' 2)) "
--------------------------------
--- Marinette bootstrap start --
--------------------------------
--- Update link for:
---     |_ 5hell -> https://github.com/jhook777/5hell-for-Grey-Hack-the-Game
---     |_ Marinette -> https://github.com/shippingfandom/Marinette
--- Thanks for using Marinette! <3
-
--- Check if Marinette is already loaded and return if she is
--- Big thanks to Plu70 for this check! <3
-glosure -e " (: 'marinette-loaded') " | if " glosure -e \" ((set globals 'SILENT' 0)) \" || echo @RETURN " " echo Loading Marinette... " " echo true "
-
--- To clipa, get 5hell path
--- To clipb, get parent path of clipa
--- To clipc, get file name of clipb
-glosure -e (program_path) | clipa
-file -P @a | file -p | clipb
-file -n @b | clipc
-
--- If the parent is rkit, clip the parent of it, else clip home directory
-if " file -P \@b | clipb " " glosure -e (home_dir) | file -r | clipb " " rkit " @c
-
--- Look for rkit in @b, create marinette in it if it's there
-grep -p ^rkit$ @b | clipa
-if " " " pwd | clipb || cd \@a || mkdir marinette || cd \@b " @a " No ^rkit$ found. "
-
--- Look for marinette in @b/rkit, create glosure in it if it's there
-grep -p ^marinette$ @a | clipa
-if " " " pwd | clipb || cd \@a || mkdir glosure || cd \@b " @a " No ^marinette$ found. "
-
--- Look for glosure in @b/rkit/marinette, create 5hell.gls, marinette.gls, do.gls in it if it's there
-grep -p ^glosure$ @a | clipa
-if " " " pwd | clipb || cd \@a || poke 5hell.gls || cd \@b " @a " No ^glosure$ found. "
-if " " " pwd | clipb || cd \@a || poke marinette.gls || cd \@b " @a " No ^glosure$ found. "
-if " " " pwd | clipb || cd \@a || poke do.gls || cd \@b " @a " No ^glosure$ found. "
-
--- Look for 5hell.gls in @b/rkit/marinette, run in it if it's there
-grep -p ^5hell.gls$ @a | clipc
-if " " " cat \@c | glosure -e " @c " No ^5hell.gls$ found. "
-
--- Look for marinette.gls in @b/rkit/marinette, run in it if it's there
-grep -p ^marinette.gls$ @a | clipc
-if " " " cat \@c | glosure -e " @c " No ^marinette.gls$ found. "
-
--- Look for do.gls in @b/rkit/marinette, run in it if it's there
-grep -p ^do.gls$ @a | clipc
-if " " " cat \@c | glosure -e " @c " No ^do.gls$ found. "
-
--- Set Marinette state to loaded so that the check at the start works
--- Big thanks to Plu70 for this check! <3
-glosure -e " (:= 'marinette-loaded' 'true') "
-
------------------------------
--- Marinette bootstrap end --
------------------------------
-glosure -e " ((set globals 'SILENT' 0)) "
+-- The Glosure line below is a bootstraping for a little addition to 5hell known as Marinette! (^.^ )
+-- You can find Marinette, her bootstraping code and minify bat script at https://github.com/shippingfandom/Marinette (0.0 )
+-- Here, I would like to thank Plu70 and lagoon for double-loading prevention method, big thanks to you guys! <3
+-- Oh, and never forget to update your 5hell at here: https://github.com/jhook777/5hell-for-Grey-Hack-the-Game
+-- Thanks for using Marinette, lots of loooove! .( -.^)/ <3
+-- P.S. I also highly appreciate maho_citrus for Glosure!!!
+--      And not only for Glosure! Just because she's a good person and deserves that...
+--      And Plu70, and lagoon are too! I just wanted to give everyone of them a little credit for their hard work...
+--      I want these lines of mine to be as sincere as they can be, without any rephrasing and redoing that
+--      I always do because of all the mess that is going inside of my head... So sorry if it came out weird!
+--      Oh, and absolutely feel free to remove this post scriptum if it bothers you in any way, the user of Marinette!
+--      (^._.^)ノ <3 (0.0 ) (^.^ ) ( -.^)/ <3 (._. ) ( >_< ) ( ^.^ )ノ <3
+glosure -e " ((lambda () (if (== 0 (hasIndex globals 'marinette-loaded?')) (begin     ((set globals 'SILENT' 2))      (set globals 'marinette-loaded?' 1)      (def shell-path (program_path))     (def shell-parent-path (parent_path shell-path))     (def shell-parent-name (at (split shell-parent-path '/') (to_int '-1')))      (def marinette-glosure-path         (if (== 'rkit' shell-parent-name)             (+ shell-parent-path '/marinette/glosure')             (+ (home_dir) '/rkit/marinette/glosure')))      (def path marinette-glosure-path)     (def paths-names (array))     (while (!= '/' path) (begin         (def parent-path (parent_path path))         (push paths-names (array parent-path ((at path 'replace') ((at path 'replace') path parent-path '') '/' '')))         (def path parent-path)))     (reverse paths-names)      (def computer ((at (get_shell) 'host_computer') (get_shell)))     (foreach _ pair paths-names (begin         (def path (at pair 0))         (def name (at pair 1))         ((at computer 'create_folder') computer path name)))      (def marinette-glosure ((at computer 'File') computer marinette-glosure-path))     (if (== 'file' (typeof marinette-glosure)) (begin         (defun glosure-interpreter (glosure-code)             ((at (at globals 'command') 'glosure') '-e' glosure-code))          (defun marinette-interpret-file (file-name) (begin             ((at computer 'touch') computer marinette-glosure-path file-name)             (def file ((at computer 'File') computer (+ marinette-glosure-path (+ '/' file-name))))             (if (== 'file' (typeof file)) (begin                 (def file-content ((at file 'get_content') file))                 (if (!= null file-content)                     (glosure-interpreter file-content))))))          (marinette-interpret-file '5hell.gls')         (marinette-interpret-file 'marinette.gls')         (marinette-interpret-file 'do.gls')))      ((set globals 'SILENT' 0))))))  "
