@@ -167,6 +167,12 @@
 ;; By default, Marinette attempts to show the loading time
 (def MARINETTE-SHOW-LOADING-TIME 1)
 
+;; Clear clips from Marinette loading thingies
+;; By default, Marinette attempts to clear the clips
+((|> clipa) '-n')
+((|> clipb) '-n')
+((|> clipc) '-n')
+
 
 ;; Simply print version information of the used configuration
 ;; By default, Marinette will print version information
