@@ -1,6 +1,6 @@
 # Marinette Reference
 
-This reference covers the functions, macros, and commands provided by Marinette.
+This reference covers functions, macros, and (some of the) commands provided by Marinette.
 
 ---
 
@@ -203,7 +203,7 @@ From: [5hell.gls](../glosure/5hell.gls)
 
 | Parameter | Type | Description |
 |-----------|------|--------------|
-| str-array | array | An array of strings to join and print |
+| str-array | array or string | A string or an array of strings to join and print |
 
 Returns: The formatted output string
 
@@ -614,7 +614,7 @@ From: [marinette.gls](../glosure/marinette.gls)
 
 | Parameter | Type | Description |
 |-----------|------|--------------|
-| str-array | array | An array of strings to join and print |
+| str-array | array or string | A string or an array of strings to join and print |
 
 Returns: The formatted output string
 

@@ -1,0 +1,104 @@
+(defun main-menu () (begin
+    (do-while (== null (indexOf choices choice)) (begin
+        (def choices (array 1 2 'q'))
+        ((|> clear))
+        (gl-break-silence '<u>Marinette installation script (0.0 )</u>')
+        (gl-break-silence '')
+        (gl-break-silence 'Please choose an option below!')
+        (gl-break-silence '')
+        (gl-break-silence '1. User install [Install for non-root user]')
+        (gl-break-silence '2. Bash install [Install as your bash replacement]')
+        (gl-break-silence 'q. Quit the installation script')
+        (gl-break-silence '')
+        (def choice (to_int (user_input '> ')))
+        (if (== 1 choice)
+            (user-install-menu)
+        (if (== 2 choice)
+            (bash-install)
+        (if (== 'q' choice)
+            'Удачкиии~ (^.^)v'
+        (begin
+            (gl-break-silence 'Incorrect choice!')
+            ((|> pause) '-m')))))))))
+
+(defun user-install-menu () (begin
+    (do-while (== null (indexOf choices choice)) (begin
+        (def users (array))
+        (if (== 'file' (typeof ((|> file) '-r' '/home'))) (begin
+            ((|> enum) ((|> string) '-l' '@10' ((|> ls) '-r' '/home')))
+            (def users ((|> enum) '-e'))))
+        (def choices (indexes users))
+        (foreach idx val choices
+            (set choices idx (+ val 1)))
+        (def choices (+ choices (array 'q')))
+        ((|> clear))
+        (gl-break-silence '<u>User install mode</u>')
+        (gl-break-silence '')
+        (gl-break-silence 'Select which user you want to install Marinette for!')
+        (gl-break-silence '')
+        (foreach idx user users (begin
+            (gl-break-silence (join (array (+ idx 1) '. ' user) ''))))
+        (gl-break-silence 'q. Back to the main menu')
+        (gl-break-silence '')
+        (def choice (to_int (user_input '> ')))
+        (if (!= null (indexOf choices choice))
+            (if (== 'q' choice)
+                (main-menu)
+            (begin
+                (user-install (at users (- choice 1)))))
+        (begin
+            (gl-break-silence 'Incorrect choice!')
+            ((|> pause) '-m')))))))
+
+(defun user-install (user) (begin
+    (do-while (!= 'Good is good enough' user-input) (begin
+        ((|> clear))
+        (gl-break-silence '<u>An important warning!</u>')
+        (gl-break-silence '')
+        (gl-break-silence 'You are about to be faced with <b>kore -r</b> prompt')
+        (gl-break-silence 'In this prompt, you absolutely must simply press enter for a quick install!')
+        (gl-break-silence 'If you understand this, please enter this simple affirmation I have prepaired for you <3')
+        (gl-break-silence '<b>Good is good enough</b>')
+        (gl-break-silence '')
+        (def user-input (user_input '> '))))
+    ((|> kore) '-r')
+    (def user-home (gl-pathcat (array '/home' user)))
+    ((|> cp) '/root/rkit' user-home)
+    (def user-rkit (gl-pathcat (array user-home 'rkit')))
+    ((|> usr) '-r' 'guest' user-rkit)
+    ((|> grp) '-r' 'guest' user-rkit)
+    ((|> perms) '-r' 'o+rwx' user-rkit)
+    ((|> perms) '-r' 'g+rwx' user-rkit)
+    ((|> perms) '-r' 'u+rwx' user-rkit)
+    (gl-break-silence '')
+    (gl-break-silence 'User install is done!')
+    ((|> pause) '-m')
+    (user-install-menu)))
+
+(defun bash-install () (begin
+    (do-while (!= 'I am absolutely amazing today' user-input) (begin
+        ((|> clear))
+        (gl-break-silence '<u>An important warning!</u>')
+        (gl-break-silence '')
+        (gl-break-silence 'As <b>/bin/bash</b>, <b>5hell</b> will load <b>Marinette</b> only from your user home directory!')
+        (gl-break-silence 'Therefore, if you have not done it already, you absolutely must perform user install for your computer user!')
+        (gl-break-silence 'If you understand this, please enter this simple affirmation I have prepaired for you <3')
+        (gl-break-silence '<b>I am absolutely amazing today</b>')
+        (gl-break-silence '')
+        (def user-input (user_input '> '))))
+    (def shell (program_path))
+    ((|> cp) shell '/bin/bash')
+    ((|> usr) '-r' 'root' '/bin/bash')
+    ((|> grp) '-r' 'root' '/bin/bash')
+    ((|> perms) '-r' 'o-rwx' '/bin/bash')
+    ((|> perms) '-r' 'g-rwx' '/bin/bash')
+    ((|> perms) '-r' 'u-rwx' '/bin/bash')
+    (gl-break-silence '')
+    (gl-break-silence 'Bash install is done!')
+    ((|> pause) '-m')
+    (main-menu)))
+
+
+(if (!= 'root' ((|> whoami)))
+    (mari-printline 'Root access is neccessary for this script!')
+    (main-menu))

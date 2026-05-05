@@ -5,6 +5,16 @@ A set of [5hell](https://github.com/jhook777/5hell-for-Grey-Hack-the-Game) confi
 
 **TL;DR** An [installation how-to](#okay-you-definitely-bought-me-how-can-i-install-marinette) for those who can't wait! 👀
 
+I know this README is a little bit of a mess, so I've compiled the most interesting and important parts of this repository here for both your and my convenience ❤️
+- [The motivation behind the name](#why-marinette)
+- [The resource configuration explained](#what-is-rkitdorc)
+- [What Glosure is and why it underlies Marinette](#what-and-why-is-glosure)
+- [Benefits of using Marinette](#why-would-i-want-to-use-marinette)
+- [Marinette installation instructions](#okay-you-definitely-bought-me-how-can-i-install-marinette)
+- [Encountering a bug](#ive-encountered-a-bug-please-help)
+- [All the best of people who made Marinette possible](#the-people-who-made-this-possible)
+
+
 ## What is even this?
 It's **Marinette** - the addition to your **5hell**'s **rkit/do.rc**, written entirely in **Glosure**! 😜
 
@@ -23,7 +33,7 @@ In simple words, **do.rc** is simply a file with a set of commands that gets exe
 
 If you would like to learn more in detail about how it works, refer to the documentation [here](https://github.com/Arc8ne/5hell-Documentation-Extractor/blob/main/5hell-Documentation.md#do), or simply issue `help -s do.rc` command while running the **5hell** herself 🥰
 
-## What and why Glosure?
+## What and why is Glosure?
 **Glosure** is the first ever publicly available interpreted lisp-like language for **Grey Hack** by the gorgeous [mahocitrus](https://github.com/mahocitrus), which **5hell** supports fully and without *any* restrictions! 😃
 
 It allows everything **do.rc** scripitng allows *plus* everything in-game **scripting** allows! Which opens endless possibilities with what you can implement in a configuration files, really! 🌺
@@ -54,11 +64,13 @@ Awesome! Can't wait for it! 😄
 
 To install **Marinette**, follow these simple instructions:
 
-1. Ensure you have **rkit/do.rc** file. If you haven't, issue `kore -r`. Skip tables generation as it will make the process A LOT longer! ⏳
+1. Ensure you have **/root/rkit/do.rc** file. If you haven't, issue `kore -r` **as root**. Skip tables generation as it will make the process A LOT longer! ⏳
 2. Add [these simple lines](do.rc) at the end of **do.rc** 📝
-3. Close **5hell** and run her again. This will generate **marinette** folder structure in your **rkit** 🗂
-4. Go to **rkit/marinette/glosure** and paste in [5hell.gls](glosure/5hell.clj), [do.gls](glosure/do.clj), [marinette.gls](glosure/marinette.clj), one by one ✏️
+3. Close **5hell** and run her again. This will generate **marinette** folder structure in your **/root/rkit/** 🗂
+4. Go to **/root/rkit/marinette/glosure** and paste in [5hell.gls](glosure/5hell.clj), [do.gls](glosure/do.clj), [marinette.gls](glosure/marinette.clj), one by one ✏️
 5. Close **5hell** and run her again 💻
+
+After this, you may want to copy over [/root/rkit/marinette/ascii.txt](notepads/ascii.txt) as well as [/root/rkit/marinette/themes/soft.src](themes/soft.src) for a bit of personalization 🙂
 
 Or, if you're feeling adventurous, you can try an alternative way, using [Greybel-JS](https://github.com/ayecue/greybel-js):
 1. Repeat steps 1 and 2 from the above 👆
@@ -68,14 +80,17 @@ Or, if you're feeling adventurous, you can try an alternative way, using [Greybe
 5. Close **5hell** and run her again ✌️
 
 
-Congratulatuons, **Marinette** is successfully installed! 💞
+Congratulatuons, **Marinette** is successfully installed **as root**! 💞
 
 Now you may would want to do one of the following things:
 - Issue `marinette` to see the overall statistics 📊
 - Issue `marinette additions` to see what commands were added (issue a specific command with `-h` flag to get a help for it!) 🧰
 - Issue `marinette modifications` to see what commands were changed 🔮
 - Issue `macros` to see what macros were added 📼
-- Change 5hell theme. Read themeing section in **rkit/marinette/glosure/do.gls** and choose a theme from [themes](themes) 🏁
+- Change **5hell** theme. Read themeing section in **/root/rkit/marinette/glosure/do.gls** and choose a theme from [themes](themes) 🏁
+- Change **Marinette** ascii art at startup. Simply change the contents of **/root/rkit/marinette/notepads/ascii.txt**!
+- Place some [scripts](scripts) to **/root/rkit/marinette/scripts** for you to issue with `%script-name` 📄
+- Install **Marinette** as your **user** or as **/bin/bash** replacement with [marinette-install.gls](scripts/marinette-install.gls) 🐞
 
 Happy hacking! 👾
 
@@ -90,7 +105,7 @@ Absolutely try these easy steps before reporting ✌️
 2. Rename all folders with the name **rkit** to something else, for example, rkit.bak, or remove them from the machine entirely 📝
 3. Build the most recent **5hell** from the [upstream](https://github.com/jhook777/5hell-for-Grey-Hack-the-Game) ✨
 4. Create **rkit** folder in /root and create **do.rc** text file in it 📄
-5. Begin the [installation](#okay-you-definitely-bought-me-how-can-i-install-marinette) of **Marinette** <u>from the step 2!!!</u>
+5. Begin the [installation](#okay-you-definitely-bought-me-how-can-i-install-marinette) of **Marinette** from the step 2!!!
 
 If the issue is resolved, chances are high that this has something to do with your setup! 😔
 
