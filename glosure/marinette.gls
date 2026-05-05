@@ -135,7 +135,8 @@
                             (mari-printline (array 'Attempting to update ' lib-path '...'))
                             ((|> aptm) '-i' library path))
                         (begin
-                            (mari-printline (array 'Up to date: ' lib-path '!'))))))))))))))
+                            (mari-printline (array 'Up to date: ' lib-path '!'))))))
+                    ((|> aptm) '--hotswap')))))))))
 
 ;; Get all macros starting with %
 (defun mari-get-scripts () (begin
@@ -217,7 +218,7 @@
     (def idxs (mari-tws-list 'FG'))
     (foreach _ index idxs (begin
         (if (== (to_int '-1') return) (begin
-            (def object (at (: BUFFER) index))
+            (def object (at ((|> bios) '-B') index))
             (def object-user ((: checkUser) object))
             (if (* (== object-type (typeof object)) (== user object-user)) (begin
                 (if (== 'file' object-type)
@@ -246,7 +247,12 @@
 
 ;; Output something with the Marinette prefix!
 (defun mari-printline (str-array)
-    (gl-break-silence (join (array (: colorViolet) '[Marinette]' (: CT) ' ' (join str-array '')) '')))
+    (if (== 'list' (typeof str-array))
+        (gl-break-silence (join (array (: colorViolet) '[Marinette]' (: CT) ' ' (join str-array '')) ''))
+    (if (== 'string' (typeof str-array))
+        (gl-break-silence (join (array (: colorViolet) '[Marinette]' (: CT) ' ' str-array) ''))
+    (begin
+        (gl-break-silence (join (array 'Marinette: Wrong argument passed into the mari-printline: expected list or string, got ' (typeof str-array)) ''))))))
 
 ;; Turn shell into computer, computer into computer and return
 (defun mari-computerify (object) (begin
@@ -279,8 +285,15 @@
 (defun mari-show-ascii-art () (begin
     ((|> cob) 'validate')
     (if (* (== 0 ((|> cob) 'get' 'stack_pool')) (!= 1 ((|> cob) 'get' 'ascii-shown?'))) (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
         ((|> cob) 'set' 'ascii-shown?' 1)
-        (ascii)))))
+        (def a ((|> clipa)))
+        (ascii)
+        ((|> clipa) '-n')
+        ((|> clipa) a)
+        (:= SILENT silent-state)
+        null))))
 
 ;; Return an undercover buffer
 (defun mari-undercover-buffer () (begin
@@ -479,12 +492,12 @@
         (:= SILENT 2)
         (do-while not-have-found (begin
             (def rnip ((|> rnip) '1'))
-            (gl-break-silence (join (array 'Matching ' a1 ' on ' rnip '...') ''))
+            (mari-printline (array 'Matching ' a1 ' on ' rnip '...'))
             ((|> probe) '-q' rnip)
             (def probe ((|> probe) '-s'))
             (def not-have-found (== 0 (match a1 probe)))))
         (:= SILENT silent-state)
-        (gl-break-silence (join (array 'Found ' rnip ' matching ' a1 ' <3') ''))
+        (mari-printline (array 'Found ' rnip ' matching ' a1 ' <3'))
         rnip)))))
 
 (|= type (a1 a2 a3 a4)
@@ -539,7 +552,7 @@
                 ;; 1. Swap metaxploit to myx0
                 (def silent-state (: SILENT))
                 (:= SILENT 2)
-                (def link-metaxploit ((|> meta) '-x'))
+                (def link-metaxploit ((|> bios) '-x'))
                 (def hack-metaxploit ((|> cob) 'get' 'myx0'))
                 ((|> meta) '-i' hack-metaxploit)
                 (:= SILENT silent-state)
@@ -561,15 +574,15 @@
             '--eg: <b>brutus | undercover</b> -- Attempts to bruteforce the password and then covers the traces left'
             ''
             '<b>Usage: undercover -b/buffer [opt:shell|computer|#]</b> -- Buffer management'
-            '-- An undercover buffer is a buffer with shells and computers you ghost infiltrate with <b>infil -g/-G</b>'
-            '--eg: <b>undercover -b</b> -- List the undercover buffer'
-            '--eg: <b>undercover -b @B 0</b> -- Add shell you are on to the undercover buffer'
+            '-- An undercover-buffer is a buffer with shells and computers you ghost infiltrate with <b>infil -g/-G</b>'
+            '--eg: <b>undercover -b</b> -- List the undercover-buffer'
+            '--eg: <b>undercover -b @B 0</b> -- Add shell you are on to the undercover-buffer'
             ''
             '<b>Usage: undercover -b/buffer -i/index [#]</b> -- Get an object at index #'
             ''
-            '<b>Usage: undercover -b/buffer -r/remove [index]</b> -- Remove object at specified index from the undercover buffer'
+            '<b>Usage: undercover -b/buffer -r/remove [index]</b> -- Remove object at specified index from the undercover-buffer'
             ''
-            '<b>Usage: undercover -b/buffer -c/cover</b> -- Run <b>undercover</b> on every object of the undercover buffer'
+            '<b>Usage: undercover -b/buffer -c/cover</b> -- Run <b>undercover</b> on every object of the undercover-buffer'
             ''
             'Now with <b>uc</b> shorthand!')
             (char 10))
@@ -590,7 +603,6 @@
                 (def buffer-public-address (mari-public-address buffer-object))
                 (def buffer-local-address (mari-local-address buffer-object))
                 (def buffer-tws-like (mari-format-tws-like buffer-object))
-                ;; (if (gl-all (array (== object-type buffer-object-type) (== public-address buffer-public-address) (== local-address buffer-local-address))) (begin
                 (if (gl-all (array (== public-address buffer-public-address) (== local-address buffer-local-address))) (begin
                     (if (+ (== user buffer-user) (+ (== null (indexOf (array 'guest' 'root') user)) (== null (indexOf (array 'guest' 'root') user)))) (begin
                         (set buffer i object)
@@ -614,14 +626,14 @@
                 (def return (join (array return (char 10) (: colorOlive) '[' i ']' (: CT) tws-like) ''))))
             (def return (trim return))
             (if (== '' return) (begin
-                (gl-break-silence (join (array 'An ' (: colorOlive) 'undercover-buffer' (: CT) ' is empty! </3') ''))
+                (mari-printline (array 'An ' (: colorOlive) 'undercover-buffer' (: CT) ' is empty! </3'))
                 0)
             (begin
                 return)))
         (if (!= null (indexOf (array '-c' 'cover') a2)) (begin
             (def buffer (mari-undercover-buffer))
             (if (== 0 (len buffer)) (begin
-                (gl-break-silence (join (array 'An ' (: colorOlive) 'undercover-buffer' (: CT) ' is empty! </3') ''))
+                (mari-printline (array 'An ' (: colorOlive) 'undercover-buffer' (: CT) ' is empty! </3'))
                 0)
             (begin
                 (foreach i object buffer (begin
@@ -681,8 +693,8 @@
                 (def parent-path ((_ parent path) parent))
                 (if (== 0 (indexOf parent-name '\.'))
                     (if (== '' ((_ parent delete) parent))
-                        (gl-break-silence (join (array 'Deleted ' parent-path ' ...') ''))
-                        (gl-break-silence (join (array 'Could not delete ' parent-path '!') '')))))))
+                        (mari-printline (array 'Deleted ' parent-path ' ...'))
+                        (mari-printline (array 'Could not delete ' parent-path '!')))))))
         (if (== 1 ((|> silentclean) '-d' a1 a2 a3))
             'Successfully covered traces with silentclean -d <3'
             'Could not cover traces with silentclean -d! </3'))))))
@@ -736,7 +748,7 @@
         (def lines (split ((|> clipb)) (char 10)))
         (foreach _ line lines (begin
             (def address (pull (split line ' ')))
-            (gl-break-silence (join (array 'Disabling the firewall for ' address '...') ''))
+            (mari-printline (array 'Disabling the firewall for ' address '...'))
             ((|> target) address '0')
             ((|> meta) 'link')
             ((|> zap) a1 a2)))
@@ -768,7 +780,7 @@
             (join (array 'explorer: could not find ' a1 '.') '')
         (begin
             (def explorer-path ((|> file) '-p' explorer))
-            (gl-break-silence (join (array 'Opening FileExplorer.exe at ' path '...') ''))
+            (mari-printline (array 'Opening FileExplorer.exe at ' path '...'))
             ((|> run) explorer-path path)))))))
 
 (|= notepad (a1 a2 a3 a4)
@@ -798,7 +810,7 @@
             (def notepad-path ((|> file) '-p' notepad))
             (if (== 0 path)
                 (gl-break-silence 'Opening Notepad.exe...')
-                (gl-break-silence (join (array 'Opening Notepad.exe for ' path '...') '')))
+                (mari-printline (array 'Opening Notepad.exe for ' path '...')))
             ((|> run) notepad-path path)))))))
 
 (|= view (a1 a2 a3 a4)
@@ -842,8 +854,8 @@
         (begin
             (def program-path ((|> file) '-p' program))
             (if (== 0 path)
-                (gl-break-silence (join (array 'Opening ' graphical-program '...') ''))
-                (gl-break-silence (join (array 'Opening ' graphical-program ' for ' path '...') '')))
+                (mari-printline (array 'Opening ' graphical-program '...'))
+                (mari-printline (array 'Opening ' graphical-program ' for ' path '...')))
             ((|> run) program-path path))))))))
 
 (|= marinette (a1 a2 a3 a4)
@@ -949,7 +961,7 @@
             (def silent-state (: SILENT))
             (:= SILENT 2)
             (def bounce-library-path ((|> file) '-p' bounce-library-file))
-            (gl-break-silence (join (array 'Attempting to copy ' bounce-library-path ' to /lib directory...') ''))
+            (mari-printline (array 'Attempting to copy ' bounce-library-path ' to /lib directory...'))
             (def cp ((|> cp) bounce-library-path '/lib/'))
             (:= SILENT silent-state)
             (if (!= 1 cp)
@@ -960,14 +972,14 @@
                 ;; Back up previous metalib
                 (def metalib-backup ((|> bios) '-m'))
                 ;; Load bounce library
-                (gl-break-silence (join (array 'Loading /lib/' bounce-library '...') ''))
+                (mari-printline (array 'Loading /lib/' bounce-library '...'))
                 ((|> meta) 'load' (+ '/lib/' bounce-library))
                 ;; Perform bounce exploit attack
-                (gl-break-silence (join (array 'Attempting to bounce into ' a1 '...') ''))
+                (mari-printline (array 'Attempting to bounce into ' a1 '...'))
                 (def return ((|> zap) bounce-library-memory-address bounce-library-unsecure-zone a1))
                 ;; Restore previous metalib
                 (if (!= null metalib-backup) (begin
-                    (gl-break-silence (join (array 'Restoring previous ' metalib-backup '...') ''))
+                    (mari-printline (array 'Restoring previous ' metalib-backup '...'))
                     ((|> meta) 'load' metalib-backup)))
                 (:= SILENT silent-state)
                 (gl-break-silence 'Everything is done! Check BUFFER to see how successfull an attack was')
@@ -995,7 +1007,7 @@
             (def silent-state (: SILENT))
             (:= SILENT 2)
             (def escalation-library-path ((|> file) '-p' escalation-library-file))
-            (gl-break-silence (join (array 'Attempting to copy ' escalation-library-path ' to /lib directory...') ''))
+            (mari-printline (array 'Attempting to copy ' escalation-library-path ' to /lib directory...'))
             (def cp ((|> cp) escalation-library-path '/lib/'))
             (:= SILENT silent-state)
             (if (!= 1 cp)
@@ -1006,14 +1018,14 @@
                 ;; Back up previous metalib
                 (def metalib-backup ((|> bios) '-m'))
                 ;; Load escalation library
-                (gl-break-silence (join (array 'Loading /lib/' escalation-library '...') ''))
+                (mari-printline (array 'Loading /lib/' escalation-library '...'))
                 ((|> meta) 'load' (+ '/lib/' escalation-library))
                 ;; Perform escalation exploit attack
-                (gl-break-silence (join (array 'Attempting an escalation to root...') ''))
+                (mari-printline (array 'Attempting an escalation to root...'))
                 (def return ((|> zap) escalation-library-memory-address escalation-library-unsecure-zone a1))
                 ;; Restore previous metalib
                 (if (!= null metalib-backup) (begin
-                    (gl-break-silence (join (array 'Restoring previous ' metalib-backup '...') ''))
+                    (mari-printline (array 'Restoring previous ' metalib-backup '...'))
                     ((|> meta) 'load' metalib-backup)))
                 (:= SILENT silent-state)
                 (gl-break-silence 'Everything is done! Check BUFFER to see how successfull an attack was')
@@ -1112,7 +1124,11 @@
             'Moreover, it uploads to any available permissive folder it finds, not necessarily /home/guest'
             'To perform this kind of infiltration, issue <b>infil -g/ghost [shell_object]</b>'
             'To run 5hell after infiltration, use <b>-G</b> flag'
-            'Infiltration with <b>-g/ghost</b> flag now runs <b>mimi</b> automatically!')
+            ''
+            '<u>Hooks</u>'
+            '<b>Marinette</b> intercepts this command and runs the following commands with it:'
+            '-- <b>undercover</b> to add ghost <b>infil</b> object to the undercover-buffer'
+            '-- <b>mimi</b> to notify if there are players or administrators online on the object')
             (char 10))
     (if (!= null (indexOf (array '-g' 'ghost') (lower a1))) (begin
         (def shell a2)
@@ -1146,7 +1162,7 @@
                     ((|> perms) 'lock' rkit-path)))
                 ;; Yielding 5hell on target
                 (def five-hell-path (gl-pathcat (array upload-path 'rkit' '5hell')))
-                (gl-break-silence (join (array '5hell is accessible at ' five-hell-path '! <3') ''))
+                (mari-printline (array '5hell is accessible at ' five-hell-path '! <3'))
                 (if (!= '-G' a1) (begin
                     (undercover '-b' shell)
                     (mimi shell)))
@@ -1168,7 +1184,11 @@
             ''
             '<u>Marinette specific functionality</u>'
             'Hack random NPCs and populate Map.conf with their machines'
-            '--eg: <b>kraken -r/random [count]</b>')
+            '--eg: <b>kraken -r/random [count]</b>'
+            ''
+            '<u>Hooks</u>'
+            '<b>Marinette</b> intercepts this command and runs the following commands with it:'
+            '-- <b>undercover</b> to add an NPC object to the undercover-buffer')
             (char 10))
     (if (!= null (indexOf (array '-r' 'random') a1))
         (if (+ (== 0 a2) (!= 'number' (typeof (to_int a2))))
@@ -1176,6 +1196,8 @@
                 'kraken: second argument must be a positive integer.'
                 'See <b>kraken -h</b> for more info!')
                 (char 10))
+        (if (== null ((|> bios) '-x'))
+            'kraken: no metaxploitLib loaded.'
         (if (== 0 ((_ (: localmachine) is_network_active) (: localmachine)))
             'kraken: no network connection.'
         (begin
@@ -1189,14 +1211,14 @@
             (def count (to_int a2))
             (while (> count 0) (begin
                 (if (* (>= addresses-generated 5) (== 0 (% addresses-generated 5)))
-                    (gl-break-silence (join (array 'Have tried ' addresses-generated ' addresses so far...') '')))
+                    (mari-printline (array 'Currently past ' addresses-generated ' addresses so far...')))
                 (def rnip ((|> rnip) '1'))
                 (++ addresses-generated)
                 (def has-smtp (== rnip ((|> porter) '25' rnip)))
                 (def has-ssh (== rnip ((|> porter) '22' rnip)))
                 (def is-npc-network (* has-smtp has-ssh))
                 (if (== 1 is-npc-network) (begin
-                    (gl-break-silence (join (array 'Hacking ' rnip ' on port 22...') ''))
+                    (mari-printline (array 'Hacking ' rnip ' on port 22...'))
                     (nemesis rnip '22')
                     (def tws ((|> tws) 's' 'pl'))
                     (def lines (split tws (char 10)))
@@ -1213,17 +1235,17 @@
                             (foreach key value (get_custom_object)
                                 (if (* (== 0 is-bruted) (== lookup-addresses value)) (begin
                                     (KRAKEN 'add' rnip key)
-                                    (gl-break-silence (join (array 'Added root@' key ' ' rnip ' 22 to Map.conf!') ''))
+                                    (mari-printline (array 'Added root@' key ' ' rnip ' 22 to Map.conf!'))
                                     (-- count)
                                     (def is-bruted 1))))))))
                     (if (== 0 is-bruted)
                         (push faulty-machines rnip))))))
             (:= SILENT silent-state)
-            (gl-break-silence (join (array 'A total of ' a2 ' NPC machines have been added to Map.conf!') ''))
+            (mari-printline (array 'A total of ' a2 ' NPC machines have been added to Map.conf!'))
             (if (!= 0 (len faulty-machines)) (begin
-                (gl-break-silence 'Warning: these machines could not be rooted and you absolutely must root them and cover your traces yourself!')
+                (mari-printline 'Warning: these machines could not be rooted and you absolutely must root them and cover your traces yourself!')
                 (gl-break-silence (join faulty-machines ', '))))
-            'Note: it is adviced to run <b>kraken scrub</b> to avoid detection!')))
+            'Note: it is adviced to run <b>kraken scrub</b> to avoid detection!'))))
     (begin
         (KRAKEN a1 a2 a3 a4))))))
 
@@ -1275,7 +1297,12 @@
             ''
             '<u>Marinette specific functionality</u>'
             'You can now quickly get a list of available exploits without opening up a menu with <b>zap -l/list</b>!'
-            'Automatically detect players or administrators with <b>mimi</b>!')
+            'Automatically detect players or administrators with <b>mimi</b>!'
+            ''
+            '<u>Hooks</u>'
+            '<b>Marinette</b> intercepts this command and runs the following commands with it:'
+            '-- <b>undercover</b> to add <b>zap</b> object to the undercover-buffer'
+            '-- <b>mimi</b> to notify if there are players or administrators online on the object')
             (char 10))
     (if (!= null (indexOf (array '-l' 'list') a1))
         (ZAP '-r' '1337')
@@ -1302,7 +1329,7 @@
             '<b>zc -p/patch [user] [password] [path_to_lib_or_folder]</b> -- Auto-patch local libraries'
             '-- This action removes any orig and patch.zd it finds!'
             '-- It is highly adviced to remove any debugLibraries from your BUFFER before using this!'
-            '-- As of Marinette v0.1.5 this feature is experimental. Proceed at your own risk!')
+            (join (array '-- As of Marinette v' MARINETTE-GLS-VERSION ' this feature is experimental. Proceed at your own risk!') ''))
             (char 10))
     (if (!= null (indexOf (array '-i' 'info') a1)) (begin
         (def file ((|> file) '-r' a2))
@@ -1462,7 +1489,12 @@
             ''
             '<u>Marinette specific functionality</u>'
             'You can now open 5hell instead of a terminal with <b>prox -g/-G/ghost</b>!'
-            'This will run scrub beforehand!')
+            'This will run scrub beforehand!'
+            ''
+            '<u>Hooks</u>'
+            '<b>Marinette</b> intercepts this command and runs the following commands with it:'
+            '-- <b>undercover</b> to add <b>prox</b> object to the undercover-buffer'
+            '-- <b>mimi</b> to notify if there are players or administrators online on the object')
             (char 10))
     (if (!= null (indexOf (array '-g' '-G' 'ghost') a1)) (begin
         ((|> scrub))
@@ -1483,7 +1515,11 @@
             ''
             '<u>Marinette specific functionality</u>'
             'You can now get your HOME server shell with <b>ssh -H/home</b>!'
-            'Run <b>mimi</b> automatically when using <b>ssh</b>!')
+            'Run <b>mimi</b> automatically when using <b>ssh</b>!'
+            ''
+            '<u>Hooks</u>'
+            '<b>Marinette</b> intercepts this command and runs the following commands with it:'
+            '-- <b>mimi</b> to notify if there are players or administrators online on the object')
             (char 10))
     (if (!= null (indexOf (array '-H' 'home') a1)) (begin
         (def user (at (@ HOME) 'user'))
@@ -1722,7 +1758,8 @@
         (def macro-string (join (array 'glosure -e (gl-get-rkit) | file -p | grep -p ' name-re ' | gls') ''))
         ((|> macro) '-s' macro-name macro-string))))))
 
+
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.2.6')
+(def MARINETTE-GLS-VERSION '0.2.8')
 (mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is loaded at ' (def MARINETTE-GLS-TIME (- (time) MARINETTE-GLS-TIME)) '! \\(^.^)/' (: CT)))
 (def DO-GLS-TIME (time))
