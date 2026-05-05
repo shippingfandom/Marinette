@@ -1,6 +1,6 @@
 # Marinette Reference
 
-This reference covers the functions, macros, and commands provided by Marinette.
+This reference covers the functions, macros, and (some of the) commands provided by Marinette.
 
 ---
 
