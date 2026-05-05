@@ -179,5 +179,5 @@
 ;; -- It is highly recommended to leave this printing for the ease of bug reporting
 ;; -- If you remove DO-GLS-VERSION definition line, 5hell will crash if you attempt
 ;;    to issue marinette command
-(def DO-GLS-VERSION '0.2.3')
+(def DO-GLS-VERSION '0.2.4')
 (gl-break-silence (join (array (: colorGold) '[Marinette Configuration] Marinette configuration v' DO-GLS-VERSION ' is loaded at ' (def DO-GLS-TIME (- (time) DO-GLS-TIME)) '! \\(^.^)/' (: CT)) ''))
