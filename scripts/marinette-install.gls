@@ -16,7 +16,7 @@
         (if (== 2 choice)
             (bash-install)
         (if (== 'q' choice)
-            'Удачкиии~ (^.^)v'
+            'Удачкиии~ .( ^.^)v'
         (begin
             (gl-break-silence 'Incorrect choice!')
             ((|> pause) '-m')))))))))
@@ -25,7 +25,8 @@
     (do-while (== null (indexOf choices choice)) (begin
         (def users (array))
         (if (== 'file' (typeof ((|> file) '-r' '/home'))) (begin
-            ((|> enum) ((|> string) '-l' '\n' ((|> ls) '-r' '/home')))
+            ((|> purge) '-e' 'y')
+            ((|> enum) ((|> ls) '-r' '/home'))
             (def users ((|> enum) '-e'))))
         (def choices (indexes users))
         (foreach idx val choices
@@ -63,6 +64,7 @@
         (def user-input (user_input '> '))))
     ((|> kore) '-r')
     (def user-home (gl-pathcat (array '/home' user)))
+(gl-break-silence (array user-home))
     ((|> cp) '/root/rkit' user-home)
     (def user-rkit (gl-pathcat (array user-home 'rkit')))
     ((|> usr) '-r' 'guest' user-rkit)
