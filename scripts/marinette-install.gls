@@ -64,7 +64,6 @@
         (def user-input (user_input '> '))))
     ((|> kore) '-r')
     (def user-home (gl-pathcat (array '/home' user)))
-(gl-break-silence (array user-home))
     ((|> cp) '/root/rkit' user-home)
     (def user-rkit (gl-pathcat (array user-home 'rkit')))
     ((|> usr) '-r' 'guest' user-rkit)
