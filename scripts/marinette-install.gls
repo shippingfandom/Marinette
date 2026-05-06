@@ -25,7 +25,7 @@
     (do-while (== null (indexOf choices choice)) (begin
         (def users (array))
         (if (== 'file' (typeof ((|> file) '-r' '/home'))) (begin
-            ((|> enum) ((|> string) '-l' '@10' ((|> ls) '-r' '/home')))
+            ((|> enum) ((|> string) '-l' '\n' ((|> ls) '-r' '/home')))
             (def users ((|> enum) '-e'))))
         (def choices (indexes users))
         (foreach idx val choices
