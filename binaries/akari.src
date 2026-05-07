@@ -20,6 +20,7 @@ getCloudExploitAPI = function(metaxploit) //rocketorbit's exploit database api.
         if maxDepth == 0 then return true
         if @anyObject isa map or @anyObject isa list then
             for key in indexes(@anyObject)
+                if @key == "akari" then continue
                 if not recursiveCheck(@key, maxDepth - 1) then return false
             end for
             for val in values(@anyObject)
@@ -37,7 +38,7 @@ getCloudExploitAPI = function(metaxploit) //rocketorbit's exploit database api.
     
     clearInterface = function(interface)
         for k in indexes(interface)
-            if @k == "classID" or @k == "__isa" then continue
+            if @k == "classID" or @k == "__isa" or @k == "akari" then continue
             remove(interface, @k)
         end for
         if not recursiveCheck(@interface) then exit("<color=red>WARNING, API MAY HAVE BEEN POISONED, ABORTING.</color>")
@@ -69,7 +70,7 @@ getCloudExploitAPI = function(metaxploit) //rocketorbit's exploit database api.
         self.interface.ret = null
         self.interface.args = ["scanMetaLib", metaLib]
         if typeof(self.connection) == "shell" then self.connection.launch("/interfaces/exploitAPI")
-        print("IF YOU SEE ANY WEIRD OUTPUT ABOVE (ESPECIALLY OVERFLOW PROMPT), OR IF YOUR TERMINAL WAS CLEARED (OUTPUT SHOULD ONLY BE A PROGRESS BAR, NOTHING MORE NOTHING LESS), IT MEANS THE SERVER WAS HACKED AND YOU NEED TO STOP USING THIS API RIGHT NOW, AND CONTACT DISCORD:rocketorbit IMMEDIATELY.")
+        print("IF YOU SEE ANY WEIRD OUTPUT ABOVE (ESPECIALLY OVERFLOW PROMPT), OR IF YOUR TERMINAL WAS CLEARED (OUTPUT SHOULD ONLY BE A PROGRESS BAR, NOTHING MORE NOTHING LESS), IT MEANS THE SERVER WAS HACKED AND YOU NEED TO STOP USING THIS API RIGHT NOW.")
         if hasIndex(self.interface, "ret") and @self.interface.ret != null and recursiveCheck(@self.interface.ret) then
             ret = @self.interface.ret
             clearInterface(self.interface)
@@ -194,6 +195,7 @@ getRshellAPI = function(metaxploit)
         if maxDepth == 0 then return true
         if @anyObject isa map or @anyObject isa list then
             for key in indexes(@anyObject)
+                if @key == "akari" then continue
                 if not recursiveCheck(@key, maxDepth - 1) then return false
             end for
             for val in values(@anyObject)
@@ -211,7 +213,7 @@ getRshellAPI = function(metaxploit)
     
     clearInterface = function(interface)
         for k in indexes(interface)
-            if @k == "classID" or @k == "__isa" then continue
+            if @k == "classID" or @k == "__isa" or @k == "akari" then continue
             remove(interface, @k)
         end for
         if not recursiveCheck(@interface) then exit("<color=red>WARNING, API MAY HAVE BEEN POISONED, ABORTING.</color>")
@@ -486,22 +488,25 @@ actions = function(result, targetPublicIp, port, targetLocalIp, k, v)
     if port == 0 and router.local_ip != targetLocalIp and resultType != "computer" then return null
 
     // _(o.o )_ Akari compatibility code with 5hell/Marinette _( o.o)_
-    IsString = function(strRef)
+    locals.lastIndexOf = @lastIndexOf
+    locals.IsString = function(strRef)
         return lastIndexOf(@strRef, "") != null
     end function
 
-    IsFunction = function(funcRef)
-        notStrRef = not outer.IsString(@funcRef)
-        sigRef = @funcRef + ""
-        isStrSigRef = outer.IsString(@sigRef)
+    locals.is_match = @is_match
+    locals.IsFunction = function(fRef)
+        notStrRef = not IsString(@fRef)
+        sigRef = @fRef + ""
+        isStrSigRef = IsString(@sigRef)
         return notStrRef and isStrSigRef and is_match(@sigRef, "^FUNCTION(.*)$")
     end function
 
-    IsList = function(listRef)
-        notStrRef = not outer.IsString(@listRef)
-        notFuncRef = not outer.IsFunction(@listRef)
-        aPotentialListRef = outer.IsString(join(@listRef, ""))
-        return notStrRef and notFuncRef and aPotentialListRef
+    locals.join = @join
+    locals.IsList = function(listRef)
+        notStrRef = not IsString(@listRef)
+        notfRef = not IsFunction(@listRef)
+        aPotentialListRef = IsString(join(@listRef, ""))
+        return notStrRef and notfRef and aPotentialListRef
     end function
 
     if not hasIndex(get_custom_object, "akari") or not IsList(@get_custom_object.akari) then
@@ -537,16 +542,24 @@ actions = function(result, targetPublicIp, port, targetLocalIp, k, v)
         print("escalate failed.")
     end if
     if permission == "root" then
-        print("Without a shell object you usually can not finish a mission.")
-        print("However you can enter Y to wipe this system if you are doing a corrupt data mission. (This does not actually delete anything, only rename them. Find and delete will fail, do not use wipe for find and delete.)")
-        choice = user_input("y/N> ").lower
-        if choice == "y" then
-            wipeSystem(toFile(result))
-            exit("Wiped system. script ends.")
+        if not hasIndex(globals, "keep_trying") then
+            print("Without a shell object you usually can not finish a mission.")
+            print("However you can enter Y to wipe this system if you are doing a corrupt data mission. (This does not actually delete anything, only rename them. Find and delete will fail, do not use wipe for find and delete.)")
+            choice = user_input("y/N> ").lower
+            if choice == "y" then
+                wipeSystem(toFile(result))
+                exit("Wiped system. script ends.")
+            end if
+            print("All info gathered. Try openRshell to get a shell access.")
+            print("Enter Y to keep trying to get a root shell or enter N to quit to the 5hell!")
+            globals.keep_trying = user_input("y/N> ").lower
+            if globals.keep_trying != "y" then
+                exit("Quiting to 5hell.")
+            end if
+        else
+            print("Trying further to get a root shell...")
         end if
-        print("All info gathered. Try openRshell to get a shell access.")
     end if
-    return print("Trying further to get the root shell...")
 end function
 
 payload = "
