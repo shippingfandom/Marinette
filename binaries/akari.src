@@ -546,6 +546,7 @@ actions = function(result, targetPublicIp, port, targetLocalIp, k, v)
         end if
         print("All info gathered. Try openRshell to get a shell access.")
     end if
+    return print("Trying further to get the root shell...")
 end function
 
 payload = "
