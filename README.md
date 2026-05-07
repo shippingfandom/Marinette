@@ -67,7 +67,7 @@ To install **Marinette**, follow these simple instructions:
 1. Ensure you have **/root/rkit/do.rc** file. If you haven't, issue `kore -r` **as root**. Skip tables generation as it will make the process A LOT longer! ⏳
 2. Add [these simple lines](do.rc) at the end of **do.rc** 📝
 3. Close **5hell** and run her again. This will generate **marinette** folder structure in your **/root/rkit/** 🗂
-4. Go to **/root/rkit/marinette/glosure** and paste in [5hell.gls](glosure/5hell.clj), [do.gls](glosure/do.clj), [marinette.gls](glosure/marinette.clj), one by one ✏️
+4. Go to **/root/rkit/marinette/glosure** and paste in [5hell.gls](glosure/5hell.gls), [do.gls](glosure/do.gls), [marinette.gls](glosure/marinette.gls), one by one ✏️
 5. Close **5hell** and run her again 💻
 
 After this, you may want to copy over [/root/rkit/marinette/ascii.txt](notepads/ascii.txt) as well as [/root/rkit/marinette/themes/soft.src](themes/soft.src) for a bit of personalization 🙂
@@ -90,6 +90,7 @@ Now you may would want to do one of the following things:
 - Change **5hell** theme. Read themeing section in **/root/rkit/marinette/glosure/do.gls** and choose a theme from [themes](themes) 🏁
 - Change **Marinette** ascii art at startup. Simply change the contents of **/root/rkit/marinette/notepads/ascii.txt**!
 - Place some [scripts](scripts) to **/root/rkit/marinette/scripts** for you to issue with `%script-name` 📄
+- Get yourself a repository, some hacking binaries and an NPC proxy with [setup-v2.gls](scripts/setup-v2.gls) 👀
 - Install **Marinette** as your **user** or as **/bin/bash** replacement with [marinette-install.gls](scripts/marinette-install.gls) 🐞
 
 Happy hacking! 👾
@@ -124,7 +125,7 @@ I'm absolutely sure something is still missing in here... Guess we'll see! 😅
 **Marinette** wouldn't be possible without you! Big thanks to *all* of you! 💖
 
 - Thanks [Plu70](https://github.com/jhook777) for [5hell](https://github.com/jhook777/5hell-for-Grey-Hack-the-Game)!
-- Thanks [mahocitrus](https://github.com/mahocitrus) for [Glosure](https://github.com/mahocitrus/Glosure)!
+- Thanks [mahocitrus](https://github.com/mahocitrus) for [Glosure](https://github.com/mahocitrus/Glosure) and [Akari](https://github.com/mahocitrus/Akari-Grey-Hack-Tool)!
 - Thanks [Arc8ne](https://github.com/Arc8ne) for the [extracted documentation](https://github.com/Arc8ne/5hell-Documentation-Extractor/blob/main/5hell-Documentation.md)!
 - Thanks [ayecue](https://github.com/ayecue) for [Greybel-JS](https://github.com/ayecue/greybel-js)!
 

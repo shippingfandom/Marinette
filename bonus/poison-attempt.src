@@ -1,0 +1,60 @@
+cob = get_custom_object
+
+
+globals.lastIndexOf = function(a1, a2, a3, a4, a5, a6)
+    print [a1, a2, a3, a4, a5, a6]
+    print "lastIndexOf() posioned"
+end function
+
+globals.IsString = function(a1, a2, a3, a4, a5, a6)
+    print [a1, a2, a3, a4, a5, a6]
+    print "IsString() posioned"
+end function
+
+globals.is_match = function(a1, a2, a3, a4, a5, a6)
+    print [a1, a2, a3, a4, a5, a6]
+    print "is_match() posioned"
+end function
+
+globals.IsFunction = function(a1, a2, a3, a4, a5, a6)
+    print [a1, a2, a3, a4, a5, a6]
+    print "IsFunction() posioned"
+end function
+
+globals.join = function(a1, a2, a3, a4, a5, a6)
+    print [a1, a2, a3, a4, a5, a6]
+    print "join() posioned"
+end function
+
+globals.IsList = function(a1, a2, a3, a4, a5, a6)
+    print [a1, a2, a3, a4, a5, a6]
+    print "IsList() posioned"
+end function
+
+
+Func = function
+	print "I am malicious!"
+end function
+
+
+print "-- IsString() --"
+print [null, cob.IsString(null)]
+print [1337, cob.IsString(1337)]
+print ["hiiiii", cob.IsString("hiiiii")]
+print [[], cob.IsString([])]
+print [{}, cob.IsString({})]
+print [@Func, cob.IsString(@Func)]
+print "-- IsFunction() --"
+print [null, cob.IsFunction(null)]
+print [1337, cob.IsFunction(1337)]
+print ["hiiiii", cob.IsFunction("hiiiii")]
+print [[], cob.IsFunction([])]
+print [{}, cob.IsFunction({})]
+print [@Func, cob.IsFunction(@Func)]
+print "-- IsList() --"
+print [null, cob.IsList(null)]
+print [1337, cob.IsList(1337)]
+print ["hiiiii", cob.IsList("hiiiii")]
+print [[], cob.IsList([])]
+print [{}, cob.IsList({})]
+print [@Func, cob.IsList(@Func)]
