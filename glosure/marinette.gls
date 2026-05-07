@@ -180,8 +180,7 @@
         (def columns (join (array columns (char 10) (join (slice rest (* i 8) (* (+ i 1) 8)) ' ')) ''))))
     (def lines (split (format_columns columns) (char 10)))
     (foreach idx line lines (begin
-        (set lines idx (join (array (: colorWhite) line (: CT)) ''))))
-    (join lines (char 10))
+        (set lines idx (join (array (: colorWhite) line) ''))))
     (def return (join (array
         (join (array (: colorGold) '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -' (: CT)) '')
         (join lines (char 10))
@@ -312,6 +311,16 @@
     (if (!= '1' ((|> cob) 'get' 'time-shown?')) (begin
         ((|> cob) 'set' 'time-shown?' '1')
         (mari-printline (array 'It took ' (sum (array SHELL-GLS-TIME MARINETTE-GLS-TIME DO-GLS-TIME)) ' for <b>Marinette</b> to load <b>.(-.0 ).</b>'))))))
+
+(defun mari-backup-dict (dictionary) (begin
+    (def return (dict))
+    (foreach key value dictionary (begin
+        (set return key value)))
+    return))
+
+(defun mari-restore-dict (dictionary backup) (begin
+    (foreach key value backup (begin
+        (set dictionary key value)))))
 
 
 
@@ -1106,6 +1115,74 @@
                     (:= SILENT silent-state)
                     null))))))))
 
+(|= akari (a1 a2 a3 a4)
+    (if (!= null (indexOf (array '-h' 'help') a1)) (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
+        (def rkit-marinette-binaries-path ((|> file) '-p' (gl-grep-into (array '^marinette$' '^binaries$') (gl-get-rkit))))
+        (:= SILENT silent-state)
+        (join (array
+            '<u>Marinette || smartNPChackingTool || Akaza Akari || rocketorbit || mahocitrus</u>'
+            ''
+            '<b>akari</b> -- A smart NPC hacking tool by Akaza Akari'
+            '-- Now open source, localized and integrated into the Marinette!'
+            '-- This command requires you to setup an additional binary, see below for a little how-to'
+            ''
+            '<b>Usage: akari [public_address] [local_address]</b> -- Hack into the target at the specified addresses'
+            '-- Hacks every port local_address exposes to the public'
+            '-- If it gathers a shell, attempts to escalate it'
+            '-- Quits on successfull root shell'
+            '-- Marinette intercepts everything <b>akari</b> hacks and pushes it to the <b>BUFFER</b>'
+            ''
+            '<u>Additional binary setup instructions</u>'
+            '-- Copy the source code of the modified <b>akari</b> into the game; see below for the source code!'
+            '---- The modification is needed for Marinette to be able to intercept objects from <b>akari</b>'
+            '---- An attempt to use unmodified <b>akari</b> binary will make Marinette unable to accomplish the above!' 
+            (join (array '-- Compile the source code and save the binary as <b>' (gl-pathcat (array rkit-marinette-binaries-path 'akari')) '</b>') '')
+            (join (array '-- Close ' (join (array (: colorRed) '5hell' (char 8482) (: CT)) '') ' and run her again') '')
+            ''
+            'Here is the source code of the modification (0.0 )'
+            '<b>https://github.com/shippingfandom/Marinette/blob/main/binaries/akari.src</b>')
+            (char 10)))
+    (if (+ (!= 1 (is_valid_ip a1)) (!= 0 (is_lan_ip a1)))
+        (join (array
+            'akari: need a public address as the first argument.'
+            'See <b>akari -h</b> for more info!')
+            (char 10))
+    (if (+ (!= 1 (is_valid_ip a2)) (!= 1 (is_lan_ip a2)))
+        (join (array
+            'akari: need a local address as the second argument.'
+            'See <b>akari -h</b> for more info!')
+            (char 10))
+    (begin
+        (def silent-state (: SILENT))
+        (:= SILENT 2)
+        (def rkit (gl-get-rkit))
+        (def rkit-marinette-binaries (gl-grep-into (array '^marinette$' '^binaries$') rkit))
+        (def akari (mari-get-binary 'akari'))
+        (def crypto-path (gl-pathcat (array ((|> file) '-p' rkit) 'crypto.so')))
+        (def metaxploit-path (gl-pathcat (array ((|> file) '-p' rkit) 'metaxploit.so')))
+        (:= SILENT silent-state)
+        (if (== null akari)
+            (join (array
+                'akari: an additional binary setup is required.'
+                'See <b>akari -h</b> for more info!')
+                (char 10))
+        (begin
+            (def silent-state (: SILENT))
+            (:= SILENT 2)
+            ((|> cp) crypto-path rkit-marinette-binaries)
+            ((|> cp) metaxploit-path rkit-marinette-binaries)
+            (def backup (mari-backup-dict (get_custom_object)))
+            ((|> run) akari (join (array a1 a2) ' '))
+            (mari-restore-dict (get_custom_object) backup)
+            (def akari-intercepted-objects ((|> cob) 'get' 'akari'))
+            ((|> cob) 'del' 'akari')
+            (foreach _ object akari-intercepted-objects (begin
+                (push ((|> bios) '-B') object)))
+            (:= SILENT silent-state)
+            akari-intercepted-objects)))))))
+
 
 ;; Hooks
 ;; -- Change the behaviour of the existing command, hopefully without breaking anything
@@ -1357,8 +1434,7 @@
                         (if (== 1 ((_ metalib is_patched) metalib))
                             'patched'
                             'unpatched')
-                        ((_ metalib is_patched) metalib 1)
-                        ) ' ')))))
+                        ((_ metalib is_patched) metalib 1)) ' ')))))
             (:= SILENT silent-state)
             (if (> (len info) 0)
                 (+ (char 10) (format_columns (join (+ (array 'LIBRARY VERSION STATUS DATE') info) (char 10))))))))
@@ -1760,6 +1836,6 @@
 
 
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.2.8')
+(def MARINETTE-GLS-VERSION '0.2.9')
 (mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is loaded at ' (def MARINETTE-GLS-TIME (- (time) MARINETTE-GLS-TIME)) '! \\(^.^)/' (: CT)))
 (def DO-GLS-TIME (time))
