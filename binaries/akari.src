@@ -20,7 +20,6 @@ getCloudExploitAPI = function(metaxploit) //rocketorbit's exploit database api.
         if maxDepth == 0 then return true
         if @anyObject isa map or @anyObject isa list then
             for key in indexes(@anyObject)
-                if @key == "akari" then continue
                 if not recursiveCheck(@key, maxDepth - 1) then return false
             end for
             for val in values(@anyObject)
@@ -38,7 +37,7 @@ getCloudExploitAPI = function(metaxploit) //rocketorbit's exploit database api.
     
     clearInterface = function(interface)
         for k in indexes(interface)
-            if @k == "classID" or @k == "__isa" or @k == "akari" then continue
+            if @k == "classID" or @k == "__isa" then continue
             remove(interface, @k)
         end for
         if not recursiveCheck(@interface) then exit("<color=red>WARNING, API MAY HAVE BEEN POISONED, ABORTING.</color>")
@@ -70,7 +69,7 @@ getCloudExploitAPI = function(metaxploit) //rocketorbit's exploit database api.
         self.interface.ret = null
         self.interface.args = ["scanMetaLib", metaLib]
         if typeof(self.connection) == "shell" then self.connection.launch("/interfaces/exploitAPI")
-        print("IF YOU SEE ANY WEIRD OUTPUT ABOVE (ESPECIALLY OVERFLOW PROMPT), OR IF YOUR TERMINAL WAS CLEARED (OUTPUT SHOULD ONLY BE A PROGRESS BAR, NOTHING MORE NOTHING LESS), IT MEANS THE SERVER WAS HACKED AND YOU NEED TO STOP USING THIS API RIGHT NOW.")
+        print("IF YOU SEE ANY WEIRD OUTPUT ABOVE (ESPECIALLY OVERFLOW PROMPT), OR IF YOUR TERMINAL WAS CLEARED (OUTPUT SHOULD ONLY BE A PROGRESS BAR, NOTHING MORE NOTHING LESS), IT MEANS THE SERVER WAS HACKED AND YOU NEED TO STOP USING THIS API RIGHT NOW, AND CONTACT DISCORD:rocketorbit IMMEDIATELY.")
         if hasIndex(self.interface, "ret") and @self.interface.ret != null and recursiveCheck(@self.interface.ret) then
             ret = @self.interface.ret
             clearInterface(self.interface)
@@ -195,7 +194,6 @@ getRshellAPI = function(metaxploit)
         if maxDepth == 0 then return true
         if @anyObject isa map or @anyObject isa list then
             for key in indexes(@anyObject)
-                if @key == "akari" then continue
                 if not recursiveCheck(@key, maxDepth - 1) then return false
             end for
             for val in values(@anyObject)
@@ -213,7 +211,7 @@ getRshellAPI = function(metaxploit)
     
     clearInterface = function(interface)
         for k in indexes(interface)
-            if @k == "classID" or @k == "__isa" or @k == "akari" then continue
+            if @k == "classID" or @k == "__isa" then continue
             remove(interface, @k)
         end for
         if not recursiveCheck(@interface) then exit("<color=red>WARNING, API MAY HAVE BEEN POISONED, ABORTING.</color>")
@@ -509,10 +507,11 @@ actions = function(result, targetPublicIp, port, targetLocalIp, k, v)
         return notStrRef and notfRef and aPotentialListRef
     end function
 
+    if not hasIndex(globals, "akari") then globals.akari = []
+    if result != null then push(globals.akari, result)
     if not hasIndex(get_custom_object, "akari") or not IsList(@get_custom_object.akari) then
-        get_custom_object.akari = []
+        get_custom_object.akari = globals.akari
     end if
-    if result != null then push(@get_custom_object.akari, result)
     // ^^^^^^ Akari compatibility code with 5hell/Marinette ^^^^^^
 
     permission = checkAccess(toFile(result))
@@ -641,7 +640,10 @@ for port in targetPorts
 end for
 print
 print("It seems like you did not get a shell from the target. No problem, the tool have openRshell support built-in. Let me check openRshell for you.")
-if not rshellAPI.testConnection then exit("Bad luck, openRshell service is down.")
+if not rshellAPI.testConnection then
+    get_custom_object.akari = globals.akari
+    exit("Bad luck, openRshell service is down.")
+end if
 print("openRshell service is online! IP is " + nslookup("www.OpenRshell.org_must_be_here"))
 print("If you do not know what openRshell is yet, it is a service that allows you to use rshell to hack NPCs without setting up your own rshell server.")
 print("All you have to do is to scroll above and try to find two mails. You log into one of them and send funny game to another, IP is <b>" + nslookup("www.OpenRshell.org_must_be_here") + "</b>, port is <b>1222</b>.")
