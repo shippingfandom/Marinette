@@ -599,37 +599,60 @@
         (if (+ (== 'shell' (typeof a2)) (== 'computer' (typeof a2))) (begin
             (def object a2)
             (def object-type (typeof object))
+            (def object-type-priority
+                (if (== 'computer' object-type)
+                    0
+                (if (== 'shell' object-type)
+                    1)))
             (def user ((: checkUser) object))
+            (def user-priority
+                (if (== 'guest' user)
+                    0
+                (if (== 'root' user)
+                    2
+                (begin
+                    1))))
             (def public-address (mari-public-address object))
             (def local-address (mari-local-address object))
             (def tws-like (mari-format-tws-like object))
-            (def done? 0)
+            (def need-push? 1)
             (def buffer (mari-undercover-buffer))
             (for (def i 0) (< i (len buffer)) (++ i) (begin
                 (def buffer-object (at buffer i))
-                (def buffer-object-type (typeof object))
+                (def buffer-object-type (typeof buffer-object))
+                (def buffer-object-type-priority
+                    (if (== 'computer' buffer-object-type)
+                        0
+                    (if (== 'shell' buffer-object-type)
+                        1)))
                 (def buffer-user ((: checkUser) buffer-object))
+                (def buffer-user-priority
+                    (if (== 'guest' buffer-user)
+                        0
+                    (if (== 'root' buffer-user)
+                        2
+                    (begin
+                        1))))
                 (def buffer-public-address (mari-public-address buffer-object))
                 (def buffer-local-address (mari-local-address buffer-object))
                 (def buffer-tws-like (mari-format-tws-like buffer-object))
-                (if (gl-all (array (== public-address buffer-public-address) (== local-address buffer-local-address))) (begin
-                    (if (+ (== user buffer-user) (+ (== null (indexOf (array 'guest' 'root') user)) (== null (indexOf (array 'guest' 'root') user)))) (begin
+                (if (* (== public-address buffer-public-address) (== local-address buffer-local-address)) (begin
+                    (if (+ (< buffer-user-priority user-priority) (* (== buffer-user-priority user-priority) (< buffer-object-type-priority object-type-priority))) (begin
                         (set buffer i object)
-                        (mari-printline (array 'Updated ' (: colorOlive) '[' i ']' (: CT)  buffer-tws-like ' in the ' (: colorOlive) 'undercover-buffer' (: CT) '!'))
-                        (def done? 1))
-                    (if (+ (* (== 'root' user) (!= 'root' buffer-user)) (* (== null (indexOf (array 'guest' 'root') user)) (== 'guest' buffer-user))) (begin
-                        (set buffer i object)
-                        (mari-printline (array 'Upgraded ' (: colorOlive) '[' i ']' (: CT) buffer-tws-like ' to ' tws-like ' in the ' (: colorOlive) 'undercover-buffer' (: CT) '!'))
-                        (def done? 1))))))))
-            (if (== 0 done?) (begin
+                        (mari-printline (array 'Replaced ' (: colorOlive) '[' i ']' (: CT) buffer-tws-like ' with ' tws-like ' in the ' (: colorOlive) 'undercover-buffer' (: CT) '!'))
+                        (def need-push? 0))
+                    (if (>= buffer-user-priority user-priority) (begin
+                        (mari-printline (array 'Skipped ' tws-like ' as there is already an equivalent or better object at ' (: colorOlive) '[' i ']' (: CT) buffer-tws-like ' in the ' (: colorOlive) 'undercover-buffer' (: CT) '!'))
+                        (def need-push? 0))))))))
+            (if (== 1 need-push?) (begin
                 (push buffer object)
                 (mari-printline (array 'Pushed ' tws-like ' to the ' (: colorOlive) 'undercover-buffer' (: CT) '!'))
-                (def done? 1)))
-            done?)
+                (def need-push? 0)))
+            need-push?)
         (if (== 0 a2) (begin
             (def buffer (mari-undercover-buffer))
             (def return '')
-            (for (def i 0) (< i (len buffer)) (++ i) (begin
+            (for (def i (- (len buffer) 1)) (>= i 0) (-- i) (begin
                 (def object (at buffer i))
                 (def tws-like (mari-format-tws-like object))
                 (def return (join (array return (char 10) (: colorOlive) '[' i ']' (: CT) tws-like) ''))))
@@ -1836,6 +1859,6 @@
 
 
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.2.9')
+(def MARINETTE-GLS-VERSION '0.3.0')
 (mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is loaded at ' (def MARINETTE-GLS-TIME (- (time) MARINETTE-GLS-TIME)) '! \\(^.^)/' (: CT)))
 (def DO-GLS-TIME (time))
