@@ -1,0 +1,119 @@
+Error = function(msg) //This is up to implementation to decide.
+    return exit("<color=red><noparse>" + @msg + "</noparse></color>") //reference implementation simply panics. 
+end function
+reader = function(codeStr) //code string to s-expression
+    newline = char(10)
+    whitespace = ", " + char(9) + newline + char(13) // \t, \n, \r
+    delimiters = " .'();" + char(9) + newline + char(13)
+    numbers = "0123456789."
+
+    // Precompute tables
+    isWs = {}
+    isDel = {}
+    isNum = {}
+    i = 0; while i < whitespace.len; isWs[whitespace[i]] = 1; i = i + 1; end while
+    i = 0; while i < delimiters.len; isDel[delimiters[i]] = 1; i = i + 1; end while
+    i = 0; while i < numbers.len; isNum[numbers[i]] = 1; i = i + 1; end while
+
+    len = codeStr.len
+    pos = 0
+    stack = [[]]
+
+    while pos < len
+        c = codeStr[pos]
+        pos = pos + 1
+
+        if isWs.hasIndex(c) then //ignore whitespace
+            // skip
+        else if c == "(" then //parse a new list
+            stack.push([])
+        else if c == ")" then //end a list
+            if stack.len < 2 then return Error("Glosure: Error: Unbalanced parenthesis.")
+            top = stack.pop
+            stack[-1].push(top)
+        else if isNum.hasIndex(c) then //tokenize number
+            start = pos - 1
+            while pos < len and isNum.hasIndex(codeStr[pos])
+                pos = pos + 1
+            end while
+            stack[-1].push(val(codeStr[start:pos]))
+        else if c == "'" then //tokenize string
+            start = pos - 1
+            while pos < len and codeStr[pos] != "'"
+                if codeStr[pos] == "\" then pos = pos + 1
+                pos = pos + 1
+            end while
+            if pos < len and codeStr[pos] == "'" then pos = pos + 1
+            stack[-1].push(codeStr[start:pos])
+        else if c == ";" then //ignore comment
+            while pos < len and codeStr[pos] != newline
+                pos = pos + 1
+            end while
+            if pos < len and codeStr[pos] == newline then pos = pos + 1
+        else //tokenize symbol
+            start = pos - 1
+            while pos < len and not isDel.hasIndex(codeStr[pos])
+                pos = pos + 1
+            end while
+            stack[-1].push(codeStr[start:pos])
+        end if
+    end while
+
+    if stack.len != 1 then return Error("Glosure: Error: Unbalanced parenthesis.")
+    return ["begin"] + stack[0]
+end function
+
+// Inverse of reader() - converts S-expression tokens back to string representation
+codify = function(tokens)
+    unread = function(tokens)
+        if tokens == null then return "null"
+
+        // Handle different token types
+        if typeof(tokens) == "number" then
+            return str(tokens)
+        else if typeof(tokens) == "string" then
+            // Check if it's a quoted string (starts and ends with ')
+            if tokens.len >= 2 and tokens[0] == "'" and tokens[-1] == "'" then
+                return tokens
+            else
+                // Check if it contains special characters that need quoting
+                needs_quoting = false
+                for i in tokens.indexes
+                    c = tokens[i]
+                    if c == " " or c == "(" or c == ")" or c == ";" or c == "'" or c == "\" or c == char(9) or c == char(10) or c == char(13) then
+                        needs_quoting = true
+                        break
+                    end if
+                end for
+                if needs_quoting then
+                    return "'" + tokens + "'"
+                else
+                    return tokens
+                end if
+            end if
+        else if typeof(tokens) == "list" then
+            // Handle empty list
+            if tokens.len == 0 then return "()"
+
+            // Recursively convert each element
+            result = []
+            for elem in tokens
+                result.push(unread(elem))
+            end for
+
+            return "(" + result.join(" ") + ")"
+        else
+            return str(tokens)
+        end if
+    end function
+    return unread(tokens[1:])[1:-1]
+end function
+
+
+
+
+sourceName = params[0]
+codeStr = get_shell.host_computer.File(sourceName).get_content
+outFileName = sourceName[:-4] + "-out.gls"
+get_shell.host_computer.touch(parent_path(program_path), outFileName)
+get_shell.host_computer.File(outFileName).set_content(codify(reader(codeStr)))
