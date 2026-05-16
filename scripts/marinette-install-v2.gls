@@ -8,13 +8,10 @@
 (defun AvailableUsers () (begin
     (def users (array))
     (if (== (typeof ((at (at globals 'command') 'file') '-r' '/home')) 'file') (begin
-    ((at (at globals 'command') 'purge') '-e' 'y')
-    ((at (at globals 'command') 'enum') ((at (at globals 'command') 'ls') '-r' '/home'))
-    (def users ((at (at globals 'command') 'enum') '-e'))))
-    (if (== (typeof users) 'list') (begin
-    users)
-(begin
-    (array)))))
+    (def homeDirectory ((at ((at (at globals 'command') 'ls') '-r' '/home') 'split') ((at (at globals 'command') 'ls') '-r' '/home') (char 10)))
+    (foreach _ user homeDirectory (begin
+    ((at users 'push') users ((at user 'trim') user))))))
+    users))
 (defun MainMenu () (begin
     ((at (at globals 'command') 'clear'))
     (def header (array '<u>Marinette installation script (0.0 )</u>' '' 'Please choose an option below!' '' '1. User install [Install for non-root user]' '2. Bash install [Install as your bash replacement]' 'q. Quit the installation script' ''))

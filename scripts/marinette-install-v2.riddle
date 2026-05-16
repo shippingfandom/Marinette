@@ -17,15 +17,12 @@ defun RandomAffirmation() {
 defun AvailableUsers() {
     users = [];
     if typeof(globals.command.file("-r", "/home")) == "file" {
-        globals.command.purge("-e", "y");
-        globals.command.enum(globals.command.ls("-r", "/home"));
-        users = globals.command.enum("-e");
+        homeDirectory = globals.command.ls("-r", "/home")->split(char(10));
+        foreach _ user in homeDirectory {
+            users->push(user->trim());
+        }
     }
-    if typeof(users) == "list" {
-        return users;
-    } else {
-        return [];
-    }
+    return users;
 }
 
 
