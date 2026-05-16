@@ -90,8 +90,8 @@ Now you may would want to do one of the following things:
 - Change **5hell** theme. Read themeing section in **/root/rkit/marinette/glosure/do.gls** and choose a theme from [themes](themes) 🏁
 - Change **Marinette** ascii art at startup. Simply change the contents of **/root/rkit/marinette/notepads/ascii.txt**!
 - Place some [scripts](scripts) to **/root/rkit/marinette/scripts** for you to issue with `%script-name` 📄
-- Get yourself a repository, some hacking binaries and an NPC proxy with [setup-v2.gls](scripts/setup-v2.gls) 👀
-- Install **Marinette** as your **user** or as **/bin/bash** replacement with [marinette-install.gls](scripts/marinette-install.gls) 🐞
+- Get yourself a repository, some hacking binaries and an NPC proxy with [setup-v3.gls](scripts/setup-v3.gls) 👀
+- Install **Marinette** as your **user** or as **/bin/bash** replacement with [marinette-install-v2.gls](scripts/marinette-install-v2.gls) 🐞
 
 Happy hacking! 👾
 
