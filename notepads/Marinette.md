@@ -1,4 +1,4 @@
-# Marinette Reference
+﻿# Marinette Reference
 
 This reference covers functions, macros, and (some of the) commands provided by Marinette.
 
