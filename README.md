@@ -72,6 +72,8 @@ To install **Marinette**, follow these simple instructions:
 
 After this, you may want to copy over [/root/rkit/marinette/ascii.txt](notepads/ascii.txt) as well as [/root/rkit/marinette/themes/soft.src](themes/soft.src) for a bit of personalization 🙂
 
+You may as well use [minified releases](https://github.com/shippingfandom/Marinette/releases) for a bit faster startup times 👀
+
 Or, if you're feeling adventurous, you can try an alternative way, using [Greybel-JS](https://github.com/ayecue/greybel-js):
 1. Repeat steps 1 and 2 from the above 👆
 2. Download the source code of Marinette to your computer and unarchive it 📚
