@@ -88,6 +88,7 @@
     ((at (at globals 'command') 'pause') '-m')
     (MainMenu)))
 (if (!= ((at (at globals 'command') 'whoami')) 'root') (begin
-    (mari-printline 'Root access is neccessary for this script!'))
+    (mari-printline 'Root access is neccessary for this script!')
+    null)
 (begin
     (MainMenu)))

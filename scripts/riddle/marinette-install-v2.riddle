@@ -149,6 +149,7 @@ defun BashInstall () {
 
 if globals.command.whoami() != "root" {
     mari-printline("Root access is neccessary for this script!");
+    null;
 } else {
     MainMenu();
 }

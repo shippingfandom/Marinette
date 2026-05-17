@@ -42,7 +42,7 @@
     ((at (at globals 'command') 'perms') 'g+rwx' '/usr/bin/AdminMonitor.exe')
     ((at (at globals 'command') 'perms') 'u+rwx' '/usr/bin/AdminMonitor.exe')))
     (def affirmation (RandomAffirmation))
-    (def header (array '<u>An important warning!</u>' '' 'You are about to be faced with <b>kore -r</b> prompt' 'In this prompt, you absolutely must simply press enter for a quick setup!' 'If you understand this, please enter this simple affirmation I have prepaired for you <3' '' (+ (+ '<b>' affirmation) '</b>') ''))
+    (def header (array '<u>An important warning!</u>' '' 'You are about to be faced with <b>kore -r</b> prompt' 'In this prompt, you absolutely must simply press enter for a quick setup!' 'After this, you may encounter <b>kraken</b> Map.conf prompt' 'It is <b>kraken</b> attempting to create Map.conf, so simply press enter as well' 'If you understand this, please enter this simple affirmation I have prepaired for you <3' '' (+ (+ '<b>' affirmation) '</b>') ''))
     (gl-break-silence ((at header 'join') header (char 10)))
     (while (!= affirmation (user_input ':: ')) (begin
     (gl-break-silence 'You filled an affirmation incorrectly!')
@@ -56,7 +56,8 @@
     (mari-printline 'The setup is done! <3')
     null))
 (if (!= ((at (at globals 'command') 'whoami')) 'root') (begin
-    (mari-printline 'Root access is neccessary for this script!'))
+    (mari-printline 'Root access is neccessary for this script!')
+    null)
 (begin
     (if (! multiplayer?) (begin
     (mari-printline 'Not in the multiplayer, running the stripped-down version...')

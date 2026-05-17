@@ -77,6 +77,8 @@ defun NetworkLogic() {
         "",
         "You are about to be faced with <b>kore -r</b> prompt",
         "In this prompt, you absolutely must simply press enter for a quick setup!",
+        "After this, you may encounter <b>kraken</b> Map.conf prompt",
+        "It is <b>kraken</b> attempting to create Map.conf, so simply press enter as well",
         "If you understand this, please enter this simple affirmation I have prepaired for you <3",
         "",
         "<b>" + affirmation + "</b>",
@@ -101,6 +103,7 @@ defun NetworkLogic() {
 
 if globals.command.whoami() != "root" {
     mari-printline("Root access is neccessary for this script!");
+    null;
 } else {
     if !multiplayer? {
         mari-printline("Not in the multiplayer, running the stripped-down version...");
