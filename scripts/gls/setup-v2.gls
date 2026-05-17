@@ -1,0 +1,48 @@
+(def multiplayer? (begin
+    ((|> kore) '--silent')
+    (def return (== 'file' ((|> type) ((|> file) '-r' '/usr/bin/Chat.exe'))))
+    ((|> kore) '--silent')
+    return))
+
+(defun check-network-connection () (begin
+    (!= 'No active network connection.' (trim ((|> ifconfig))))))
+
+
+(defun no-network-logic () (begin
+	(mari-printline (array 'No network connection, running the no network logic...'))
+    (while (== 0 (check-network-connection)) (begin
+        ((|> air))
+        (if (== 0 (check-network-connection)) (begin
+            (mari-printline (array 'Please connect to the network!'))
+            ((|> pause) '3')))))
+	((|> shell) 'exit " Awesome! Now run 5hell with this script again! (^.^ ) "')))
+
+(defun network-logic () (begin
+	(mari-printline (array 'Network connection is present, running the network logic...'))
+    (if multiplayer? (begin
+        (mari-printline (array 'Looking for three repositories...'))
+        ((|> do) '3' 'netstalk " ^.*>1542 .*>open .*>repository .*$ " | aptm -a')
+        (mari-printline (array 'Installing the hacking utilities...'))
+        ((|> aptm) '-i' 'crypto.so' '/lib')
+        ((|> aptm) '-i' 'metaxploit.so' '/lib')
+        ((|> aptm) '--hotswap')
+        ((|> aptm) '-i' 'AdminMonitor.exe' '/usr/bin')
+        ((|> perms) 'u+rwx' '/usr/bin/AdminMonitor.exe')
+        ((|> perms) 'g+rwx' '/usr/bin/AdminMonitor.exe')
+        ((|> perms) 'o+rwx' '/usr/bin/AdminMonitor.exe')))
+    (mari-printline (array 'Regenerating the rkit...'))
+    ((|> kore) '-r')
+    (if multiplayer? (begin
+        (mari-printline (array 'Making up proxy of three NPCs...'))
+        ((|> kraken) '-r' '3')
+        ((|> undercover) '-b' '-c')))
+    (mari-printline (array 'The setup is done! <3'))))
+
+
+(if (== 0 multiplayer?) (begin
+    (mari-printline 'Not in the multiplayer, running the stripped-down version...')
+    ((|> pause) '3')))
+(if (== 0 (check-network-connection))
+	((no-network-logic))
+(begin
+	((network-logic))))

@@ -1,0 +1,155 @@
+defun RandomAffirmation() {
+    affirmations = [
+        "Good is good enough",
+        "Kindness connects people",
+        "Every mistake is a lesson",
+        "Compassion needs no reason",
+        "Today holds quiet good things",
+        "Small steps lead to big change",
+        "Growth happens in stillness too",
+        "Help given freely lifts everyone",
+        "The world is full of second chances"
+    ];
+    affirmations->shuffle();
+    return affirmations->pull();
+}
+
+defun AvailableUsers() {
+    users = [];
+    if typeof(globals.command.file("-r", "/home")) == "file" {
+        homeDirectory = globals.command.ls("-r", "/home")->split(char(10));
+        foreach _ user in homeDirectory {
+            users->push(user->trim());
+        }
+    }
+    return users;
+}
+
+
+defun MainMenu() {
+    globals.command.clear();
+    header = [
+        "<u>Marinette installation script (0.0 )</u>",
+        "",
+        "Please choose an option below!",
+        "",
+        "1. User install [Install for non-root user]",
+        "2. Bash install [Install as your bash replacement]",
+        "q. Quit the installation script",
+        ""
+    ];
+    gl-break-silence(header->join(char(10)));
+    choice = to_int(user_input(":: "));
+    if choice == 1 {
+        return UserInstallMenu();
+    } else if choice == 2 {
+        return BashInstall();
+    } else if choice == "q" {
+        return "Удачкиии~ .( ^.^)v";
+    } else {
+        gl-break-silence("Incorrect choice!");
+        globals.command.pause("-m");
+        return MainMenu();
+    }
+}
+
+defun UserInstallMenu() {
+    users = AvailableUsers();
+    globals.command.clear();
+    header = [
+        "<u>User install mode</u>",
+        "",
+        "Select which user you want to install Marinette for!",
+        ""
+    ];
+    choices = [];
+    foreach index user in users {
+        header->push((index + 1) + ". " + user);
+        choices->push(index + 1);
+    }
+    header->push("q. Back to the main menu");
+    header->push("");
+    gl-break-silence(header->join(char(10)));
+    choice = to_int(user_input(":: "));
+    if choices->indexOf(choice) != null {
+        return UserInstall(users[choice - 1]);
+    } else if choice == "q" {
+        return MainMenu();
+    } else {
+        gl-break-silence("Incorrect choice!");
+        globals.command.pause("-m");
+        return UserInstallMenu();
+    }
+}
+
+defun UserInstall(user) {
+    globals.command.clear();
+    affirmation = RandomAffirmation();
+    header = [
+        "<u>An important warning!</u>",
+        "",
+        "You are about to be faced with <b>kore -r</b> prompt",
+        "In this prompt, you absolutely must simply press enter for a quick install!",
+        "If you understand this, please enter this simple affirmation I have prepaired for you <3",
+        "",
+        "<b>" + affirmation + "</b>",
+        ""
+    ];
+    gl-break-silence(header->join(char(10)));
+    while affirmation != user_input(":: ") {
+        gl-break-silence("You filled an affirmation incorrectly!");
+        gl-break-silence("Please try again, you got this!!!");
+    }
+    globals.command.kore("-r");
+    userHome = gl-pathcat(["/home", user]);
+    globals.command.cp("/root/rkit", userHome);
+    userRkit = gl-pathcat([userHome, "rkit"]);
+    globals.command.usr("-r", "guest", userRkit);
+    globals.command.grp("-r", "guest", userRkit);
+    globals.command.perms("-r", "o+rwx", userRkit);
+    globals.command.perms("-r", "g+rwx", userRkit);
+    globals.command.perms("-r", "u+rwx", userRkit);
+    gl-break-silence("");
+    mari-printline("User install is done!");
+    globals.command.pause("-m");
+    return UserInstallMenu();
+}
+
+defun BashInstall () {
+    globals.command.clear();
+    affirmation = RandomAffirmation();
+    header = [
+        "<u>An important warning!</u>",
+        "",
+        "As <b>/bin/bash</b>, <b>5hell</b> will load <b>Marinette</b> only from your user home directory!",
+        "So, if you have not done it already, you absolutely must perform user install for your computer user after this!",
+        "If you understand this, please enter this simple affirmation I have prepaired for you <3",
+        "",
+        "<b>" + affirmation + "</b>",
+        ""
+    ];
+    gl-break-silence(header->join(char(10)));
+    while affirmation != user_input(":: ") {
+        gl-break-silence("You filled an affirmation incorrectly!");
+        gl-break-silence("Please try again, you got this!!!");
+    }
+    shell = program_path();
+    globals.command.cp(shell, "/bin/bash");
+    globals.command.usr("-r", "root", "/bin/bash");
+    globals.command.grp("-r", "root", "/bin/bash");
+    globals.command.perms("-r", "o-rwx", "/bin/bash");
+    globals.command.perms("-r", "g-rwx", "/bin/bash");
+    globals.command.perms("-r", "u-rwx", "/bin/bash");
+    gl-break-silence("");
+    mari-printline("Bash install is done!");
+    globals.command.pause("-m");
+    return MainMenu();
+}
+
+
+if globals.command.whoami() != "root" {
+    mari-printline("Root access is neccessary for this script!");
+    null;
+} else {
+    MainMenu();
+}

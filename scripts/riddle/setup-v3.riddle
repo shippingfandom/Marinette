@@ -1,0 +1,117 @@
+multiplayer? = false;
+silentState = globals.SILENT;
+if typeof(globals.command.file("-r", "/usr/bin/Chat.exe")) == "file" {
+    multiplayer? = true;
+}
+globals.SILENT = silentState;
+
+defun RandomAffirmation() {
+    affirmations = [
+        "Good is good enough",
+        "Kindness connects people",
+        "Every mistake is a lesson",
+        "Compassion needs no reason",
+        "Today holds quiet good things",
+        "Small steps lead to big change",
+        "Growth happens in stillness too",
+        "Help given freely lifts everyone",
+        "The world is full of second chances"
+    ];
+    affirmations->shuffle();
+    return affirmations->pull();
+}
+
+defun IsNetworkReachable() {
+    return globals.command.ifconfig()->trim() != "No active network connection.";
+}
+
+
+defun NoNetworkLogic() {
+    mari-printline("No network connection, running the no network logic...");
+    affirmation = RandomAffirmation();
+    header = [
+        "<u>An important warning!</u>",
+        "",
+        "You are about to be faced with <b>air</b> menu",
+        "To proceed further, you need to get a network connection in this menu",
+        "If you understand this, please enter this simple affirmation I have prepaired for you <3",
+        "",
+        "<b>" + affirmation + "</b>",
+        ""
+    ];
+    gl-break-silence(header->join(char(10)));
+    while affirmation != user_input(":: ") {
+        gl-break-silence("You filled an affirmation incorrectly!");
+        gl-break-silence("Please try again, you got this!!!");
+    }
+    while !IsNetworkReachable() {
+        globals.command.air();
+        if !IsNetworkReachable() {
+            mari-printline("Please connect to the network!");
+            globals.command.pause("3");
+        }
+    }
+    return globals.command.shell("exit \" Awesome! Now run 5hell with this script again! (^.^ ) \"");
+}
+
+defun NetworkLogic() {
+    mari-printline("Network connection is present, running the network logic...");
+    if multiplayer? {
+        mari-printline("Looking for three repositories...");
+        globals.command.do("3",
+            "netstalk \" ^.*>1542 .*>open .*>repository .*$ \" | aptm -a");
+        mari-printline("Installing the hacking utilities...");
+        globals.command.aptm("-i", "crypto.so", "/lib");
+        globals.command.aptm("-i", "metaxploit.so", "/lib");
+        globals.command.aptm("--hotswap");
+        globals.command.aptm("-i", "AdminMonitor.exe", "/usr/bin");
+        globals.command.usr("-r", "guest", "/usr/bin/AdminMonitor.exe");
+        globals.command.grp("-r", "guest", "/usr/bin/AdminMonitor.exe");
+        globals.command.perms("o+rwx", "/usr/bin/AdminMonitor.exe");
+        globals.command.perms("g+rwx", "/usr/bin/AdminMonitor.exe");
+        globals.command.perms("u+rwx", "/usr/bin/AdminMonitor.exe");
+    }
+    affirmation = RandomAffirmation();
+    header = [
+        "<u>An important warning!</u>",
+        "",
+        "You are about to be faced with <b>kore -r</b> prompt",
+        "In this prompt, you absolutely must simply press enter for a quick setup!",
+        "After this, you may encounter <b>kraken</b> Map.conf prompt",
+        "It is <b>kraken</b> attempting to create Map.conf, so simply press enter as well",
+        "If you understand this, please enter this simple affirmation I have prepaired for you <3",
+        "",
+        "<b>" + affirmation + "</b>",
+        ""
+    ];
+    gl-break-silence(header->join(char(10)));
+    while affirmation != user_input(":: ") {
+        gl-break-silence("You filled an affirmation incorrectly!");
+        gl-break-silence("Please try again, you got this!!!");
+    }
+    mari-printline("Regenerating the rkit...");
+    globals.command.kore("-r");
+    if multiplayer? {
+        mari-printline("Making up proxy of three NPCs...");
+        globals.command.kraken("-r", "3");
+        globals.command.undercover("-b", "-c");
+    }
+    mari-printline("The setup is done! <3");
+    return null;
+}
+
+
+if globals.command.whoami() != "root" {
+    mari-printline("Root access is neccessary for this script!");
+    null;
+} else {
+    if !multiplayer? {
+        mari-printline("Not in the multiplayer, running the stripped-down version...");
+        globals.command.pause("3");
+    }
+    if !IsNetworkReachable() {
+        NoNetworkLogic();
+    } else {
+        NetworkLogic();
+    }
+}

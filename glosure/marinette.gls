@@ -9,18 +9,22 @@
 
 ;; Load custom theme
 (defun mari-load-theme (theme) (begin
+    (def loaded? 0)
     (def grep (gl-grep-into (array '^marinette$' theme) (gl-get-rkit)))
     (if grep (begin
         (def content (trim ((_ grep get_content) grep)))
         (def lines (split content (char 10)))
-        (if content
+        (if content (begin
             (foreach _ line lines (begin
-                (def parts (split line ' '))
-                (def color-name (at parts 0))
-                (def color-value (at parts 2))
-                (set globals color-name ((_ color-value replace) color-value (char 34) ''))
-                (:= colorDefault ((_ (: colorGreen) replace) (: colorGreen) '<b>' ''))))
-            (mari-printline (array 'Could not load ' theme ' theme!'))))
+                (def parts (split line ' = '))
+                (def color-name (trim (at parts 0)))
+                (def second-part (trim (at parts 1)))
+                (def second-part ((_ second-part replace) second-part (char 34) '`'))
+                (def color-value (slice second-part (++ (indexOf second-part '`')) (lastIndexOf second-part '`')))
+                (set globals color-name color-value)))
+            (:= colorDefault ((_ (: colorGreen) replace) (: colorGreen) '<b>' ''))
+            (def loaded? 1)))))
+    (if (== 0 loaded?)
         (mari-printline (array 'Could not load ' theme ' theme!')))))
 
 ;; Populate rkit/marinette w/ a directory
@@ -391,6 +395,14 @@
             (def code ((|> cat) ((|> file) '-p' file)))
             (:= SILENT silent-state)
             ((|> glosure) '-e' code))))))))
+
+(>> objects @pipe (begin
+    (def query (# @pipe 0 'F'))
+    ((|> tws) query)))
+
+(>> zoomies @pipe (begin
+    ((|> cerebrum))
+    ((|> brutus))))
 
 
 ;; Aliases
@@ -1345,7 +1357,7 @@
             (if (!= 0 (len faulty-machines)) (begin
                 (mari-printline 'Warning: these machines could not be rooted and you absolutely must root them and cover your traces yourself!')
                 (gl-break-silence (join faulty-machines ', '))))
-            'Note: it is adviced to run <b>kraken scrub</b> to avoid detection!'))))
+            'Note: it is adviced to run <b>undercover -b -c</b> to avoid detection!'))))
     (begin
         (KRAKEN a1 a2 a3 a4))))))
 
@@ -1692,7 +1704,10 @@
             'Now run <b>mimi</b> on mirrored objects! (^.^ )')
             (char 10))
     (begin
-        (GLASSPOOL a1 a2 a3 a4)))))
+        (:= glasspool-show-mimi? 1)
+        (def return (GLASSPOOL a1 a2 a3 a4))
+        (:= glasspool-show-mimi? 0)
+        return))))
 
 ;; Hook mimi into anything that starts glasspool mirroring session
 ;; command.shell = function(input=null,mute=null)
@@ -1700,8 +1715,9 @@
 (|= shell (input mute) (begin
     (defaultvalue input null)
     (defaultvalue mute null)
-    (if (: GLASSPOOL)
-        (mimi (mari-get-current-object)))
+    (if (* (: GLASSPOOL) (: glasspool-show-mimi?)) (begin
+        (mimi (mari-get-current-object))
+        (:= glasspool-show-mimi? 0)))
     (SHELL input mute)))
 
 ;; command.purge = function(arg1, arg2, arg3=0, arg4=0)
@@ -1859,6 +1875,6 @@
 
 
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.3.0')
+(def MARINETTE-GLS-VERSION '0.3.1')
 (mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is loaded at ' (def MARINETTE-GLS-TIME (- (time) MARINETTE-GLS-TIME)) '! \\(^.^)/' (: CT)))
 (def DO-GLS-TIME (time))
