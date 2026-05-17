@@ -486,30 +486,22 @@ actions = function(result, targetPublicIp, port, targetLocalIp, k, v)
     if port == 0 and router.local_ip != targetLocalIp and resultType != "computer" then return null
 
     // _(o.o )_ Akari compatibility code with 5hell/Marinette _( o.o)_
-    locals.lastIndexOf = @lastIndexOf
-    locals.IsString = function(strRef)
-        return lastIndexOf(@strRef, "") != null
-    end function
-
-    locals.is_match = @is_match
-    locals.IsFunction = function(fRef)
-        notStrRef = not IsString(@fRef)
-        sigRef = @fRef + ""
-        isStrSigRef = IsString(@sigRef)
-        return notStrRef and isStrSigRef and is_match(@sigRef, "^FUNCTION(.*)$")
-    end function
-
-    locals.join = @join
-    locals.IsList = function(listRef)
-        notStrRef = not IsString(@listRef)
-        notfRef = not IsFunction(@listRef)
-        aPotentialListRef = IsString(join(@listRef, ""))
-        return notStrRef and notfRef and aPotentialListRef
+    realTypeof = function(anyObject)
+        if @anyObject == null then return "null"
+        objectType = @anyObject * 0
+        if objectType == "" then return "string"
+        if objectType == [] then return "list"
+        if @anyObject == {} then return "map"
+        for i in @anyObject
+            return "map"
+        end for
+        if objectType == null then return "function"
+        return "number"
     end function
 
     if not hasIndex(globals, "akari") then globals.akari = []
     if result != null then push(globals.akari, result)
-    if not hasIndex(get_custom_object, "akari") or not IsList(@get_custom_object.akari) then
+    if not hasIndex(get_custom_object, "akari") or realTypeof(@get_custom_object.akari) != "list" then
         get_custom_object.akari = globals.akari
     end if
     // ^^^^^^ Akari compatibility code with 5hell/Marinette ^^^^^^
