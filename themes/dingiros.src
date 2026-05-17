@@ -1,0 +1,12 @@
+colorRed =            "<color=#FF3B3BFF><b>"   // Bright blood red
+colorCyan =           "<color=#FF6B6BFF><b>"   // Soft neon crimson
+colorGold =           "<color=#D14A4AFF><b>"   // Rust red
+colorGrey =           "<color=#A8A8A8FF><b>"   // Readable grey
+colorGreen =          "<color=#2E8B57FF><b>"   // Sea green - vibrant and visible
+colorOlive =          "<color=#6B8E23FF><b>"   // Olive drab - maintains olive tone with good contrast
+colorWhite =          "<color=#F2F2F2FF><b>"   // Clean off-white
+colorBlack =          "<color=#050505FF><b>"   // Near-black
+colorOrange =         "<color=#FF5A36FF><b>"   // Hot ember glow
+colorViolet =         "<color=#9B2C52FF><b>"   // Crimson-violet blend
+colorMagenta =        "<color=#FF1744FF><b>"   // Neon ritual red
+colorLightBlue =      "<color=#C8C8C8FF><b>"   // Pale silver
