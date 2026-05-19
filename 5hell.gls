@@ -1,0 +1,199 @@
+(def SHELL-GLS-TIME (time))
+
+
+
+
+;; 
+;; A modification to the Standard Glosure Library, also known as STL
+;; 
+
+;; Define undefined variable or use value of the defined one
+(defmacro defdefault (name value) ()
+    (def name
+        (if (hasIndex (context) (symstring name))
+            name
+            value)))
+
+;; Effectfull for loop
+(defmacro for (initializer condition iterator body) (!result) (begin
+    initializer
+    (if condition (begin
+        (loop (def !result body) iterator condition)
+        !result))))
+
+;; Potentially more hygienic foreach
+(defmacro foreach (key value collection body) (!keys) (begin
+    (defdefault !keys (array))
+    (push !keys (indexes collection))
+    (if (at !keys (to_int '-1'))
+        (loop
+            (def key (pull (at !keys (to_int '-1'))))
+            (def value (at collection key))
+            body
+            (at !keys (to_int '-1'))))
+    (pop !keys)))
+
+;; Convert passed symbol to a string
+(defmacro symstring (sym) () ((lambda () (begin
+	(def sym null)
+	(at (indexes (context)) 0)))))
+
+
+
+
+;; 
+;; 5hell Glosure Library
+;;
+
+;; Get COB variable
+(defmacro @ (var-name) ()
+    (if (hasIndex (get_custom_object) (symstring var-name))
+        (at (get_custom_object) (symstring var-name))))
+
+;; Set COB variable
+(defmacro @= (var-name var-value) ()
+    (set (get_custom_object) (symstring var-name) var-value))
+
+;; Get globals variable
+(defmacro : (var-name) ()
+    (if (hasIndex globals (symstring var-name))
+        (at globals (symstring var-name))))
+
+;; Set globals variable
+(defmacro := (var-name var-value) ()
+    (set globals (symstring var-name) var-value))
+
+;; Get globals.command command
+(defmacro |> (cmd-name) ()
+    (if (hasIndex (: command) (symstring cmd-name))
+        (at (: command) (symstring cmd-name))))
+
+;; Sets globals.command.cmd-name
+(defmacro |= (cmd-name cmd-args cmd-body) () (begin
+    (defdefault MARINETTE-COMMANDS (dict))
+    (if (hasIndex MARINETTE-COMMANDS (symstring cmd-name))
+        (gl-printline (array 'Command <b>' (symstring cmd-name) '</b> is already defined or hooked, skipping'))
+    (begin
+        (defunction cmd-name cmd-args cmd-body)
+        (set MARINETTE-COMMANDS (symstring cmd-name) 1)
+        ((lambda () (begin
+            (def commands (: command))
+            (set commands (symstring cmd-name) cmd-name)
+            (:= command commands))))))))
+
+;; Get miniscript's object method
+(defmacro _ (object method) ()
+    (at object (symstring method)))
+
+;; Break through globals.SILENT and print()
+(defun gl-break-silence (message) (begin
+    (def silent-state (: SILENT))
+    (if (!= silent-state 0)
+        (:= SILENT 0))
+    (print message)
+    (:= SILENT silent-state)
+    message))
+
+;; Greps into every step from previous step and returns a file if successfull
+(defun gl-grep-into (steps starting-point) (begin
+    (def from ((|> file) '-r' '/'))
+    (if starting-point
+        (def from ((|> file) '-r' starting-point)))
+    (foreach _ step steps
+        (if (== (typeof from) 'file')
+            (def from ((|> grep) '-f' step from))))
+    (if (== (typeof from) 'file')
+        from)))
+
+;; Gets rkit folder from the 5hell launched
+(defun gl-get-rkit () (begin
+    (def silent-state (: SILENT))
+    (:= SILENT 2)
+    (def shell-path (program_path))
+    (def shell-parent-path ((|> file) '-p' ((|> file) '-P' shell-path)))
+    (def shell-parent-name ((|> file) '-n' shell-parent-path))
+    (def lookup-path
+        (if (== 'rkit' shell-parent-name)
+            ((|> file) '-P' shell-parent-path)
+            (home_dir)))
+    (def rkit ((|> grep) '-a' '^rkit$' lookup-path))
+    (def return null)
+    (if (== 'list' (typeof rkit)) (begin
+        ;; (at rkit (to_int '-1'))
+        (def trash-file null)
+        (foreach _ rkit-file rkit (begin
+            (def file-path ((|> file) '-p' rkit-file))
+            (def trash? (is_match file-path '^.*/\.Trash.*$'))
+            (if (* (== null return) (== 0 trash?))
+                (def return rkit-file)
+            (if (* (== null trash-file) (== 1 trash?))
+                (def trash-file rkit-file)))))
+        (if (== null return)
+            (def return trash-file))))
+    (:= SILENT silent-state)
+    return))
+
+;; Concats file paths
+(defun gl-pathcat (paths) (begin
+    (def path (pull paths))
+    (foreach _ part paths
+        (def path (join (array path part) '/')))
+    (if (== '//' (slice path 0 2))
+        (slice path 2 (len path)))
+        path))
+
+;; Generates random string of specified length
+(defun gl-random-string (length) (begin
+    (def abc 'acdfeghhijklmnopqrstuvwxyz')
+    (def abc (+ abc (upper abc)))
+    (def return-string '')
+    (for (def i 0) (< i length) (++ i) (begin
+        (def characters (values abc))
+        (shuffle characters)
+        (def character (pull characters))
+        (def return-string (+ return-string character))))
+    return-string))
+
+;; Return 1 if a file is a text file
+(defun gl-is-file-text (file) (begin
+    (def return 0)
+    (if (== 'file' (typeof file))
+        (def return (* (== 0 ((_ file is_folder) file)) (== 0 ((_ file is_binary) file)))))
+    return))
+
+;; Return 1 if any of the conditions evaluate to truthy value
+(defun gl-any (conditions) (begin
+    (def return 0)
+    (foreach _ condition conditions
+        (if condition
+            (def return 1)))
+    return))
+
+;; Return 1 if all of the conditions evaluate to truthy value
+(defun gl-all (conditions) (begin
+    (def return 1)
+    (foreach _ condition conditions
+        (if condition
+            ()
+            (def return 0)))
+    return))
+
+;; Default value for lambda/glosure parameter
+(defmacro defaultvalue (parameter-name parameter-value) ()
+    (if (== null (at (context) (symstring parameter-name))) (set (context) (symstring parameter-name) parameter-value)))
+
+;; Output something with the 5hell Glosure Library prefix!
+(defun gl-printline (str-array)
+    (if (== 'list' (typeof str-array))
+        (gl-break-silence (join (array (: colorWhite) '[5hell Glosure Library]' (: CT) ' ' (join str-array '')) ''))
+    (if (== 'string' (typeof str-array))
+        (gl-break-silence (join (array (: colorWhite) '[5hell Glosure Library]' (: CT) ' ' str-array) ''))
+    (begin
+        (gl-break-silence (join (array '5hell Glosure Library: Wrong argument passed into the gl-printline: expected list or string, got ' (typeof str-array)) ''))))))
+
+
+
+
+;; Init
+(def SHELL-GLS-VERSION '0.1.6')
+(gl-printline (array (: colorWhite) '5hell Glosure library v' SHELL-GLS-VERSION ' is loaded at ' (def SHELL-GLS-TIME (- (time) SHELL-GLS-TIME)) '! \\(^.^)/' (: CT)))
