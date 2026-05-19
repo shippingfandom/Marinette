@@ -10,7 +10,7 @@
 ;; Define undefined variable or use value of the defined one
 (defmacro defdefault (name value) ()
     (def name
-        (if (hasIndex (context) (quote name))
+        (if (hasIndex (context) (symstring name))
             name
             value)))
 
@@ -33,9 +33,10 @@
             (at !keys (to_int '-1'))))
     (pop !keys)))
 
-;; Useless gensym
-(defun gensym ()
-    (exec '(defmacro _ () (sym) (quote sym))(_)')) ;; Unquote is needed to make it any usefull
+;; Convert passed symbol to a string
+(defmacro symstring (sym) () ((lambda () (begin
+	(def sym null)
+	(at (indexes (context)) 0)))))
 
 
 
@@ -46,43 +47,43 @@
 
 ;; Get COB variable
 (defmacro @ (var-name) ()
-    (if (hasIndex (get_custom_object) (quote var-name))
-        (at (get_custom_object) (quote var-name))))
+    (if (hasIndex (get_custom_object) (symstring var-name))
+        (at (get_custom_object) (symstring var-name))))
 
 ;; Set COB variable
 (defmacro @= (var-name var-value) ()
-    (set (get_custom_object) (quote var-name) var-value))
+    (set (get_custom_object) (symstring var-name) var-value))
 
 ;; Get globals variable
 (defmacro : (var-name) ()
-    (if (hasIndex globals (quote var-name))
-        (at globals (quote var-name))))
+    (if (hasIndex globals (symstring var-name))
+        (at globals (symstring var-name))))
 
 ;; Set globals variable
 (defmacro := (var-name var-value) ()
-    (set globals (quote var-name) var-value))
+    (set globals (symstring var-name) var-value))
 
 ;; Get globals.command command
 (defmacro |> (cmd-name) ()
-    (if (hasIndex (: command) (quote cmd-name))
-        (at (: command) (quote cmd-name))))
+    (if (hasIndex (: command) (symstring cmd-name))
+        (at (: command) (symstring cmd-name))))
 
 ;; Sets globals.command.cmd-name
 (defmacro |= (cmd-name cmd-args cmd-body) () (begin
     (defdefault MARINETTE-COMMANDS (dict))
-    (if (hasIndex MARINETTE-COMMANDS (quote cmd-name))
-        (gl-printline (array 'Command <b>' (quote cmd-name) '</b> is already defined or hooked, skipping'))
+    (if (hasIndex MARINETTE-COMMANDS (symstring cmd-name))
+        (gl-printline (array 'Command <b>' (symstring cmd-name) '</b> is already defined or hooked, skipping'))
     (begin
         (defunction cmd-name cmd-args cmd-body)
-        (set MARINETTE-COMMANDS (quote cmd-name) 1)
+        (set MARINETTE-COMMANDS (symstring cmd-name) 1)
         ((lambda () (begin
             (def commands (: command))
-            (set commands (quote cmd-name) cmd-name)
+            (set commands (symstring cmd-name) cmd-name)
             (:= command commands))))))))
 
 ;; Get miniscript's object method
 (defmacro _ (object method) ()
-    (at object (quote method)))
+    (at object (symstring method)))
 
 ;; Break through globals.SILENT and print()
 (defun gl-break-silence (message) (begin
@@ -179,11 +180,9 @@
 
 ;; Default value for lambda/glosure parameter
 (defmacro defaultvalue (parameter-name parameter-value) ()
-    (if (== null (at (context) (quote parameter-name))) (set (context) (quote parameter-name) parameter-value)))
+    (if (== null (at (context) (symstring parameter-name))) (set (context) (symstring parameter-name) parameter-value)))
 
 ;; Output something with the 5hell Glosure Library prefix!
-;; (defun gl-printline (str-array)
-;;     (gl-break-silence (join (array (: colorWhite) '[5hell Glosure Library]' (: CT) ' ' (join str-array '')) '')))
 (defun gl-printline (str-array)
     (if (== 'list' (typeof str-array))
         (gl-break-silence (join (array (: colorWhite) '[5hell Glosure Library]' (: CT) ' ' (join str-array '')) ''))
@@ -196,5 +195,5 @@
 
 
 ;; Init
-(def SHELL-GLS-VERSION '0.1.5')
+(def SHELL-GLS-VERSION '0.1.6')
 (gl-printline (array (: colorWhite) '5hell Glosure library v' SHELL-GLS-VERSION ' is loaded at ' (def SHELL-GLS-TIME (- (time) SHELL-GLS-TIME)) '! \\(^.^)/' (: CT)))

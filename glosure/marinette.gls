@@ -20,7 +20,7 @@
                 (def color-name (trim (at parts 0)))
                 (def second-part (trim (at parts 1)))
                 (def second-part ((_ second-part replace) second-part (char 34) '`'))
-                (def color-value (slice second-part (++ (indexOf second-part '`')) (lastIndexOf second-part '`')))
+                (def color-value (slice second-part (+ 1 (indexOf second-part '`')) (lastIndexOf second-part '`')))
                 (set globals color-name color-value)))
             (:= colorDefault ((_ (: colorGreen) replace) (: colorGreen) '<b>' ''))
             (def loaded? 1)))))
@@ -54,7 +54,7 @@
     (defun macroname () (begin
         (def args (mari-args))
         macrobody))
-    ((|> macro) '-s' (quote macroname) (join (array 'glosure -e \" (:= SILENT 2) \" | | cob set PIPE \@pipe | | glosure -e \" (:= SILENT 0) \" | | glosure -e (' (quote macroname) ')') ''))))
+    ((|> macro) '-s' (symstring macroname) (join (array 'glosure -e \" (:= SILENT 2) \" | | cob set PIPE \@pipe | | glosure -e \" (:= SILENT 0) \" | | glosure -e (' (symstring macroname) ')') ''))))
 
 ;; Sorts 5hell macros
 (defun mari-sort-macros () (begin
@@ -1875,6 +1875,6 @@
 
 
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.3.1')
+(def MARINETTE-GLS-VERSION '0.3.2')
 (mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is loaded at ' (def MARINETTE-GLS-TIME (- (time) MARINETTE-GLS-TIME)) '! \\(^.^)/' (: CT)))
 (def DO-GLS-TIME (time))
