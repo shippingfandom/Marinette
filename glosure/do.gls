@@ -118,7 +118,7 @@
 
 ;; Show Marinette ascii art in rkit/marinette/notepads/ascii.txt on startup
 ;; By default, Marinette attempts to show the ascii art
-(def MARINETTE-SHOW-ASCII-ART 1)
+(= MARINETTE-SHOW-ASCII-ART 1)
 
 ;; Color Marinette ascii art
 ;; By default, Marinette attempts to color the ascii art
@@ -165,7 +165,7 @@
 
 ;; Show Marinette loading time
 ;; By default, Marinette attempts to show the loading time
-(def MARINETTE-SHOW-LOADING-TIME 1)
+(= MARINETTE-SHOW-LOADING-TIME 1)
 
 ;; Various cleanup from Marinette loading thingies
 ;; By default, Marinette attempts to clear the clips
@@ -180,5 +180,5 @@
 ;; -- It is highly recommended to leave this printing for the ease of bug reporting
 ;; -- If you remove DO-GLS-VERSION definition line, 5hell will crash if you attempt
 ;;    to issue marinette command
-(def DO-GLS-VERSION '0.2.5')
+(def DO-GLS-VERSION '0.2.6')
 (gl-break-silence (join (array (: colorGold) '[Marinette Configuration] Marinette configuration v' DO-GLS-VERSION ' is loaded at ' (def DO-GLS-TIME (- (time) DO-GLS-TIME)) '! \\(^.^)/' (: CT)) ''))
