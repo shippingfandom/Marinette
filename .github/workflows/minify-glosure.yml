@@ -29,8 +29,8 @@ jobs:
         id: versions
         shell: bash
         run: |
-          SHELL_VER=$(grep "^ *SHELL-GLS-VERSION" glosure/5hell.gls | grep -oP "'\K[^']+")
-          MARI_VER=$(grep "^ *MARINETTE-GLS-VERSION" glosure/marinette.gls | grep -oP "'\K[^']+")
+          SHELL_VER=$(awk -F"'" '/def SHELL-GLS-VERSION/{print $2}' glosure/5hell.gls)
+          MARI_VER=$(awk -F"'" '/def MARINETTE-GLS-VERSION/{print $2}' glosure/marinette.gls)
           echo "shell_ver=$SHELL_VER" >> $GITHUB_OUTPUT
           echo "mari_ver=$MARI_VER" >> $GITHUB_OUTPUT
 
