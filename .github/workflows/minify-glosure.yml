@@ -34,6 +34,9 @@ jobs:
           echo "shell_ver=$SHELL_VER" >> $GITHUB_OUTPUT
           echo "mari_ver=$MARI_VER" >> $GITHUB_OUTPUT
 
+      - name: Create dist directory
+        run: mkdir -p dist
+
       - name: Minify 5hell.gls
         run: python /tmp/riddle/riddle.py --minify-glosure glosure/5hell.gls dist/5hell.gls
 
