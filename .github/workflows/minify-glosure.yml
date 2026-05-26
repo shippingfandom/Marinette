@@ -1,0 +1,57 @@
+name: Minify Glosure Files
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  minify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Clone Riddle
+        run: git clone https://github.com/shippingfandom/Riddle.git /tmp/riddle
+
+      - name: Install dependencies
+        run: pip install -r /tmp/riddle/requirements.txt
+
+      - name: Extract versions
+        id: versions
+        shell: bash
+        run: |
+          SHELL_VER=$(grep "^ *SHELL-GLS-VERSION" glosure/5hell.gls | grep -oP "'\K[^']+")
+          MARI_VER=$(grep "^ *MARINETTE-GLS-VERSION" glosure/marinette.gls | grep -oP "'\K[^']+")
+          echo "shell_ver=$SHELL_VER" >> $GITHUB_OUTPUT
+          echo "mari_ver=$MARI_VER" >> $GITHUB_OUTPUT
+
+      - name: Minify 5hell.gls
+        run: python /tmp/riddle/riddle.py --minify-glosure glosure/5hell.gls glosure/5hell-minified.gls
+
+      - name: Minify marinette.gls
+        run: python /tmp/riddle/riddle.py --minify-glosure glosure/marinette.gls glosure/marinette-minified.gls
+
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHELL_VER: ${{ steps.versions.outputs.shell_ver }}
+          MARI_VER: ${{ steps.versions.outputs.mari_ver }}
+        run: |
+          TAG="5hell-v${SHELL_VER},marinette-v${MARI_VER}"
+          NAME="5hell v${SHELL_VER}, marinette v${MARI_VER}"
+          BODY="These are 5hell.gls v${SHELL_VER} and marinette.gls v${MARI_VER} minified for faster loading times! <3"
+
+          gh release create "$TAG" \
+            "glosure/5hell-minified.gls#5hell.gls" \
+            "glosure/marinette-minified.gls#marinette.gls" \
+            --title "$NAME" \
+            --notes "$BODY"
