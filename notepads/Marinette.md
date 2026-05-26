@@ -1,4 +1,4 @@
-﻿# Marinette Reference
+# Marinette Reference
 
 This reference covers functions, macros, and (some of the) commands provided by Marinette.
 
@@ -793,6 +793,65 @@ Returns: An array of string arguments
 
 ```clojure
 (def args (mari-args))
+```
+</details>
+
+<details open>
+<summary>mari-show-loading-time</summary>
+
+> Prints the total loading time for 5hell, Marinette, and do.gls. Only shows once per session.
+
+From: [marinette.gls](../glosure/marinette.gls)
+
+Returns: null
+
+```clojure
+(mari-show-loading-time)
+```
+</details>
+
+<details open>
+<summary>mari-backup-dict</summary>
+
+> Creates a shallow copy of a dictionary by iterating over its key-value pairs.
+
+From: [marinette.gls](../glosure/marinette.gls)
+
+| Parameter | Type | Description |
+|-----------|------|--------------|
+| dictionary | dict | The dictionary to back up |
+
+Returns: A new dictionary with the same key-value pairs
+
+```clojure
+(mari-backup-dict (get_custom_object))
+```
+
+```clojure
+(def backup (mari-backup-dict some-dict))
+```
+</details>
+
+<details open>
+<summary>mari-restore-dict</summary>
+
+> Restores a dictionary from a backup by copying all key-value pairs from the backup into the original dictionary.
+
+From: [marinette.gls](../glosure/marinette.gls)
+
+| Parameter | Type | Description |
+|-----------|------|--------------|
+| dictionary | dict | The dictionary to restore into |
+| backup | dict | The backup dictionary to copy from |
+
+Returns: null
+
+```clojure
+(mari-restore-dict (get_custom_object) backup)
+```
+
+```clojure
+(mari-restore-dict my-dict backup-dict)
 ```
 </details>
 
