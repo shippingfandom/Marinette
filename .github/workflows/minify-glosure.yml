@@ -35,10 +35,10 @@ jobs:
           echo "mari_ver=$MARI_VER" >> $GITHUB_OUTPUT
 
       - name: Minify 5hell.gls
-        run: python /tmp/riddle/riddle.py --minify-glosure glosure/5hell.gls glosure/5hell-minified.gls
+        run: python /tmp/riddle/riddle.py --minify-glosure glosure/5hell.gls dist/5hell.gls
 
       - name: Minify marinette.gls
-        run: python /tmp/riddle/riddle.py --minify-glosure glosure/marinette.gls glosure/marinette-minified.gls
+        run: python /tmp/riddle/riddle.py --minify-glosure glosure/marinette.gls dist/marinette.gls
 
       - name: Create Release
         env:
@@ -55,7 +55,7 @@ jobs:
           git push origin --delete "$TAG" 2>/dev/null || true
 
           gh release create "$TAG" \
-            "glosure/5hell-minified.gls#5hell.gls" \
-            "glosure/marinette-minified.gls#marinette.gls" \
+            "dist/5hell.gls" \
+            "dist/marinette.gls" \
             --title "$NAME" \
             --notes "$BODY"
