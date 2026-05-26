@@ -50,6 +50,10 @@ jobs:
           NAME="5hell v${SHELL_VER}, marinette v${MARI_VER}"
           BODY="These are 5hell.gls v${SHELL_VER} and marinette.gls v${MARI_VER} minified for faster loading times! <3"
 
+          gh release delete "$TAG" --yes 2>/dev/null || true
+          git tag -d "$TAG" 2>/dev/null || true
+          git push origin --delete "$TAG" 2>/dev/null || true
+
           gh release create "$TAG" \
             "glosure/5hell-minified.gls#5hell.gls" \
             "glosure/marinette-minified.gls#marinette.gls" \
