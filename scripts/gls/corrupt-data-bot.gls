@@ -32,9 +32,9 @@
 ;; |> meta load /lib/attackinglibrary.so | db -m || zap -l
 ;; 4. Copy address and value of the root computer exploit to the below.
 ;; Hooray! The bot is configured! \(^.^)/
-(def library 'libhttp-1.0.4.so')
-(def address '0x7DD8F3DE')
-(def value 'alse')
+(def library 'libhttp-100.so')
+(def address '0x1F000FB5')
+(def value 'length')
 
 ;; Open mail client and dump spool
 ((|> mail))
