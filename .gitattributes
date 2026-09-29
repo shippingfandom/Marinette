@@ -1,4 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-*.src linguist-language=Lua
+*.src linguist-language=Miniscript
 *.gls linguist-language=Clojure
