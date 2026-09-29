@@ -1,5 +1,5 @@
 ((lambda () (if (== 0 (hasIndex globals 'marinette-loaded?')) (begin
-    ((set globals 'SILENT' 2))
+    (set globals 'SILENT' 2)
 
     (set globals 'marinette-loaded?' 1)
 
@@ -43,4 +43,5 @@
         (marinette-interpret-file 'marinette.gls')
         (marinette-interpret-file 'do.gls')))
 
-    ((set globals 'SILENT' 0))))))
+    (set globals 'SILENT' 0)
+    null))))

@@ -36,7 +36,7 @@
 ;; Convert passed symbol to a string
 (defmacro symstring (sym) () ((lambda () (begin
 	(def sym null)
-	(at (indexes (context)) 0)))))
+	(at (indexes (context)) -1)))))
 
 
 
@@ -195,5 +195,5 @@
 
 
 ;; Init
-(def SHELL-GLS-VERSION '0.1.6')
+(def SHELL-GLS-VERSION '0.1.7')
 (gl-printline (array (: colorWhite) '5hell Glosure library v' SHELL-GLS-VERSION ' is loaded at ' (def SHELL-GLS-TIME (- (time) SHELL-GLS-TIME)) '! \\(^.^)/' (: CT)))

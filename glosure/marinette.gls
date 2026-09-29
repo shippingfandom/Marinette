@@ -442,7 +442,7 @@
         (if (== '-u' a1)
             ((|> psudo) '-u' a2 a3 a4)
         (begin
-            (((|> psudo) a1 a2 a3 a4)))))))
+            ((|> psudo) a1 a2 a3 a4))))))
     (if (== 'shell' (typeof shell))
         ((|> glasspool) shell)
         shell)))
@@ -1875,6 +1875,6 @@
 
 
 ;; Print version information
-(def MARINETTE-GLS-VERSION '0.3.2')
+(def MARINETTE-GLS-VERSION '0.3.3')
 (mari-printline (array (: colorViolet) 'Marinette v' MARINETTE-GLS-VERSION ' is loaded at ' (def MARINETTE-GLS-TIME (- (time) MARINETTE-GLS-TIME)) '! \\(^.^)/' (: CT)))
 (def DO-GLS-TIME (time))
