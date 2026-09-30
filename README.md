@@ -3,6 +3,8 @@
 
 A set of [5hell](https://github.com/jhook777/5hell-for-Grey-Hack-the-Game) configuration files written entirely in [Glosure](https://github.com/mahocitrus/Glosure)!
 
+> This README turns out to be rather clunky. Please consider [reading an alternative instead](notepads/README.md) 😄
+
 **TL;DR** An [installation how-to](#okay-you-definitely-bought-me-how-can-i-install-marinette) for those who can't wait! 👀
 
 I know this README is a little bit of a mess, so I've compiled the most interesting and important parts of this repository here for both your and my convenience ❤️
